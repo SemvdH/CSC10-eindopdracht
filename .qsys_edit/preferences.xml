@@ -3,12 +3,11 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="143" />
-   <irq preferredWidth="34" />
+   <connections preferredWidth="127" />
+   <irq preferredWidth="47" />
   </columns>
  </systemtable>
- <library
-   expandedCategories="Library/Interface Protocols/PCI Express/QSYS Example Designs,Library/Processors and Peripherals/Peripherals,Library/Processors and Peripherals,Library,Library/Interface Protocols,Project,Library/Interface Protocols/PCI Express" />
+ <library expandedCategories="Library,Project" />
  <window width="1900" height="1040" x="10" y="30" />
  <hdlexample language="VERILOG" />
  <generation synthesis="VHDL" block_symbol_file="0" />

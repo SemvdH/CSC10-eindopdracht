@@ -4,97 +4,69 @@ Progress: Loading CSC10-eindopdracht/VGA_image_viewer.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 18.1]
 Progress: Parameterizing module clk_0
-Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 18.1]
-Progress: Parameterizing module jtag_uart_0
-Progress: Adding nios2_gen2_0 [altera_nios2_gen2 18.1]
-Progress: Parameterizing module nios2_gen2_0
-Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 18.1]
-Progress: Parameterizing module onchip_memory2_0
-Progress: Adding pio_0 [altera_avalon_pio 18.1]
-Progress: Parameterizing module pio_0
-Progress: Adding pio_1 [altera_avalon_pio 18.1]
-Progress: Parameterizing module pio_1
+Progress: Adding hps_0 [altera_hps 18.1]
+Progress: Parameterizing module hps_0
+Progress: Adding pixel_data [altera_avalon_pio 18.1]
+Progress: Parameterizing module pixel_data
+Progress: Adding pixel_status [altera_avalon_pio 18.1]
+Progress: Parameterizing module pixel_status
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Info: VGA_image_viewer.jtag_uart_0: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
-Info: VGA_image_viewer.pio_0: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
-Info: VGA_image_viewer.pio_1: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: VGA_image_viewer.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: VGA_image_viewer.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: VGA_image_viewer.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: VGA_image_viewer.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: VGA_image_viewer.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: VGA_image_viewer.pixel_data: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: VGA_image_viewer.pixel_status: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: VGA_image_viewer: Generating VGA_image_viewer "VGA_image_viewer" for QUARTUS_SYNTH
-Info: jtag_uart_0: Starting RTL generation for module 'VGA_image_viewer_jtag_uart_0'
-Info: jtag_uart_0:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=VGA_image_viewer_jtag_uart_0 --dir=/tmp/alt9346_7912021315652444770.dir/0002_jtag_uart_0_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_7912021315652444770.dir/0002_jtag_uart_0_gen//VGA_image_viewer_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
-Info: jtag_uart_0: Done RTL generation for module 'VGA_image_viewer_jtag_uart_0'
-Info: jtag_uart_0: "VGA_image_viewer" instantiated altera_avalon_jtag_uart "jtag_uart_0"
-Info: nios2_gen2_0: "VGA_image_viewer" instantiated altera_nios2_gen2 "nios2_gen2_0"
-Info: onchip_memory2_0: Starting RTL generation for module 'VGA_image_viewer_onchip_memory2_0'
-Info: onchip_memory2_0:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=VGA_image_viewer_onchip_memory2_0 --dir=/tmp/alt9346_7912021315652444770.dir/0003_onchip_memory2_0_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_7912021315652444770.dir/0003_onchip_memory2_0_gen//VGA_image_viewer_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
-Info: onchip_memory2_0: Done RTL generation for module 'VGA_image_viewer_onchip_memory2_0'
-Info: onchip_memory2_0: "VGA_image_viewer" instantiated altera_avalon_onchip_memory2 "onchip_memory2_0"
-Info: pio_0: Starting RTL generation for module 'VGA_image_viewer_pio_0'
-Info: pio_0:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pio_0 --dir=/tmp/alt9346_7912021315652444770.dir/0004_pio_0_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_7912021315652444770.dir/0004_pio_0_gen//VGA_image_viewer_pio_0_component_configuration.pl  --do_build_sim=0  ]
-Info: pio_0: Done RTL generation for module 'VGA_image_viewer_pio_0'
-Info: pio_0: "VGA_image_viewer" instantiated altera_avalon_pio "pio_0"
+Warning: hps_0.f2h_irq0: Cannot connect clock for irq_mapper.sender
+Warning: hps_0.f2h_irq0: Cannot connect reset for irq_mapper.sender
+Warning: hps_0.f2h_irq1: Cannot connect clock for irq_mapper_001.sender
+Warning: hps_0.f2h_irq1: Cannot connect reset for irq_mapper_001.sender
+Info: hps_0: "Running  for module: hps_0"
+Info: hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: hps_0: "VGA_image_viewer" instantiated altera_hps "hps_0"
+Info: pixel_data: Starting RTL generation for module 'VGA_image_viewer_pixel_data'
+Info: pixel_data:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_data --dir=/tmp/alt9346_4461591499011088297.dir/0002_pixel_data_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_4461591499011088297.dir/0002_pixel_data_gen//VGA_image_viewer_pixel_data_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_data: Done RTL generation for module 'VGA_image_viewer_pixel_data'
+Info: pixel_data: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_data"
+Info: pixel_status: Starting RTL generation for module 'VGA_image_viewer_pixel_status'
+Info: pixel_status:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_status --dir=/tmp/alt9346_4461591499011088297.dir/0003_pixel_status_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_4461591499011088297.dir/0003_pixel_status_gen//VGA_image_viewer_pixel_status_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_status: Done RTL generation for module 'VGA_image_viewer_pixel_status'
+Info: pixel_status: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_status"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
-Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
-Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
-Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_0: "VGA_image_viewer" instantiated altera_mm_interconnect "mm_interconnect_0"
 Info: irq_mapper: "VGA_image_viewer" instantiated altera_irq_mapper "irq_mapper"
 Info: rst_controller: "VGA_image_viewer" instantiated altera_reset_controller "rst_controller"
-Info: cpu: Starting RTL generation for module 'VGA_image_viewer_nios2_gen2_0_cpu'
-Info: cpu:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64//eperlcmd -I /home/sem/intelFPGA_lite/18.1/quartus/linux64//perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=VGA_image_viewer_nios2_gen2_0_cpu --dir=/tmp/alt9346_7912021315652444770.dir/0007_cpu_gen/ --quartus_bindir=/home/sem/intelFPGA_lite/18.1/quartus/linux64/ --verilog --config=/tmp/alt9346_7912021315652444770.dir/0007_cpu_gen//VGA_image_viewer_nios2_gen2_0_cpu_processor_configuration.pl  --do_build_sim=0  ]
-Info: cpu: # 2022.12.20 10:49:42 (*) Starting Nios II generation
-Info: cpu: # 2022.12.20 10:49:42 (*)   Checking for plaintext license.
-Info: cpu: # 2022.12.20 10:49:43 (*)   Couldn't query license setup in Quartus directory /home/sem/intelFPGA_lite/18.1/quartus/linux64/
-Info: cpu: # 2022.12.20 10:49:43 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
-Info: cpu: # 2022.12.20 10:49:43 (*)   LM_LICENSE_FILE environment variable is empty
-Info: cpu: # 2022.12.20 10:49:43 (*)   Plaintext license not found.
-Info: cpu: # 2022.12.20 10:49:43 (*)   Checking for encrypted license (non-evaluation).
-Info: cpu: # 2022.12.20 10:49:43 (*)   Couldn't query license setup in Quartus directory /home/sem/intelFPGA_lite/18.1/quartus/linux64/
-Info: cpu: # 2022.12.20 10:49:43 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
-Info: cpu: # 2022.12.20 10:49:43 (*)   LM_LICENSE_FILE environment variable is empty
-Info: cpu: # 2022.12.20 10:49:43 (*)   Encrypted license not found.  Defaulting to OCP evaluation license (produces a time-limited SOF)
-Info: cpu: # 2022.12.20 10:49:43 (*)   Elaborating CPU configuration settings
-Info: cpu: # 2022.12.20 10:49:43 (*)   Creating all objects for CPU
-Info: cpu: # 2022.12.20 10:49:43 (*)     Testbench
-Info: cpu: # 2022.12.20 10:49:44 (*)     Instruction decoding
-Info: cpu: # 2022.12.20 10:49:44 (*)       Instruction fields
-Info: cpu: # 2022.12.20 10:49:44 (*)       Instruction decodes
-Info: cpu: # 2022.12.20 10:49:44 (*)       Signals for RTL simulation waveforms
-Info: cpu: # 2022.12.20 10:49:44 (*)       Instruction controls
-Info: cpu: # 2022.12.20 10:49:44 (*)     Pipeline frontend
-Info: cpu: # 2022.12.20 10:49:44 (*)     Pipeline backend
-Info: cpu: # 2022.12.20 10:49:46 (*)   Generating RTL from CPU objects
-Info: cpu: # 2022.12.20 10:49:48 (*)   Creating encrypted RTL
-Info: cpu: # 2022.12.20 10:49:48 (*) Done Nios II generation
-Info: cpu: Done RTL generation for module 'VGA_image_viewer_nios2_gen2_0_cpu'
-Info: cpu: "nios2_gen2_0" instantiated altera_nios2_gen2_unit "cpu"
-Info: nios2_gen2_0_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "nios2_gen2_0_data_master_translator"
-Info: jtag_uart_0_avalon_jtag_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "jtag_uart_0_avalon_jtag_slave_translator"
-Info: nios2_gen2_0_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "nios2_gen2_0_data_master_agent"
-Info: jtag_uart_0_avalon_jtag_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "jtag_uart_0_avalon_jtag_slave_agent"
-Info: jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo"
+Info: fpga_interfaces: "hps_0" instantiated altera_interface_generator "fpga_interfaces"
+Info: hps_io: "hps_0" instantiated altera_hps_io "hps_io"
+Info: pixel_data_s1_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "pixel_data_s1_translator"
+Info: hps_0_h2f_lw_axi_master_agent: "mm_interconnect_0" instantiated altera_merlin_axi_master_ni "hps_0_h2f_lw_axi_master_agent"
+Info: pixel_data_s1_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "pixel_data_s1_agent"
+Info: pixel_data_s1_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "pixel_data_s1_agent_rsp_fifo"
 Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
-Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
 Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
-Info: router_003: "mm_interconnect_0" instantiated altera_merlin_router "router_003"
-Info: nios2_gen2_0_data_master_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "nios2_gen2_0_data_master_limiter"
+Info: hps_0_h2f_lw_axi_master_wr_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "hps_0_h2f_lw_axi_master_wr_limiter"
 Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_avalon_sc_fifo.v
+Info: pixel_data_s1_burst_adapter: "mm_interconnect_0" instantiated altera_merlin_burst_adapter "pixel_data_s1_burst_adapter"
+Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_avalon_st_pipeline_base.v
 Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
-Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
 Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
-Info: cmd_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_001"
-Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
-Info: rsp_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux_001"
 Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
 Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_merlin_arbitrator.sv
-Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_001"
-Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_viewer/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: border: "hps_io" instantiated altera_interface_generator "border"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
-Info: VGA_image_viewer: Done "VGA_image_viewer" with 29 modules, 49 files
+Info: VGA_image_viewer: Done "VGA_image_viewer" with 24 modules, 81 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis
