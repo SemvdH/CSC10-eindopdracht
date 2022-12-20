@@ -75,8 +75,8 @@ entity VGA_image_viewer is
 		memory_mem_odt                  : out   std_logic;                                        --             .mem_odt
 		memory_mem_dm                   : out   std_logic_vector(3 downto 0);                     --             .mem_dm
 		memory_oct_rzqin                : in    std_logic                     := '0';             --             .oct_rzqin
-		pixel_data_export               : in    std_logic_vector(31 downto 0) := (others => '0'); --   pixel_data.export
-		pixel_status_export             : in    std_logic_vector(31 downto 0) := (others => '0'); -- pixel_status.export
+		pixel_data_export               : out   std_logic_vector(31 downto 0);                    --   pixel_data.export
+		pixel_status_export             : out   std_logic_vector(31 downto 0);                    -- pixel_status.export
 		reset_reset_n                   : in    std_logic                     := '0'              --        reset.reset_n
 	);
 end entity VGA_image_viewer;
@@ -199,21 +199,27 @@ architecture rtl of VGA_image_viewer is
 
 	component VGA_image_viewer_pixel_data is
 		port (
-			clk      : in  std_logic                     := 'X';             -- clk
-			reset_n  : in  std_logic                     := 'X';             -- reset_n
-			address  : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
-			readdata : out std_logic_vector(31 downto 0);                    -- readdata
-			in_port  : in  std_logic_vector(31 downto 0) := (others => 'X')  -- export
+			clk        : in  std_logic                     := 'X';             -- clk
+			reset_n    : in  std_logic                     := 'X';             -- reset_n
+			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
+			write_n    : in  std_logic                     := 'X';             -- write_n
+			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			chipselect : in  std_logic                     := 'X';             -- chipselect
+			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			out_port   : out std_logic_vector(31 downto 0)                     -- export
 		);
 	end component VGA_image_viewer_pixel_data;
 
 	component VGA_image_viewer_pixel_status is
 		port (
-			clk      : in  std_logic                     := 'X';             -- clk
-			reset_n  : in  std_logic                     := 'X';             -- reset_n
-			address  : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
-			readdata : out std_logic_vector(31 downto 0);                    -- readdata
-			in_port  : in  std_logic_vector(31 downto 0) := (others => 'X')  -- export
+			clk        : in  std_logic                     := 'X';             -- clk
+			reset_n    : in  std_logic                     := 'X';             -- reset_n
+			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
+			write_n    : in  std_logic                     := 'X';             -- write_n
+			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			chipselect : in  std_logic                     := 'X';             -- chipselect
+			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			out_port   : out std_logic_vector(31 downto 0)                     -- export
 		);
 	end component VGA_image_viewer_pixel_status;
 
@@ -259,9 +265,15 @@ architecture rtl of VGA_image_viewer is
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        : in  std_logic                     := 'X';             -- reset
 			pixel_data_s1_address                                               : out std_logic_vector(1 downto 0);                     -- address
+			pixel_data_s1_write                                                 : out std_logic;                                        -- write
 			pixel_data_s1_readdata                                              : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			pixel_data_s1_writedata                                             : out std_logic_vector(31 downto 0);                    -- writedata
+			pixel_data_s1_chipselect                                            : out std_logic;                                        -- chipselect
 			pixel_status_s1_address                                             : out std_logic_vector(1 downto 0);                     -- address
-			pixel_status_s1_readdata                                            : in  std_logic_vector(31 downto 0) := (others => 'X')  -- readdata
+			pixel_status_s1_write                                               : out std_logic;                                        -- write
+			pixel_status_s1_readdata                                            : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			pixel_status_s1_writedata                                           : out std_logic_vector(31 downto 0);                    -- writedata
+			pixel_status_s1_chipselect                                          : out std_logic                                         -- chipselect
 		);
 	end component VGA_image_viewer_mm_interconnect_0;
 
@@ -339,54 +351,62 @@ architecture rtl of VGA_image_viewer is
 		);
 	end component altera_reset_controller;
 
-	signal hps_0_h2f_lw_axi_master_awburst            : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_AWBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awburst
-	signal hps_0_h2f_lw_axi_master_arlen              : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_ARLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlen
-	signal hps_0_h2f_lw_axi_master_wstrb              : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_WSTRB -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wstrb
-	signal hps_0_h2f_lw_axi_master_wready             : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_wready -> hps_0:h2f_lw_WREADY
-	signal hps_0_h2f_lw_axi_master_rid                : std_logic_vector(11 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rid -> hps_0:h2f_lw_RID
-	signal hps_0_h2f_lw_axi_master_rready             : std_logic;                     -- hps_0:h2f_lw_RREADY -> mm_interconnect_0:hps_0_h2f_lw_axi_master_rready
-	signal hps_0_h2f_lw_axi_master_awlen              : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_AWLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awlen
-	signal hps_0_h2f_lw_axi_master_wid                : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_WID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wid
-	signal hps_0_h2f_lw_axi_master_arcache            : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_ARCACHE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arcache
-	signal hps_0_h2f_lw_axi_master_wvalid             : std_logic;                     -- hps_0:h2f_lw_WVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wvalid
-	signal hps_0_h2f_lw_axi_master_araddr             : std_logic_vector(20 downto 0); -- hps_0:h2f_lw_ARADDR -> mm_interconnect_0:hps_0_h2f_lw_axi_master_araddr
-	signal hps_0_h2f_lw_axi_master_arprot             : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_ARPROT -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arprot
-	signal hps_0_h2f_lw_axi_master_awprot             : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_AWPROT -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awprot
-	signal hps_0_h2f_lw_axi_master_wdata              : std_logic_vector(31 downto 0); -- hps_0:h2f_lw_WDATA -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wdata
-	signal hps_0_h2f_lw_axi_master_arvalid            : std_logic;                     -- hps_0:h2f_lw_ARVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arvalid
-	signal hps_0_h2f_lw_axi_master_awcache            : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_AWCACHE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awcache
-	signal hps_0_h2f_lw_axi_master_arid               : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_ARID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arid
-	signal hps_0_h2f_lw_axi_master_arlock             : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_ARLOCK -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlock
-	signal hps_0_h2f_lw_axi_master_awlock             : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_AWLOCK -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awlock
-	signal hps_0_h2f_lw_axi_master_awaddr             : std_logic_vector(20 downto 0); -- hps_0:h2f_lw_AWADDR -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awaddr
-	signal hps_0_h2f_lw_axi_master_bresp              : std_logic_vector(1 downto 0);  -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bresp -> hps_0:h2f_lw_BRESP
-	signal hps_0_h2f_lw_axi_master_arready            : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_arready -> hps_0:h2f_lw_ARREADY
-	signal hps_0_h2f_lw_axi_master_rdata              : std_logic_vector(31 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rdata -> hps_0:h2f_lw_RDATA
-	signal hps_0_h2f_lw_axi_master_awready            : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_awready -> hps_0:h2f_lw_AWREADY
-	signal hps_0_h2f_lw_axi_master_arburst            : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_ARBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arburst
-	signal hps_0_h2f_lw_axi_master_arsize             : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_ARSIZE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arsize
-	signal hps_0_h2f_lw_axi_master_bready             : std_logic;                     -- hps_0:h2f_lw_BREADY -> mm_interconnect_0:hps_0_h2f_lw_axi_master_bready
-	signal hps_0_h2f_lw_axi_master_rlast              : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rlast -> hps_0:h2f_lw_RLAST
-	signal hps_0_h2f_lw_axi_master_wlast              : std_logic;                     -- hps_0:h2f_lw_WLAST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wlast
-	signal hps_0_h2f_lw_axi_master_rresp              : std_logic_vector(1 downto 0);  -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rresp -> hps_0:h2f_lw_RRESP
-	signal hps_0_h2f_lw_axi_master_awid               : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_AWID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awid
-	signal hps_0_h2f_lw_axi_master_bid                : std_logic_vector(11 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bid -> hps_0:h2f_lw_BID
-	signal hps_0_h2f_lw_axi_master_bvalid             : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bvalid -> hps_0:h2f_lw_BVALID
-	signal hps_0_h2f_lw_axi_master_awsize             : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_AWSIZE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awsize
-	signal hps_0_h2f_lw_axi_master_awvalid            : std_logic;                     -- hps_0:h2f_lw_AWVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awvalid
-	signal hps_0_h2f_lw_axi_master_rvalid             : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rvalid -> hps_0:h2f_lw_RVALID
-	signal mm_interconnect_0_pixel_data_s1_readdata   : std_logic_vector(31 downto 0); -- pixel_data:readdata -> mm_interconnect_0:pixel_data_s1_readdata
-	signal mm_interconnect_0_pixel_data_s1_address    : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_data_s1_address -> pixel_data:address
-	signal mm_interconnect_0_pixel_status_s1_readdata : std_logic_vector(31 downto 0); -- pixel_status:readdata -> mm_interconnect_0:pixel_status_s1_readdata
-	signal mm_interconnect_0_pixel_status_s1_address  : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_status_s1_address -> pixel_status:address
-	signal hps_0_f2h_irq0_irq                         : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> hps_0:f2h_irq_p0
-	signal hps_0_f2h_irq1_irq                         : std_logic_vector(31 downto 0); -- irq_mapper_001:sender_irq -> hps_0:f2h_irq_p1
-	signal rst_controller_reset_out_reset             : std_logic;                     -- rst_controller:reset_out -> [mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in]
-	signal rst_controller_001_reset_out_reset         : std_logic;                     -- rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
-	signal hps_0_h2f_reset_reset                      : std_logic;                     -- hps_0:h2f_rst_n -> hps_0_h2f_reset_reset:in
-	signal reset_reset_n_ports_inv                    : std_logic;                     -- reset_reset_n:inv -> rst_controller:reset_in0
-	signal rst_controller_reset_out_reset_ports_inv   : std_logic;                     -- rst_controller_reset_out_reset:inv -> [pixel_data:reset_n, pixel_status:reset_n]
-	signal hps_0_h2f_reset_reset_ports_inv            : std_logic;                     -- hps_0_h2f_reset_reset:inv -> rst_controller_001:reset_in0
+	signal hps_0_h2f_lw_axi_master_awburst                   : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_AWBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awburst
+	signal hps_0_h2f_lw_axi_master_arlen                     : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_ARLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlen
+	signal hps_0_h2f_lw_axi_master_wstrb                     : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_WSTRB -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wstrb
+	signal hps_0_h2f_lw_axi_master_wready                    : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_wready -> hps_0:h2f_lw_WREADY
+	signal hps_0_h2f_lw_axi_master_rid                       : std_logic_vector(11 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rid -> hps_0:h2f_lw_RID
+	signal hps_0_h2f_lw_axi_master_rready                    : std_logic;                     -- hps_0:h2f_lw_RREADY -> mm_interconnect_0:hps_0_h2f_lw_axi_master_rready
+	signal hps_0_h2f_lw_axi_master_awlen                     : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_AWLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awlen
+	signal hps_0_h2f_lw_axi_master_wid                       : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_WID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wid
+	signal hps_0_h2f_lw_axi_master_arcache                   : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_ARCACHE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arcache
+	signal hps_0_h2f_lw_axi_master_wvalid                    : std_logic;                     -- hps_0:h2f_lw_WVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wvalid
+	signal hps_0_h2f_lw_axi_master_araddr                    : std_logic_vector(20 downto 0); -- hps_0:h2f_lw_ARADDR -> mm_interconnect_0:hps_0_h2f_lw_axi_master_araddr
+	signal hps_0_h2f_lw_axi_master_arprot                    : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_ARPROT -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arprot
+	signal hps_0_h2f_lw_axi_master_awprot                    : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_AWPROT -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awprot
+	signal hps_0_h2f_lw_axi_master_wdata                     : std_logic_vector(31 downto 0); -- hps_0:h2f_lw_WDATA -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wdata
+	signal hps_0_h2f_lw_axi_master_arvalid                   : std_logic;                     -- hps_0:h2f_lw_ARVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arvalid
+	signal hps_0_h2f_lw_axi_master_awcache                   : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_AWCACHE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awcache
+	signal hps_0_h2f_lw_axi_master_arid                      : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_ARID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arid
+	signal hps_0_h2f_lw_axi_master_arlock                    : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_ARLOCK -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlock
+	signal hps_0_h2f_lw_axi_master_awlock                    : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_AWLOCK -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awlock
+	signal hps_0_h2f_lw_axi_master_awaddr                    : std_logic_vector(20 downto 0); -- hps_0:h2f_lw_AWADDR -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awaddr
+	signal hps_0_h2f_lw_axi_master_bresp                     : std_logic_vector(1 downto 0);  -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bresp -> hps_0:h2f_lw_BRESP
+	signal hps_0_h2f_lw_axi_master_arready                   : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_arready -> hps_0:h2f_lw_ARREADY
+	signal hps_0_h2f_lw_axi_master_rdata                     : std_logic_vector(31 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rdata -> hps_0:h2f_lw_RDATA
+	signal hps_0_h2f_lw_axi_master_awready                   : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_awready -> hps_0:h2f_lw_AWREADY
+	signal hps_0_h2f_lw_axi_master_arburst                   : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_ARBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arburst
+	signal hps_0_h2f_lw_axi_master_arsize                    : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_ARSIZE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arsize
+	signal hps_0_h2f_lw_axi_master_bready                    : std_logic;                     -- hps_0:h2f_lw_BREADY -> mm_interconnect_0:hps_0_h2f_lw_axi_master_bready
+	signal hps_0_h2f_lw_axi_master_rlast                     : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rlast -> hps_0:h2f_lw_RLAST
+	signal hps_0_h2f_lw_axi_master_wlast                     : std_logic;                     -- hps_0:h2f_lw_WLAST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wlast
+	signal hps_0_h2f_lw_axi_master_rresp                     : std_logic_vector(1 downto 0);  -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rresp -> hps_0:h2f_lw_RRESP
+	signal hps_0_h2f_lw_axi_master_awid                      : std_logic_vector(11 downto 0); -- hps_0:h2f_lw_AWID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awid
+	signal hps_0_h2f_lw_axi_master_bid                       : std_logic_vector(11 downto 0); -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bid -> hps_0:h2f_lw_BID
+	signal hps_0_h2f_lw_axi_master_bvalid                    : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_bvalid -> hps_0:h2f_lw_BVALID
+	signal hps_0_h2f_lw_axi_master_awsize                    : std_logic_vector(2 downto 0);  -- hps_0:h2f_lw_AWSIZE -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awsize
+	signal hps_0_h2f_lw_axi_master_awvalid                   : std_logic;                     -- hps_0:h2f_lw_AWVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awvalid
+	signal hps_0_h2f_lw_axi_master_rvalid                    : std_logic;                     -- mm_interconnect_0:hps_0_h2f_lw_axi_master_rvalid -> hps_0:h2f_lw_RVALID
+	signal mm_interconnect_0_pixel_data_s1_chipselect        : std_logic;                     -- mm_interconnect_0:pixel_data_s1_chipselect -> pixel_data:chipselect
+	signal mm_interconnect_0_pixel_data_s1_readdata          : std_logic_vector(31 downto 0); -- pixel_data:readdata -> mm_interconnect_0:pixel_data_s1_readdata
+	signal mm_interconnect_0_pixel_data_s1_address           : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_data_s1_address -> pixel_data:address
+	signal mm_interconnect_0_pixel_data_s1_write             : std_logic;                     -- mm_interconnect_0:pixel_data_s1_write -> mm_interconnect_0_pixel_data_s1_write:in
+	signal mm_interconnect_0_pixel_data_s1_writedata         : std_logic_vector(31 downto 0); -- mm_interconnect_0:pixel_data_s1_writedata -> pixel_data:writedata
+	signal mm_interconnect_0_pixel_status_s1_chipselect      : std_logic;                     -- mm_interconnect_0:pixel_status_s1_chipselect -> pixel_status:chipselect
+	signal mm_interconnect_0_pixel_status_s1_readdata        : std_logic_vector(31 downto 0); -- pixel_status:readdata -> mm_interconnect_0:pixel_status_s1_readdata
+	signal mm_interconnect_0_pixel_status_s1_address         : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_status_s1_address -> pixel_status:address
+	signal mm_interconnect_0_pixel_status_s1_write           : std_logic;                     -- mm_interconnect_0:pixel_status_s1_write -> mm_interconnect_0_pixel_status_s1_write:in
+	signal mm_interconnect_0_pixel_status_s1_writedata       : std_logic_vector(31 downto 0); -- mm_interconnect_0:pixel_status_s1_writedata -> pixel_status:writedata
+	signal hps_0_f2h_irq0_irq                                : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> hps_0:f2h_irq_p0
+	signal hps_0_f2h_irq1_irq                                : std_logic_vector(31 downto 0); -- irq_mapper_001:sender_irq -> hps_0:f2h_irq_p1
+	signal rst_controller_reset_out_reset                    : std_logic;                     -- rst_controller:reset_out -> [mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in]
+	signal rst_controller_001_reset_out_reset                : std_logic;                     -- rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
+	signal hps_0_h2f_reset_reset                             : std_logic;                     -- hps_0:h2f_rst_n -> hps_0_h2f_reset_reset:in
+	signal reset_reset_n_ports_inv                           : std_logic;                     -- reset_reset_n:inv -> rst_controller:reset_in0
+	signal mm_interconnect_0_pixel_data_s1_write_ports_inv   : std_logic;                     -- mm_interconnect_0_pixel_data_s1_write:inv -> pixel_data:write_n
+	signal mm_interconnect_0_pixel_status_s1_write_ports_inv : std_logic;                     -- mm_interconnect_0_pixel_status_s1_write:inv -> pixel_status:write_n
+	signal rst_controller_reset_out_reset_ports_inv          : std_logic;                     -- rst_controller_reset_out_reset:inv -> [pixel_data:reset_n, pixel_status:reset_n]
+	signal hps_0_h2f_reset_reset_ports_inv                   : std_logic;                     -- hps_0_h2f_reset_reset:inv -> rst_controller_001:reset_in0
 
 begin
 
@@ -506,67 +526,79 @@ begin
 
 	pixel_data : component VGA_image_viewer_pixel_data
 		port map (
-			clk      => clk_clk,                                  --                 clk.clk
-			reset_n  => rst_controller_reset_out_reset_ports_inv, --               reset.reset_n
-			address  => mm_interconnect_0_pixel_data_s1_address,  --                  s1.address
-			readdata => mm_interconnect_0_pixel_data_s1_readdata, --                    .readdata
-			in_port  => pixel_data_export                         -- external_connection.export
+			clk        => clk_clk,                                         --                 clk.clk
+			reset_n    => rst_controller_reset_out_reset_ports_inv,        --               reset.reset_n
+			address    => mm_interconnect_0_pixel_data_s1_address,         --                  s1.address
+			write_n    => mm_interconnect_0_pixel_data_s1_write_ports_inv, --                    .write_n
+			writedata  => mm_interconnect_0_pixel_data_s1_writedata,       --                    .writedata
+			chipselect => mm_interconnect_0_pixel_data_s1_chipselect,      --                    .chipselect
+			readdata   => mm_interconnect_0_pixel_data_s1_readdata,        --                    .readdata
+			out_port   => pixel_data_export                                -- external_connection.export
 		);
 
 	pixel_status : component VGA_image_viewer_pixel_status
 		port map (
-			clk      => clk_clk,                                    --                 clk.clk
-			reset_n  => rst_controller_reset_out_reset_ports_inv,   --               reset.reset_n
-			address  => mm_interconnect_0_pixel_status_s1_address,  --                  s1.address
-			readdata => mm_interconnect_0_pixel_status_s1_readdata, --                    .readdata
-			in_port  => pixel_status_export                         -- external_connection.export
+			clk        => clk_clk,                                           --                 clk.clk
+			reset_n    => rst_controller_reset_out_reset_ports_inv,          --               reset.reset_n
+			address    => mm_interconnect_0_pixel_status_s1_address,         --                  s1.address
+			write_n    => mm_interconnect_0_pixel_status_s1_write_ports_inv, --                    .write_n
+			writedata  => mm_interconnect_0_pixel_status_s1_writedata,       --                    .writedata
+			chipselect => mm_interconnect_0_pixel_status_s1_chipselect,      --                    .chipselect
+			readdata   => mm_interconnect_0_pixel_status_s1_readdata,        --                    .readdata
+			out_port   => pixel_status_export                                -- external_connection.export
 		);
 
 	mm_interconnect_0 : component VGA_image_viewer_mm_interconnect_0
 		port map (
-			hps_0_h2f_lw_axi_master_awid                                        => hps_0_h2f_lw_axi_master_awid,               --                                       hps_0_h2f_lw_axi_master.awid
-			hps_0_h2f_lw_axi_master_awaddr                                      => hps_0_h2f_lw_axi_master_awaddr,             --                                                              .awaddr
-			hps_0_h2f_lw_axi_master_awlen                                       => hps_0_h2f_lw_axi_master_awlen,              --                                                              .awlen
-			hps_0_h2f_lw_axi_master_awsize                                      => hps_0_h2f_lw_axi_master_awsize,             --                                                              .awsize
-			hps_0_h2f_lw_axi_master_awburst                                     => hps_0_h2f_lw_axi_master_awburst,            --                                                              .awburst
-			hps_0_h2f_lw_axi_master_awlock                                      => hps_0_h2f_lw_axi_master_awlock,             --                                                              .awlock
-			hps_0_h2f_lw_axi_master_awcache                                     => hps_0_h2f_lw_axi_master_awcache,            --                                                              .awcache
-			hps_0_h2f_lw_axi_master_awprot                                      => hps_0_h2f_lw_axi_master_awprot,             --                                                              .awprot
-			hps_0_h2f_lw_axi_master_awvalid                                     => hps_0_h2f_lw_axi_master_awvalid,            --                                                              .awvalid
-			hps_0_h2f_lw_axi_master_awready                                     => hps_0_h2f_lw_axi_master_awready,            --                                                              .awready
-			hps_0_h2f_lw_axi_master_wid                                         => hps_0_h2f_lw_axi_master_wid,                --                                                              .wid
-			hps_0_h2f_lw_axi_master_wdata                                       => hps_0_h2f_lw_axi_master_wdata,              --                                                              .wdata
-			hps_0_h2f_lw_axi_master_wstrb                                       => hps_0_h2f_lw_axi_master_wstrb,              --                                                              .wstrb
-			hps_0_h2f_lw_axi_master_wlast                                       => hps_0_h2f_lw_axi_master_wlast,              --                                                              .wlast
-			hps_0_h2f_lw_axi_master_wvalid                                      => hps_0_h2f_lw_axi_master_wvalid,             --                                                              .wvalid
-			hps_0_h2f_lw_axi_master_wready                                      => hps_0_h2f_lw_axi_master_wready,             --                                                              .wready
-			hps_0_h2f_lw_axi_master_bid                                         => hps_0_h2f_lw_axi_master_bid,                --                                                              .bid
-			hps_0_h2f_lw_axi_master_bresp                                       => hps_0_h2f_lw_axi_master_bresp,              --                                                              .bresp
-			hps_0_h2f_lw_axi_master_bvalid                                      => hps_0_h2f_lw_axi_master_bvalid,             --                                                              .bvalid
-			hps_0_h2f_lw_axi_master_bready                                      => hps_0_h2f_lw_axi_master_bready,             --                                                              .bready
-			hps_0_h2f_lw_axi_master_arid                                        => hps_0_h2f_lw_axi_master_arid,               --                                                              .arid
-			hps_0_h2f_lw_axi_master_araddr                                      => hps_0_h2f_lw_axi_master_araddr,             --                                                              .araddr
-			hps_0_h2f_lw_axi_master_arlen                                       => hps_0_h2f_lw_axi_master_arlen,              --                                                              .arlen
-			hps_0_h2f_lw_axi_master_arsize                                      => hps_0_h2f_lw_axi_master_arsize,             --                                                              .arsize
-			hps_0_h2f_lw_axi_master_arburst                                     => hps_0_h2f_lw_axi_master_arburst,            --                                                              .arburst
-			hps_0_h2f_lw_axi_master_arlock                                      => hps_0_h2f_lw_axi_master_arlock,             --                                                              .arlock
-			hps_0_h2f_lw_axi_master_arcache                                     => hps_0_h2f_lw_axi_master_arcache,            --                                                              .arcache
-			hps_0_h2f_lw_axi_master_arprot                                      => hps_0_h2f_lw_axi_master_arprot,             --                                                              .arprot
-			hps_0_h2f_lw_axi_master_arvalid                                     => hps_0_h2f_lw_axi_master_arvalid,            --                                                              .arvalid
-			hps_0_h2f_lw_axi_master_arready                                     => hps_0_h2f_lw_axi_master_arready,            --                                                              .arready
-			hps_0_h2f_lw_axi_master_rid                                         => hps_0_h2f_lw_axi_master_rid,                --                                                              .rid
-			hps_0_h2f_lw_axi_master_rdata                                       => hps_0_h2f_lw_axi_master_rdata,              --                                                              .rdata
-			hps_0_h2f_lw_axi_master_rresp                                       => hps_0_h2f_lw_axi_master_rresp,              --                                                              .rresp
-			hps_0_h2f_lw_axi_master_rlast                                       => hps_0_h2f_lw_axi_master_rlast,              --                                                              .rlast
-			hps_0_h2f_lw_axi_master_rvalid                                      => hps_0_h2f_lw_axi_master_rvalid,             --                                                              .rvalid
-			hps_0_h2f_lw_axi_master_rready                                      => hps_0_h2f_lw_axi_master_rready,             --                                                              .rready
-			clk_0_clk_clk                                                       => clk_clk,                                    --                                                     clk_0_clk.clk
-			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,         -- hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
-			pixel_data_reset_reset_bridge_in_reset_reset                        => rst_controller_reset_out_reset,             --                        pixel_data_reset_reset_bridge_in_reset.reset
-			pixel_data_s1_address                                               => mm_interconnect_0_pixel_data_s1_address,    --                                                 pixel_data_s1.address
-			pixel_data_s1_readdata                                              => mm_interconnect_0_pixel_data_s1_readdata,   --                                                              .readdata
-			pixel_status_s1_address                                             => mm_interconnect_0_pixel_status_s1_address,  --                                               pixel_status_s1.address
-			pixel_status_s1_readdata                                            => mm_interconnect_0_pixel_status_s1_readdata  --                                                              .readdata
+			hps_0_h2f_lw_axi_master_awid                                        => hps_0_h2f_lw_axi_master_awid,                 --                                       hps_0_h2f_lw_axi_master.awid
+			hps_0_h2f_lw_axi_master_awaddr                                      => hps_0_h2f_lw_axi_master_awaddr,               --                                                              .awaddr
+			hps_0_h2f_lw_axi_master_awlen                                       => hps_0_h2f_lw_axi_master_awlen,                --                                                              .awlen
+			hps_0_h2f_lw_axi_master_awsize                                      => hps_0_h2f_lw_axi_master_awsize,               --                                                              .awsize
+			hps_0_h2f_lw_axi_master_awburst                                     => hps_0_h2f_lw_axi_master_awburst,              --                                                              .awburst
+			hps_0_h2f_lw_axi_master_awlock                                      => hps_0_h2f_lw_axi_master_awlock,               --                                                              .awlock
+			hps_0_h2f_lw_axi_master_awcache                                     => hps_0_h2f_lw_axi_master_awcache,              --                                                              .awcache
+			hps_0_h2f_lw_axi_master_awprot                                      => hps_0_h2f_lw_axi_master_awprot,               --                                                              .awprot
+			hps_0_h2f_lw_axi_master_awvalid                                     => hps_0_h2f_lw_axi_master_awvalid,              --                                                              .awvalid
+			hps_0_h2f_lw_axi_master_awready                                     => hps_0_h2f_lw_axi_master_awready,              --                                                              .awready
+			hps_0_h2f_lw_axi_master_wid                                         => hps_0_h2f_lw_axi_master_wid,                  --                                                              .wid
+			hps_0_h2f_lw_axi_master_wdata                                       => hps_0_h2f_lw_axi_master_wdata,                --                                                              .wdata
+			hps_0_h2f_lw_axi_master_wstrb                                       => hps_0_h2f_lw_axi_master_wstrb,                --                                                              .wstrb
+			hps_0_h2f_lw_axi_master_wlast                                       => hps_0_h2f_lw_axi_master_wlast,                --                                                              .wlast
+			hps_0_h2f_lw_axi_master_wvalid                                      => hps_0_h2f_lw_axi_master_wvalid,               --                                                              .wvalid
+			hps_0_h2f_lw_axi_master_wready                                      => hps_0_h2f_lw_axi_master_wready,               --                                                              .wready
+			hps_0_h2f_lw_axi_master_bid                                         => hps_0_h2f_lw_axi_master_bid,                  --                                                              .bid
+			hps_0_h2f_lw_axi_master_bresp                                       => hps_0_h2f_lw_axi_master_bresp,                --                                                              .bresp
+			hps_0_h2f_lw_axi_master_bvalid                                      => hps_0_h2f_lw_axi_master_bvalid,               --                                                              .bvalid
+			hps_0_h2f_lw_axi_master_bready                                      => hps_0_h2f_lw_axi_master_bready,               --                                                              .bready
+			hps_0_h2f_lw_axi_master_arid                                        => hps_0_h2f_lw_axi_master_arid,                 --                                                              .arid
+			hps_0_h2f_lw_axi_master_araddr                                      => hps_0_h2f_lw_axi_master_araddr,               --                                                              .araddr
+			hps_0_h2f_lw_axi_master_arlen                                       => hps_0_h2f_lw_axi_master_arlen,                --                                                              .arlen
+			hps_0_h2f_lw_axi_master_arsize                                      => hps_0_h2f_lw_axi_master_arsize,               --                                                              .arsize
+			hps_0_h2f_lw_axi_master_arburst                                     => hps_0_h2f_lw_axi_master_arburst,              --                                                              .arburst
+			hps_0_h2f_lw_axi_master_arlock                                      => hps_0_h2f_lw_axi_master_arlock,               --                                                              .arlock
+			hps_0_h2f_lw_axi_master_arcache                                     => hps_0_h2f_lw_axi_master_arcache,              --                                                              .arcache
+			hps_0_h2f_lw_axi_master_arprot                                      => hps_0_h2f_lw_axi_master_arprot,               --                                                              .arprot
+			hps_0_h2f_lw_axi_master_arvalid                                     => hps_0_h2f_lw_axi_master_arvalid,              --                                                              .arvalid
+			hps_0_h2f_lw_axi_master_arready                                     => hps_0_h2f_lw_axi_master_arready,              --                                                              .arready
+			hps_0_h2f_lw_axi_master_rid                                         => hps_0_h2f_lw_axi_master_rid,                  --                                                              .rid
+			hps_0_h2f_lw_axi_master_rdata                                       => hps_0_h2f_lw_axi_master_rdata,                --                                                              .rdata
+			hps_0_h2f_lw_axi_master_rresp                                       => hps_0_h2f_lw_axi_master_rresp,                --                                                              .rresp
+			hps_0_h2f_lw_axi_master_rlast                                       => hps_0_h2f_lw_axi_master_rlast,                --                                                              .rlast
+			hps_0_h2f_lw_axi_master_rvalid                                      => hps_0_h2f_lw_axi_master_rvalid,               --                                                              .rvalid
+			hps_0_h2f_lw_axi_master_rready                                      => hps_0_h2f_lw_axi_master_rready,               --                                                              .rready
+			clk_0_clk_clk                                                       => clk_clk,                                      --                                                     clk_0_clk.clk
+			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,           -- hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
+			pixel_data_reset_reset_bridge_in_reset_reset                        => rst_controller_reset_out_reset,               --                        pixel_data_reset_reset_bridge_in_reset.reset
+			pixel_data_s1_address                                               => mm_interconnect_0_pixel_data_s1_address,      --                                                 pixel_data_s1.address
+			pixel_data_s1_write                                                 => mm_interconnect_0_pixel_data_s1_write,        --                                                              .write
+			pixel_data_s1_readdata                                              => mm_interconnect_0_pixel_data_s1_readdata,     --                                                              .readdata
+			pixel_data_s1_writedata                                             => mm_interconnect_0_pixel_data_s1_writedata,    --                                                              .writedata
+			pixel_data_s1_chipselect                                            => mm_interconnect_0_pixel_data_s1_chipselect,   --                                                              .chipselect
+			pixel_status_s1_address                                             => mm_interconnect_0_pixel_status_s1_address,    --                                               pixel_status_s1.address
+			pixel_status_s1_write                                               => mm_interconnect_0_pixel_status_s1_write,      --                                                              .write
+			pixel_status_s1_readdata                                            => mm_interconnect_0_pixel_status_s1_readdata,   --                                                              .readdata
+			pixel_status_s1_writedata                                           => mm_interconnect_0_pixel_status_s1_writedata,  --                                                              .writedata
+			pixel_status_s1_chipselect                                          => mm_interconnect_0_pixel_status_s1_chipselect  --                                                              .chipselect
 		);
 
 	irq_mapper : component VGA_image_viewer_irq_mapper
@@ -714,6 +746,10 @@ begin
 		);
 
 	reset_reset_n_ports_inv <= not reset_reset_n;
+
+	mm_interconnect_0_pixel_data_s1_write_ports_inv <= not mm_interconnect_0_pixel_data_s1_write;
+
+	mm_interconnect_0_pixel_status_s1_write_ports_inv <= not mm_interconnect_0_pixel_status_s1_write;
 
 	rst_controller_reset_out_reset_ports_inv <= not rst_controller_reset_out_reset;
 

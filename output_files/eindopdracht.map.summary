@@ -1,0 +1,17 @@
+Analysis & Synthesis Status : Successful - Tue Dec 20 12:59:44 2022
+Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+Revision Name : eindopdracht
+Top-level Entity Name : VGA_image_viewer_tl
+Family : Cyclone V
+Logic utilization (in ALMs) : N/A
+Total registers : 857
+Total pins : 156
+Total virtual pins : 0
+Total block memory bits : 0
+Total DSP Blocks : 0
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 0
+Total DLLs : 1

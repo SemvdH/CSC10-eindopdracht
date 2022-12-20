@@ -51,7 +51,6 @@ module VGA_image_viewer (
 	hps_io_hps_io_i2c1_inst_SCL,
 	hps_io_hps_io_gpio_inst_GPIO53,
 	hps_io_hps_io_gpio_inst_GPIO54,
-	pixel_data_export,
 	memory_mem_a,
 	memory_mem_ba,
 	memory_mem_ck,
@@ -68,8 +67,9 @@ module VGA_image_viewer (
 	memory_mem_odt,
 	memory_mem_dm,
 	memory_oct_rzqin,
-	reset_reset_n,
-	pixel_status_export);	
+	pixel_data_export,
+	pixel_status_export,
+	reset_reset_n);	
 
 	input		clk_clk;
 	output		hps_io_hps_io_emac1_inst_TX_CLK;
@@ -122,7 +122,6 @@ module VGA_image_viewer (
 	inout		hps_io_hps_io_i2c1_inst_SCL;
 	inout		hps_io_hps_io_gpio_inst_GPIO53;
 	inout		hps_io_hps_io_gpio_inst_GPIO54;
-	input	[31:0]	pixel_data_export;
 	output	[14:0]	memory_mem_a;
 	output	[2:0]	memory_mem_ba;
 	output		memory_mem_ck;
@@ -139,6 +138,7 @@ module VGA_image_viewer (
 	output		memory_mem_odt;
 	output	[3:0]	memory_mem_dm;
 	input		memory_oct_rzqin;
+	output	[31:0]	pixel_data_export;
+	output	[31:0]	pixel_status_export;
 	input		reset_reset_n;
-	input	[31:0]	pixel_status_export;
 endmodule
