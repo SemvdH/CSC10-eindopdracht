@@ -1,0 +1,3 @@
+[submodule "HWP_VGA_pong_game"]
+	path = HWP_VGA_pong_game
+	url = https://github.com/StijnLemm/HWP_VGA_pong_game

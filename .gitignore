@@ -32,13 +32,12 @@
 ### tbd
 
 ######## Quartus II binary files
-
+/db
 # hardware binary files
 ### project_name.sof SRAM Object File
 
 # software binary files
 
-/*
 !/*.gitignore
 ##
 !*.qpf
