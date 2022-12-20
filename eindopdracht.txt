@@ -1,0 +1,11 @@
+matrix multiplication is wel ambitieus
+    als dit te moeilijk is: matrixen optellen is niet moeilijk
+    hardware multipliers
+    open source code voor matrix multiplier gebruiken
+    probleem is memory interface
+    adres als index in array van registers
+
+matrix operations in fpga
+HPS bridge met registers
+
+
