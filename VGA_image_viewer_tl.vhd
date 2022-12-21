@@ -304,25 +304,35 @@ BEGIN
         );
 
         render : PROCESS (pixel_tick)
-            VARIABLE counter : INTEGER RANGE 0 TO 10;
+            VARIABLE prev_pixel_y : INTEGER := 0;
+            VARIABLE pixel_x_v : INTEGER;
+            VARIABLE pixel_y_v : INTEGER;
         BEGIN
             IF (rising_edge(pixel_tick)) THEN
+                pixel_x_v := to_integer(unsigned(pixel_x));
+                pixel_y_v := to_integer(unsigned(pixel_y));
                 IF (pm_blank = '1') THEN
-                    VGA_R <= pixel_data_s(7 DOWNTO 0); -- add all objects with or.
-                    VGA_G <= pixel_data_s(15 DOWNTO 8);
-                    VGA_B <= pixel_data_s(23 DOWNTO 16);
-                    counter := counter + 1;
+                    IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
+                        VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
+                        VGA_G <= row_reg_1_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
+                        VGA_B <= row_reg_1_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
+                        -- counter := counter + 1;
+                    ELSE
+                        VGA_R <= row_reg_2_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
+                        VGA_G <= row_reg_2_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
+                        VGA_B <= row_reg_2_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
+                    END IF;
                 END IF;
             END IF;
-
-            IF (counter = 10) THEN
-                counter := 0;
-                pixel_status_read_s <= "0001";
-            ELSE
+            IF (pixel_y_v = prev_pixel_y) THEN
                 pixel_status_read_s <= "0000";
+            ELSE
+                pixel_status_read_s <= "0001";
+                prev_pixel_y := pixel_y_v;
             END IF;
 
         END PROCESS;
+
         -- port map clock and blank
         VGA_CLK <= pixel_tick;
         VGA_BLANK_N <= pm_blank;
@@ -331,7 +341,7 @@ BEGIN
             VARIABLE pixel_in_row_index : INTEGER RANGE 0 TO HD - 1; -- 0 to 639
         BEGIN
             IF (pixel_status_write_s = "0001") THEN
-                IF (pixel_y MOD 2 = 0) THEN
+                IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
                     row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
                     row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
                     row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
@@ -343,5 +353,5 @@ BEGIN
                 pixel_in_row_index := pixel_in_row_index + 1;
             END IF;
         END PROCESS;
-        pixel_row_s <= pixel_y; -- write horizontal pos to row register
+        pixel_row_s <= std_logic_vector(resize(unsigned(pixel_y),16)); -- write vertical pos to row register
     END ARCHITECTURE;
