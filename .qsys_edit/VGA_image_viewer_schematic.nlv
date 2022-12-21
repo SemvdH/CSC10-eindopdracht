@@ -1,10 +1,11 @@
 # # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
 # 
-preplace inst VGA_image_viewer.pixel_data -pg 1 -lvl 5 -y 160
+preplace inst VGA_image_viewer.pixel_data -pg 1 -lvl 5 -y 180
 preplace inst VGA_image_viewer.hps_0.scu -pg 1
 preplace inst VGA_image_viewer.hps_0.arm_a9_1 -pg 1
 preplace inst VGA_image_viewer -pg 1 -lvl 1 -y 40 -regy -20
-preplace inst VGA_image_viewer.hps_0 -pg 1 -lvl 3 -y 50
+preplace inst VGA_image_viewer.pixel_status_read -pg 1 -lvl 5 -y 40
+preplace inst VGA_image_viewer.hps_0 -pg 1 -lvl 3 -y 70
 preplace inst VGA_image_viewer.hps_0.gmac0 -pg 1
 preplace inst VGA_image_viewer.hps_0.nand0 -pg 1
 preplace inst VGA_image_viewer.hps_0.dma -pg 1
@@ -12,7 +13,7 @@ preplace inst VGA_image_viewer.hps_0.eosc1 -pg 1
 preplace inst VGA_image_viewer.hps_0.timer -pg 1
 preplace inst VGA_image_viewer.hps_0.gmac1 -pg 1
 preplace inst VGA_image_viewer.hps_0.eosc2 -pg 1
-preplace inst VGA_image_viewer.clk_0 -pg 1 -lvl 4 -y 240
+preplace inst VGA_image_viewer.clk_0 -pg 1 -lvl 4 -y 260
 preplace inst VGA_image_viewer.hps_0.sdrctl -pg 1
 preplace inst VGA_image_viewer.hps_0.i2c0 -pg 1
 preplace inst VGA_image_viewer.hps_0.f2s_periph_ref_clk -pg 1
@@ -25,7 +26,6 @@ preplace inst VGA_image_viewer.hps_0.sdmmc -pg 1
 preplace inst VGA_image_viewer.hps_0.i2c2 -pg 1
 preplace inst VGA_image_viewer.hps_0.wd_timer1 -pg 1
 preplace inst VGA_image_viewer.hps_0.L2 -pg 1
-preplace inst VGA_image_viewer.pixel_status -pg 1 -lvl 5 -y 260
 preplace inst VGA_image_viewer.hps_0.axi_sdram -pg 1
 preplace inst VGA_image_viewer.hps_0.axi_ocram -pg 1
 preplace inst VGA_image_viewer.hps_0.i2c3 -pg 1
@@ -45,6 +45,8 @@ preplace inst VGA_image_viewer.hps_0.clkmgr -pg 1
 preplace inst VGA_image_viewer.hps_0.usb0 -pg 1
 preplace inst VGA_image_viewer.hps_0.gpio1 -pg 1
 preplace inst VGA_image_viewer.hps_0.timer3 -pg 1
+preplace inst VGA_image_viewer.pixel_status_write -pg 1 -lvl 5 -y 300
+preplace inst VGA_image_viewer.pixel_row -pg 1 -lvl 5 -y 400
 preplace inst VGA_image_viewer.hps_0.dcan0 -pg 1
 preplace inst VGA_image_viewer.hps_0.usb1 -pg 1
 preplace inst VGA_image_viewer.hps_0.qspi -pg 1
@@ -55,15 +57,17 @@ preplace inst VGA_image_viewer.hps_0.dcan1 -pg 1
 preplace inst VGA_image_viewer.hps_0.arm_a9_0 -pg 1
 preplace inst VGA_image_viewer.hps_0.clk_0 -pg 1
 preplace inst VGA_image_viewer.hps_0.hps_io -pg 1
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.hps_io,(SLAVE)VGA_image_viewer.hps_io) 1 0 3 NJ 60 NJ 60 NJ
-preplace netloc POINT_TO_POINT<net_container>VGA_image_viewer</net_container>(MASTER)hps_0.f2h_irq0,(SLAVE)pixel_status.irq) 1 3 2 NJ 60 1190
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.memory,(SLAVE)hps_0.memory) 1 0 3 NJ 100 NJ 100 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_data,(SLAVE)pixel_data.external_connection) 1 0 5 NJ 190 NJ 190 NJ 190 NJ 190 NJ
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(MASTER)clk_0.clk_reset,(SLAVE)pixel_data.reset,(SLAVE)pixel_status.reset) 1 4 1 1210
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.reset,(SLAVE)clk_0.clk_in_reset) 1 0 4 NJ 270 NJ 270 NJ 270 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status.external_connection,(SLAVE)VGA_image_viewer.pixel_status) 1 0 5 NJ 230 NJ 230 NJ 230 NJ 230 NJ
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.h2f_lw_axi_clock,(SLAVE)pixel_status.clk,(MASTER)clk_0.clk,(SLAVE)pixel_data.clk) 1 2 3 490 170 NJ 170 1230
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(MASTER)hps_0.h2f_lw_axi_master,(SLAVE)pixel_data.s1,(SLAVE)pixel_status.s1) 1 3 2 NJ 100 1170
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)clk_0.clk_in,(SLAVE)VGA_image_viewer.clk) 1 0 4 NJ 250 NJ 250 NJ 250 NJ
-levelinfo -pg 1 0 90 1420
-levelinfo -hier VGA_image_viewer 100 120 470 680 980 1260 1410
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.hps_io,(SLAVE)VGA_image_viewer.hps_io) 1 0 3 NJ 80 NJ 80 NJ
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_write.clk,(SLAVE)pixel_row.clk,(SLAVE)hps_0.h2f_lw_axi_clock,(MASTER)clk_0.clk,(SLAVE)pixel_status_read.clk,(SLAVE)pixel_data.clk) 1 2 3 520 190 NJ 190 1200
+preplace netloc POINT_TO_POINT<net_container>VGA_image_viewer</net_container>(MASTER)hps_0.f2h_irq0,(SLAVE)pixel_status_read.irq) 1 3 2 NJ 90 N
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_read.reset,(SLAVE)pixel_data.reset,(SLAVE)pixel_status_write.reset,(MASTER)clk_0.clk_reset,(SLAVE)pixel_row.reset) 1 4 1 1220
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.memory,(SLAVE)VGA_image_viewer.memory) 1 0 3 NJ 120 NJ 120 NJ
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(MASTER)hps_0.h2f_lw_axi_master,(SLAVE)pixel_status_write.s1,(SLAVE)pixel_data.s1,(SLAVE)pixel_row.s1,(SLAVE)pixel_status_read.s1) 1 3 2 NJ 120 1180
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_row,(SLAVE)pixel_row.external_connection) 1 0 5 NJ 430 NJ 430 NJ 430 NJ 430 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)clk_0.clk_in,(SLAVE)VGA_image_viewer.clk) 1 0 4 NJ 270 NJ 270 NJ 270 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_data.external_connection,(SLAVE)VGA_image_viewer.pixel_data) 1 0 5 NJ 210 NJ 210 NJ 210 NJ 210 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)VGA_image_viewer.reset) 1 0 4 NJ 290 NJ 290 NJ 290 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_status_read,(SLAVE)pixel_status_read.external_connection) 1 0 5 NJ 40 NJ 40 NJ 30 NJ 70 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_status,(SLAVE)pixel_status_write.external_connection) 1 0 5 NJ 330 NJ 330 NJ 330 NJ 330 NJ
+levelinfo -pg 1 0 120 1450
+levelinfo -hier VGA_image_viewer 130 150 500 710 1010 1290 1440

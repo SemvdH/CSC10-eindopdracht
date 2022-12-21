@@ -8,8 +8,12 @@ Progress: Adding hps_0 [altera_hps 18.1]
 Progress: Parameterizing module hps_0
 Progress: Adding pixel_data [altera_avalon_pio 18.1]
 Progress: Parameterizing module pixel_data
-Progress: Adding pixel_status [altera_avalon_pio 18.1]
-Progress: Parameterizing module pixel_status
+Progress: Adding pixel_row [altera_avalon_pio 18.1]
+Progress: Parameterizing module pixel_row
+Progress: Adding pixel_status_read [altera_avalon_pio 18.1]
+Progress: Parameterizing module pixel_status_read
+Progress: Adding pixel_status_write [altera_avalon_pio 18.1]
+Progress: Parameterizing module pixel_status_write
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -19,6 +23,8 @@ Info: VGA_image_viewer.hps_0: HPS peripherial PLL counter settings: n = 0  m = 3
 Warning: VGA_image_viewer.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
 Warning: VGA_image_viewer.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
 Warning: VGA_image_viewer.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: VGA_image_viewer.pixel_row: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: VGA_image_viewer.pixel_status_read: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: VGA_image_viewer: Generating VGA_image_viewer "VGA_image_viewer" for QUARTUS_SYNTH
 Warning: hps_0.f2h_irq0: Cannot connect clock for irq_mapper.sender
 Warning: hps_0.f2h_irq0: Cannot connect reset for irq_mapper.sender
@@ -32,17 +38,28 @@ Warning: hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MH
 Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
 Info: hps_0: "VGA_image_viewer" instantiated altera_hps "hps_0"
 Info: pixel_data: Starting RTL generation for module 'VGA_image_viewer_pixel_data'
-Info: pixel_data:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_data --dir=/tmp/alt9346_6922523738197197972.dir/0002_pixel_data_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_6922523738197197972.dir/0002_pixel_data_gen//VGA_image_viewer_pixel_data_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_data:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_data --dir=/tmp/alt9347_5326383737225594268.dir/0002_pixel_data_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9347_5326383737225594268.dir/0002_pixel_data_gen//VGA_image_viewer_pixel_data_component_configuration.pl  --do_build_sim=0  ]
 Info: pixel_data: Done RTL generation for module 'VGA_image_viewer_pixel_data'
 Info: pixel_data: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_data"
-Info: pixel_status: Starting RTL generation for module 'VGA_image_viewer_pixel_status'
-Info: pixel_status:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_status --dir=/tmp/alt9346_6922523738197197972.dir/0003_pixel_status_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9346_6922523738197197972.dir/0003_pixel_status_gen//VGA_image_viewer_pixel_status_component_configuration.pl  --do_build_sim=0  ]
-Info: pixel_status: Done RTL generation for module 'VGA_image_viewer_pixel_status'
-Info: pixel_status: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_status"
+Info: pixel_row: Starting RTL generation for module 'VGA_image_viewer_pixel_row'
+Info: pixel_row:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_row --dir=/tmp/alt9347_5326383737225594268.dir/0003_pixel_row_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9347_5326383737225594268.dir/0003_pixel_row_gen//VGA_image_viewer_pixel_row_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_row: Done RTL generation for module 'VGA_image_viewer_pixel_row'
+Info: pixel_row: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_row"
+Info: pixel_status_read: Starting RTL generation for module 'VGA_image_viewer_pixel_status_read'
+Info: pixel_status_read:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_status_read --dir=/tmp/alt9347_5326383737225594268.dir/0004_pixel_status_read_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9347_5326383737225594268.dir/0004_pixel_status_read_gen//VGA_image_viewer_pixel_status_read_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_status_read: Done RTL generation for module 'VGA_image_viewer_pixel_status_read'
+Info: pixel_status_read: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_status_read"
+Info: pixel_status_write: Starting RTL generation for module 'VGA_image_viewer_pixel_status_write'
+Info: pixel_status_write:   Generation command is [exec /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/sem/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/sem/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/sem/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=VGA_image_viewer_pixel_status_write --dir=/tmp/alt9347_5326383737225594268.dir/0005_pixel_status_write_gen/ --quartus_dir=/home/sem/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt9347_5326383737225594268.dir/0005_pixel_status_write_gen//VGA_image_viewer_pixel_status_write_component_configuration.pl  --do_build_sim=0  ]
+Info: pixel_status_write: Done RTL generation for module 'VGA_image_viewer_pixel_status_write'
+Info: pixel_status_write: "VGA_image_viewer" instantiated altera_avalon_pio "pixel_status_write"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_0: "VGA_image_viewer" instantiated altera_mm_interconnect "mm_interconnect_0"
 Info: irq_mapper: "VGA_image_viewer" instantiated altera_irq_mapper "irq_mapper"
+Info: irq_mapper_001: "VGA_image_viewer" instantiated altera_irq_mapper "irq_mapper_001"
 Info: rst_controller: "VGA_image_viewer" instantiated altera_reset_controller "rst_controller"
 Info: fpga_interfaces: "hps_0" instantiated altera_interface_generator "fpga_interfaces"
 Info: hps_io: "hps_0" instantiated altera_hps_io "hps_io"
@@ -65,6 +82,6 @@ Info: Reusing file /mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/VGA_image_
 Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
 Info: border: "hps_io" instantiated altera_interface_generator "border"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
-Info: VGA_image_viewer: Done "VGA_image_viewer" with 24 modules, 81 files
+Info: VGA_image_viewer: Done "VGA_image_viewer" with 27 modules, 84 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

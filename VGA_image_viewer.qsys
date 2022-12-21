@@ -37,11 +37,43 @@
    {
       datum baseAddress
       {
+         value = "48";
+         type = "String";
+      }
+   }
+   element pixel_row
+   {
+      datum _sortIndex
+      {
+         value = "4";
+         type = "int";
+      }
+   }
+   element pixel_row.s1
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
+   element pixel_status_read
+   {
+      datum _sortIndex
+      {
+         value = "5";
+         type = "int";
+      }
+   }
+   element pixel_status_read.s1
+   {
+      datum baseAddress
+      {
          value = "16";
          type = "String";
       }
    }
-   element pixel_status
+   element pixel_status_write
    {
       datum _sortIndex
       {
@@ -49,11 +81,11 @@
          type = "int";
       }
    }
-   element pixel_status.s1
+   element pixel_status_write.s1
    {
       datum baseAddress
       {
-         value = "0";
+         value = "32";
          type = "String";
       }
    }
@@ -87,8 +119,18 @@
    type="conduit"
    dir="end" />
  <interface
-   name="pixel_status"
-   internal="pixel_status.external_connection"
+   name="pixel_row"
+   internal="pixel_row.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="pixel_status_read"
+   internal="pixel_status_read.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="pixel_status_write"
+   internal="pixel_status_write.external_connection"
    type="conduit"
    dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
@@ -640,10 +682,42 @@
   <parameter name="resetValue" value="0" />
   <parameter name="simDoTestBenchWiring" value="false" />
   <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="32" />
+  <parameter name="width" value="24" />
+ </module>
+ <module name="pixel_row" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="16" />
  </module>
  <module
-   name="pixel_status"
+   name="pixel_status_read"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="true" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="true" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="4" />
+ </module>
+ <module
+   name="pixel_status_write"
    kind="altera_avalon_pio"
    version="18.1"
    enabled="1">
@@ -658,13 +732,31 @@
   <parameter name="resetValue" value="0" />
   <parameter name="simDoTestBenchWiring" value="false" />
   <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="32" />
+  <parameter name="width" value="4" />
  </module>
  <connection
    kind="avalon"
    version="18.1"
    start="hps_0.h2f_lw_axi_master"
    end="pixel_data.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0030" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="pixel_status_write.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0020" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="pixel_status_read.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0010" />
   <parameter name="defaultConnection" value="false" />
@@ -673,18 +765,35 @@
    kind="avalon"
    version="18.1"
    start="hps_0.h2f_lw_axi_master"
-   end="pixel_status.s1">
+   end="pixel_row.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="18.1" start="clk_0.clk" end="pixel_data.clk" />
- <connection kind="clock" version="18.1" start="clk_0.clk" end="pixel_status.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
+   end="pixel_status_write.clk" />
+ <connection kind="clock" version="18.1" start="clk_0.clk" end="pixel_row.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
+   end="pixel_status_read.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="hps_0.f2h_irq0"
+   end="pixel_status_read.irq">
+  <parameter name="irqNumber" value="3" />
+ </connection>
  <connection
    kind="reset"
    version="18.1"
@@ -694,7 +803,17 @@
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
-   end="pixel_status.reset" />
+   end="pixel_status_write.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="pixel_row.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="pixel_status_read.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

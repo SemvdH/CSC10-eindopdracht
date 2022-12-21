@@ -68,7 +68,9 @@ module VGA_image_viewer (
 	memory_mem_dm,
 	memory_oct_rzqin,
 	pixel_data_export,
-	pixel_status_export,
+	pixel_row_export,
+	pixel_status_write_export,
+	pixel_status_read_export,
 	reset_reset_n);	
 
 	input		clk_clk;
@@ -138,7 +140,9 @@ module VGA_image_viewer (
 	output		memory_mem_odt;
 	output	[3:0]	memory_mem_dm;
 	input		memory_oct_rzqin;
-	output	[31:0]	pixel_data_export;
-	output	[31:0]	pixel_status_export;
+	output	[23:0]	pixel_data_export;
+	input	[15:0]	pixel_row_export;
+	output	[3:0]	pixel_status_write_export;
+	input	[3:0]	pixel_status_read_export;
 	input		reset_reset_n;
 endmodule
