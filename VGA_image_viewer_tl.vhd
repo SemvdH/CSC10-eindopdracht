@@ -78,7 +78,8 @@ ENTITY VGA_image_viewer_tl IS
         reset_reset_n : IN STD_LOGIC := 'X'; -- reset_n
         pixel_row_export : IN STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => 'X'); -- export
         pixel_status_read_export : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => 'X'); -- export
-        KEY : IN STD_LOGIC_VECTOR(3 DOWNTO 0) -- reset_n
+        KEY : IN STD_LOGIC_VECTOR(3 DOWNTO 0); -- reset_n
+        LEDR : OUT STD_LOGIC_VECTOR(9 DOWNTO 0) := (OTHERS => '0') -- LEDs
     );
 END ENTITY VGA_image_viewer_tl;
 
@@ -323,12 +324,12 @@ BEGIN
                         VGA_B <= row_reg_2_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
                     END IF;
                 END IF;
-            END IF;
-            IF (pixel_y_v = prev_pixel_y) THEN
-                pixel_status_read_s <= "0000";
-            ELSE
-                pixel_status_read_s <= "0001";
-                prev_pixel_y := pixel_y_v;
+                -- IF (pixel_y_v = prev_pixel_y) THEN
+                --     pixel_status_read_s <= "0000";
+                -- ELSE
+                --     pixel_status_read_s <= "0001";
+                --     prev_pixel_y := pixel_y_v;
+                -- END IF;
             END IF;
 
         END PROCESS;
@@ -341,6 +342,7 @@ BEGIN
             VARIABLE pixel_in_row_index : INTEGER RANGE 0 TO HD - 1; -- 0 to 639
         BEGIN
             IF (pixel_status_write_s = "0001") THEN
+                pixel_status_read_s <= "0001"; -- test, remove later
                 IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
                     row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
                     row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
@@ -351,7 +353,14 @@ BEGIN
                     row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
                 END IF;
                 pixel_in_row_index := pixel_in_row_index + 1;
+            ELSE
+                pixel_status_read_s <= "0000"; -- test, remove later
             END IF;
+
         END PROCESS;
-        pixel_row_s <= std_logic_vector(resize(unsigned(pixel_y),16)); -- write vertical pos to row register
+        pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
+        LEDR(9) <= '1'; -- status led
+        LEDR(1) <= pixel_status_read_s(0); -- status led for read flag
+        LEDR(2) <= pixel_status_write_s(0); -- status led for write flag
+
     END ARCHITECTURE;

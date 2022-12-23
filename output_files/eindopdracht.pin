@@ -84,8 +84,8 @@ RESERVED_INPUT               : A4        :        :                   :         
 RESERVED_INPUT               : A5        :        :                   :         : 8A        :                
 RESERVED_INPUT               : A6        :        :                   :         : 8A        :                
 VCCIO8A                      : A7        : power  :                   : 2.5V    : 8A        :                
-pixel_data_export[4]         : A8        : output : 2.5 V             :         : 8A        : N              
-pixel_data_export[13]        : A9        : output : 2.5 V             :         : 8A        : N              
+pixel_data_export[6]         : A8        : output : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : A9        :        :                   :         : 8A        :                
 RESERVED_INPUT               : A10       :        :                   :         : 8A        :                
 VGA_CLK                      : A11       : output : 2.5 V             :         : 8A        : Y              
 GND                          : A12       : gnd    :                   :         :           :                
@@ -121,19 +121,19 @@ RESERVED_INPUT               : AA12      :        :                   :         
 RESERVED_INPUT               : AA13      :        :                   :         : 3B        :                
 KEY[0]                       : AA14      : input  : 2.5 V             :         : 3B        : Y              
 KEY[1]                       : AA15      : input  : 2.5 V             :         : 3B        : Y              
-RESERVED_INPUT               : AA16      :        :                   :         : 4A        :                
+pixel_row_export[8]          : AA16      : input  : 2.5 V             :         : 4A        : N              
 VCCIO4A                      : AA17      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AA18      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AA19      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AA20      :        :                   :         : 4A        :                
-pixel_data_export[7]         : AA21      : output : 2.5 V             :         : 4A        : N              
+pixel_data_export[9]         : AA21      : output : 2.5 V             :         : 4A        : N              
 GND                          : AA22      : gnd    :                   :         :           :                
 VCCPGM                       : AA23      : power  :                   : 1.8V/2.5V/3.0V/3.3V :           :                
 RESERVED_INPUT               : AA24      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AA25      :        :                   :         : 5A        :                
-pixel_status_write_export[2] : AA26      : output : 2.5 V             :         : 5B        : N              
+RESERVED_INPUT               : AA26      :        :                   :         : 5B        :                
 VCCIO5B                      : AA27      : power  :                   : 2.5V    : 5B        :                
-RESERVED_INPUT               : AA28      :        :                   :         : 5B        :                
+pixel_data_export[11]        : AA28      : output : 2.5 V             :         : 5B        : N              
 VREFB5BN0                    : AA29      : power  :                   :         : 5B        :                
 RESERVED_INPUT               : AA30      :        :                   :         : 5B        :                
 GND                          : AB1       : gnd    :                   :         :           :                
@@ -150,7 +150,7 @@ VCC_AUX                      : AB11      : power  :                   : 2.5V    
 RESERVED_INPUT               : AB12      :        :                   :         : 3A        :                
 RESERVED_INPUT               : AB13      :        :                   :         : 3B        :                
 VCCIO3B                      : AB14      : power  :                   : 2.5V    : 3B        :                
-pixel_data_export[22]        : AB15      : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AB15      :        :                   :         : 3B        :                
 VCC_AUX                      : AB16      : power  :                   : 2.5V    :           :                
 RESERVED_INPUT               : AB17      :        :                   :         : 4A        :                
 VCCPD3B4A                    : AB18      : power  :                   : 2.5V    : 3B, 4A    :                
@@ -160,12 +160,12 @@ RESERVED_INPUT               : AB21      :        :                   :         
 RESERVED_INPUT               : AB22      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AB23      :        :                   :         : 5A        :                
 VCCIO5A                      : AB24      : power  :                   : 2.5V    : 5A        :                
-pixel_row_export[13]         : AB25      : input  : 2.5 V             :         : 5A        : N              
+RESERVED_INPUT               : AB25      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AB26      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AB27      :        :                   :         : 5B        :                
 RESERVED_INPUT               : AB28      :        :                   :         : 5B        :                
 GND                          : AB29      : gnd    :                   :         :           :                
-pixel_data_export[9]         : AB30      : output : 2.5 V             :         : 5B        : N              
+RESERVED_INPUT               : AB30      :        :                   :         : 5B        :                
 GND                          : AC1       : gnd    :                   :         :           :                
 GND                          : AC2       : gnd    :                   :         :           :                
 GND                          : AC3       : gnd    :                   :         :           :                
@@ -174,7 +174,7 @@ TCK                          : AC5       : input  :                   :         
 GND                          : AC6       : gnd    :                   :         :           :                
 AS_DATA3, DATA3              : AC7       :        :                   :         : 3A        :                
 GND                          : AC8       : gnd    :                   :         :           :                
-RESERVED_INPUT               : AC9       :        :                   :         : 3A        :                
+pixel_data_export[5]         : AC9       : output : 2.5 V             :         : 3A        : N              
 VCCPD3A                      : AC10      : power  :                   : 2.5V    : 3A        :                
 VCCIO3A                      : AC11      : power  :                   : 2.5V    : 3A        :                
 RESERVED_INPUT               : AC12      :        :                   :         : 3A        :                
@@ -192,8 +192,8 @@ RESERVED_INPUT               : AC23      :        :                   :         
 VREFB5AN0                    : AC24      : power  :                   :         : 5A        :                
 RESERVED_INPUT               : AC25      :        :                   :         : 5A        :                
 GND                          : AC26      : gnd    :                   :         :           :                
-RESERVED_INPUT               : AC27      :        :                   :         : 5A        :                
-pixel_row_export[5]          : AC28      : input  : 2.5 V             :         : 5B        : N              
+pixel_data_export[8]         : AC27      : output : 2.5 V             :         : 5A        : N              
+pixel_data_export[13]        : AC28      : output : 2.5 V             :         : 5B        : N              
 RESERVED_INPUT               : AC29      :        :                   :         : 5B        :                
 RESERVED_INPUT               : AC30      :        :                   :         : 5B        :                
 GND                          : AD1       : gnd    :                   :         :           :                
@@ -202,25 +202,25 @@ DNU                          : AD3       :        :                   :         
 DNU                          : AD4       :        :                   :         :           :                
 GND                          : AD5       : gnd    :                   :         :           :                
 VREFB3AN0                    : AD6       : power  :                   :         : 3A        :                
-RESERVED_INPUT               : AD7       :        :                   :         : 3A        :                
+pixel_row_export[6]          : AD7       : input  : 2.5 V             :         : 3A        : N              
 VCCIO3A                      : AD8       : power  :                   : 2.5V    : 3A        :                
 RESERVED_INPUT               : AD9       :        :                   :         : 3A        :                
 RESERVED_INPUT               : AD10      :        :                   :         : 3A        :                
 RESERVED_INPUT               : AD11      :        :                   :         : 3A        :                
 RESERVED_INPUT               : AD12      :        :                   :         : 3A        :                
 VCCIO3B                      : AD13      : power  :                   : 2.5V    : 3B        :                
-pixel_status_read_export[0]  : AD14      : input  : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AD14      :        :                   :         : 3B        :                
 DNU                          : AD15      :        :                   :         :           :                
 VCCPD3B4A                    : AD16      : power  :                   : 2.5V    : 3B, 4A    :                
-RESERVED_INPUT               : AD17      :        :                   :         : 4A        :                
+pixel_row_export[13]         : AD17      : input  : 2.5 V             :         : 4A        : N              
 VCCIO4A                      : AD18      : power  :                   : 2.5V    : 4A        :                
-pixel_row_export[1]          : AD19      : input  : 2.5 V             :         : 4A        : N              
+pixel_row_export[14]         : AD19      : input  : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AD20      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AD21      :        :                   :         : 4A        :                
 VCC_AUX                      : AD22      : power  :                   : 2.5V    :           :                
 GND                          : AD23      : gnd    :                   :         :           :                
-pixel_data_export[2]         : AD24      : output : 2.5 V             :         : 4A        : N              
-RESERVED_INPUT               : AD25      :        :                   :         : 5A        :                
+RESERVED_INPUT               : AD24      :        :                   :         : 4A        :                
+pixel_data_export[18]        : AD25      : output : 2.5 V             :         : 5A        : N              
 RESERVED_INPUT               : AD26      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AD27      :        :                   :         : 5A        :                
 VCCIO5A                      : AD28      : power  :                   : 2.5V    : 5A        :                
@@ -243,13 +243,13 @@ RESERVED_INPUT               : AE14      :        :                   :         
 VCCIO3B                      : AE15      : power  :                   : 2.5V    : 3B        :                
 RESERVED_INPUT               : AE16      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AE17      :        :                   :         : 4A        :                
-RESERVED_INPUT               : AE18      :        :                   :         : 4A        :                
+pixel_data_export[15]        : AE18      : output : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AE19      :        :                   :         : 4A        :                
 GND                          : AE20      : gnd    :                   :         :           :                
 VCCPD3B4A                    : AE21      : power  :                   : 2.5V    : 3B, 4A    :                
-pixel_status_read_export[2]  : AE22      : input  : 2.5 V             :         : 4A        : N              
+RESERVED_INPUT               : AE22      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AE23      :        :                   :         : 4A        :                
-pixel_data_export[16]        : AE24      : output : 2.5 V             :         : 4A        : N              
+pixel_status_write_export[1] : AE24      : output : 2.5 V             :         : 4A        : N              
 VCCIO4A                      : AE25      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AE26      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AE27      :        :                   :         : 5A        :                
@@ -260,45 +260,45 @@ GND                          : AF1       : gnd    :                   :         
 GND                          : AF2       : gnd    :                   :         :           :                
 GND                          : AF3       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AF4       :        :                   :         : 3A        :                
-RESERVED_INPUT               : AF5       :        :                   :         : 3A        :                
+pixel_status_read_export[2]  : AF5       : input  : 2.5 V             :         : 3A        : N              
 RESERVED_INPUT               : AF6       :        :                   :         : 3A        :                
 VCCIO3A                      : AF7       : power  :                   : 2.5V    : 3A        :                
 RESERVED_INPUT               : AF8       :        :                   :         : 3A        :                
-pixel_data_export[19]        : AF9       : output : 2.5 V             :         : 3A        : N              
-pixel_data_export[5]         : AF10      : output : 2.5 V             :         : 3A        : N              
+pixel_data_export[21]        : AF9       : output : 2.5 V             :         : 3A        : N              
+pixel_data_export[7]         : AF10      : output : 2.5 V             :         : 3A        : N              
 RESERVED_INPUT               : AF11      :        :                   :         : 3B        :                
 GND                          : AF12      : gnd    :                   :         :           :                
-pixel_status_read_export[1]  : AF13      : input  : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AF13      :        :                   :         : 3B        :                
 CLOCK_50                     : AF14      : input  : 2.5 V             :         : 3B        : Y              
 RESERVED_INPUT               : AF15      :        :                   :         : 3B        :                
-pixel_data_export[3]         : AF16      : output : 2.5 V             :         : 4A        : N              
+RESERVED_INPUT               : AF16      :        :                   :         : 4A        :                
 GND                          : AF17      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AF18      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AF19      :        :                   :         : 4A        :                
-pixel_row_export[3]          : AF20      : input  : 2.5 V             :         : 4A        : N              
-pixel_row_export[11]         : AF21      : input  : 2.5 V             :         : 4A        : N              
+pixel_row_export[4]          : AF20      : input  : 2.5 V             :         : 4A        : N              
+pixel_data_export[2]         : AF21      : output : 2.5 V             :         : 4A        : N              
 VCCIO4A                      : AF22      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AF23      :        :                   :         : 4A        :                
-reset_reset_n                : AF24      : input  : 2.5 V             :         : 4A        : N              
-RESERVED_INPUT               : AF25      :        :                   :         : 4A        :                
+RESERVED_INPUT               : AF24      :        :                   :         : 4A        :                
+pixel_data_export[16]        : AF25      : output : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AF26      :        :                   :         : 4A        :                
 GND                          : AF27      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AF28      :        :                   :         : 5A        :                
-RESERVED_INPUT               : AF29      :        :                   :         : 5A        :                
+pixel_row_export[0]          : AF29      : input  : 2.5 V             :         : 5A        : N              
 RESERVED_INPUT               : AF30      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AG1       :        :                   :         : 3A        :                
 RESERVED_INPUT               : AG2       :        :                   :         : 3A        :                
-RESERVED_INPUT               : AG3       :        :                   :         : 3A        :                
+pixel_data_export[23]        : AG3       : output : 2.5 V             :         : 3A        : N              
 VCCIO3A                      : AG4       : power  :                   : 2.5V    : 3A        :                
-pixel_data_export[0]         : AG5       : output : 2.5 V             :         : 3A        : N              
-RESERVED_INPUT               : AG6       :        :                   :         : 3A        :                
+RESERVED_INPUT               : AG5       :        :                   :         : 3A        :                
+pixel_data_export[19]        : AG6       : output : 2.5 V             :         : 3A        : N              
 RESERVED_INPUT               : AG7       :        :                   :         : 3A        :                
 RESERVED_INPUT               : AG8       :        :                   :         : 3A        :                
 GND                          : AG9       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AG10      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AG11      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AG12      :        :                   :         : 3B        :                
-pixel_data_export[14]        : AG13      : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AG13      :        :                   :         : 3B        :                
 GND                          : AG14      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AG15      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AG16      :        :                   :         : 4A        :                
@@ -307,15 +307,15 @@ RESERVED_INPUT               : AG18      :        :                   :         
 VCCIO4A                      : AG19      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AG20      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AG21      :        :                   :         : 4A        :                
-pixel_row_export[14]         : AG22      : input  : 2.5 V             :         : 4A        : N              
-RESERVED_INPUT               : AG23      :        :                   :         : 4A        :                
+pixel_status_read_export[0]  : AG22      : input  : 2.5 V             :         : 4A        : N              
+pixel_data_export[4]         : AG23      : output : 2.5 V             :         : 4A        : N              
 GND                          : AG24      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AG25      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AG26      :        :                   :         : 4A        :                
-pixel_data_export[11]        : AG27      : output : 2.5 V             :         : 5A        : N              
-RESERVED_INPUT               : AG28      :        :                   :         : 5A        :                
+RESERVED_INPUT               : AG27      :        :                   :         : 5A        :                
+pixel_data_export[1]         : AG28      : output : 2.5 V             :         : 5A        : N              
 VCCIO5A                      : AG29      : power  :                   : 2.5V    : 5A        :                
-RESERVED_INPUT               : AG30      :        :                   :         : 5A        :                
+pixel_data_export[12]        : AG30      : output : 2.5 V             :         : 5A        : N              
 GND                          : AH1       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AH2       :        :                   :         : 3A        :                
 RESERVED_INPUT               : AH3       :        :                   :         : 3A        :                
@@ -323,45 +323,45 @@ pixel_row_export[2]          : AH4       : input  : 2.5 V             :         
 RESERVED_INPUT               : AH5       :        :                   :         : 3A        :                
 GND                          : AH6       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AH7       :        :                   :         : 3B        :                
-pixel_data_export[8]         : AH8       : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AH8       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AH9       :        :                   :         : 3B        :                
-pixel_row_export[12]         : AH10      : input  : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AH10      :        :                   :         : 3B        :                
 GND                          : AH11      : gnd    :                   :         :           :                
-pixel_data_export[12]        : AH12      : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AH12      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AH13      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AH14      :        :                   :         : 3B        :                
-pixel_data_export[15]        : AH15      : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AH15      :        :                   :         : 3B        :                
 VCCIO4A                      : AH16      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AH17      :        :                   :         : 4A        :                
-pixel_row_export[8]          : AH18      : input  : 2.5 V             :         : 4A        : N              
+RESERVED_INPUT               : AH18      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AH19      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AH20      :        :                   :         : 4A        :                
 GND                          : AH21      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AH22      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AH23      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AH24      :        :                   :         : 4A        :                
-RESERVED_INPUT               : AH25      :        :                   :         : 4A        :                
+pixel_row_export[15]         : AH25      : input  : 2.5 V             :         : 4A        : N              
 VCCIO4A                      : AH26      : power  :                   : 2.5V    : 4A        :                
-RESERVED_INPUT               : AH27      :        :                   :         : 4A        :                
+pixel_data_export[0]         : AH27      : output : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AH28      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AH29      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AH30      :        :                   :         : 5A        :                
-pixel_data_export[17]        : AJ1       : output : 2.5 V             :         : 3A        : N              
+pixel_status_write_export[0] : AJ1       : output : 2.5 V             :         : 3A        : N              
 RESERVED_INPUT               : AJ2       :        :                   :         : 3A        :                
 GND                          : AJ3       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AJ4       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AJ5       :        :                   :         : 3B        :                
-RESERVED_INPUT               : AJ6       :        :                   :         : 3B        :                
-RESERVED_INPUT               : AJ7       :        :                   :         : 3B        :                
+pixel_row_export[11]         : AJ6       : input  : 2.5 V             :         : 3B        : N              
+pixel_row_export[3]          : AJ7       : input  : 2.5 V             :         : 3B        : N              
 VCCIO3B                      : AJ8       : power  :                   : 2.5V    : 3B        :                
 RESERVED_INPUT               : AJ9       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AJ10      :        :                   :         : 3B        :                
-pixel_data_export[20]        : AJ11      : output : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AJ11      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AJ12      :        :                   :         : 3B        :                
 VCCIO3B                      : AJ13      : power  :                   : 2.5V    : 3B        :                
 RESERVED_INPUT               : AJ14      :        :                   :         : 3B        :                
 VREFB3BN0                    : AJ15      : power  :                   :         : 3B        :                
-RESERVED_INPUT               : AJ16      :        :                   :         : 4A        :                
+pixel_data_export[22]        : AJ16      : output : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AJ17      :        :                   :         : 4A        :                
 GND                          : AJ18      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AJ19      :        :                   :         : 4A        :                
@@ -371,40 +371,40 @@ RESERVED_INPUT               : AJ22      :        :                   :         
 VCCIO4A                      : AJ23      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AJ24      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AJ25      :        :                   :         : 4A        :                
-pixel_status_write_export[1] : AJ26      : output : 2.5 V             :         : 4A        : N              
+pixel_row_export[5]          : AJ26      : input  : 2.5 V             :         : 4A        : N              
 RESERVED_INPUT               : AJ27      :        :                   :         : 4A        :                
 GND                          : AJ28      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AJ29      :        :                   :         : 5A        :                
 GND                          : AJ30      : gnd    :                   :         :           :                
-RESERVED_INPUT               : AK2       :        :                   :         : 3B        :                
+pixel_status_read_export[3]  : AK2       : input  : 2.5 V             :         : 3B        : N              
 RESERVED_INPUT               : AK3       :        :                   :         : 3B        :                
-pixel_row_export[4]          : AK4       : input  : 2.5 V             :         : 3B        : N              
+RESERVED_INPUT               : AK4       :        :                   :         : 3B        :                
 GND                          : AK5       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AK6       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AK7       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AK8       :        :                   :         : 3B        :                
-RESERVED_INPUT               : AK9       :        :                   :         : 3B        :                
+pixel_row_export[9]          : AK9       : input  : 2.5 V             :         : 3B        : N              
 VCCIO3B                      : AK10      : power  :                   : 2.5V    : 3B        :                
 RESERVED_INPUT               : AK11      :        :                   :         : 3B        :                
 RESERVED_INPUT               : AK12      :        :                   :         : 3B        :                
-RESERVED_INPUT               : AK13      :        :                   :         : 3B        :                
+pixel_data_export[17]        : AK13      : output : 2.5 V             :         : 3B        : N              
 RESERVED_INPUT               : AK14      :        :                   :         : 3B        :                
 GND                          : AK15      : gnd    :                   :         :           :                
-pixel_row_export[6]          : AK16      : input  : 2.5 V             :         : 4A        : N              
+RESERVED_INPUT               : AK16      :        :                   :         : 4A        :                
 VREFB4AN0                    : AK17      : power  :                   :         : 4A        :                
 RESERVED_INPUT               : AK18      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AK19      :        :                   :         : 4A        :                
 VCCIO4A                      : AK20      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AK21      :        :                   :         : 4A        :                
-pixel_status_read_export[3]  : AK22      : input  : 2.5 V             :         : 4A        : N              
+RESERVED_INPUT               : AK22      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AK23      :        :                   :         : 4A        :                
-RESERVED_INPUT               : AK24      :        :                   :         : 4A        :                
+reset_reset_n                : AK24      : input  : 2.5 V             :         : 4A        : N              
 GND                          : AK25      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AK26      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AK27      :        :                   :         : 4A        :                
 RESERVED_INPUT               : AK28      :        :                   :         : 4A        :                
-pixel_row_export[10]         : AK29      : input  : 2.5 V             :         : 4A        : N              
-pixel_data_export[21]        : B1        : output : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : AK29      :        :                   :         : 4A        :                
+pixel_row_export[10]         : B1        : input  : 2.5 V             :         : 8A        : N              
 RESERVED_INPUT               : B2        :        :                   :         : 8A        :                
 RESERVED_INPUT               : B3        :        :                   :         : 8A        :                
 VCCIO8A                      : B4        : power  :                   : 2.5V    : 8A        :                
@@ -440,9 +440,9 @@ RESERVED_INPUT               : C3        :        :                   :         
 RESERVED_INPUT               : C4        :        :                   :         : 8A        :                
 RESERVED_INPUT               : C5        :        :                   :         : 8A        :                
 GND                          : C6        : gnd    :                   :         :           :                
-pixel_data_export[18]        : C7        : output : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : C7        :        :                   :         : 8A        :                
 RESERVED_INPUT               : C8        :        :                   :         : 8A        :                
-RESERVED_INPUT               : C9        :        :                   :         : 8A        :                
+pixel_data_export[20]        : C9        : output : 2.5 V             :         : 8A        : N              
 VGA_SYNC_N                   : C10       : output : 2.5 V             :         : 8A        : Y              
 VCCIO8A                      : C11       : power  :                   : 2.5V    : 8A        :                
 VGA_R[4]                     : C12       : output : 2.5 V             :         : 8A        : Y              
@@ -464,7 +464,7 @@ HPS_nRST                     : C27       :        :                   :         
 memory_mem_we_n              : C28       : output : SSTL-15 Class I   :         : 6A        : N              
 memory_mem_a[13]             : C29       : output : SSTL-15 Class I   :         : 6A        : N              
 memory_mem_a[11]             : C30       : output : SSTL-15 Class I   :         : 6A        : N              
-pixel_row_export[9]          : D1        : input  : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : D1        :        :                   :         : 8A        :                
 RESERVED_INPUT               : D2        :        :                   :         : 8A        :                
 GND                          : D3        : gnd    :                   :         :           :                
 RESERVED_INPUT               : D4        :        :                   :         : 8A        :                
@@ -501,7 +501,7 @@ RESERVED_INPUT               : E4        :        :                   :         
 VCCIO8A                      : E5        : power  :                   : 2.5V    : 8A        :                
 RESERVED_INPUT               : E6        :        :                   :         : 8A        :                
 RESERVED_INPUT               : E7        :        :                   :         : 8A        :                
-pixel_row_export[7]          : E8        : input  : 2.5 V             :         : 8A        : N              
+pixel_data_export[10]        : E8        : output : 2.5 V             :         : 8A        : N              
 RESERVED_INPUT               : E9        :        :                   :         : 8A        :                
 GND                          : E10       : gnd    :                   :         :           :                
 VGA_G[7]                     : E11       : output : 2.5 V             :         : 8A        : Y              
@@ -532,7 +532,7 @@ GND                          : F5        : gnd    :                   :         
 RESERVED_INPUT               : F6        :        :                   :         : 8A        :                
 GND                          : F7        : gnd    :                   :         :           :                
 RESERVED_INPUT               : F8        :        :                   :         : 8A        :                
-RESERVED_INPUT               : F9        :        :                   :         : 8A        :                
+pixel_status_write_export[2] : F9        : output : 2.5 V             :         : 8A        : N              
 VGA_BLANK_N                  : F10       : output : 2.5 V             :         : 8A        : Y              
 VGA_G[6]                     : F11       : output : 2.5 V             :         : 8A        : Y              
 VCCIO8A                      : F12       : power  :                   : 2.5V    : 8A        :                
@@ -560,8 +560,8 @@ GND                          : G3        : gnd    :                   :         
 GND                          : G4        : gnd    :                   :         :           :                
 nCE                          : G5        :        :                   :         : 9A        :                
 MSEL2                        : G6        :        :                   :         : 9A        :                
-pixel_data_export[1]         : G7        : output : 2.5 V             :         : 8A        : N              
-RESERVED_INPUT               : G8        :        :                   :         : 8A        :                
+pixel_data_export[3]         : G7        : output : 2.5 V             :         : 8A        : N              
+pixel_data_export[14]        : G8        : output : 2.5 V             :         : 8A        : N              
 VCCIO8A                      : G9        : power  :                   : 2.5V    : 8A        :                
 VGA_G[3]                     : G10       : output : 2.5 V             :         : 8A        : Y              
 VGA_G[4]                     : G11       : output : 2.5 V             :         : 8A        : Y              
@@ -625,7 +625,7 @@ GND                          : J8        : gnd    :                   :         
 VGA_G[0]                     : J9        : output : 2.5 V             :         : 8A        : Y              
 VGA_G[1]                     : J10       : output : 2.5 V             :         : 8A        : Y              
 VCCPGM                       : J11       : power  :                   : 1.8V/2.5V/3.0V/3.3V :           :                
-RESERVED_INPUT               : J12       :        :                   :         : 8A        :                
+pixel_row_export[12]         : J12       : input  : 2.5 V             :         : 8A        : N              
 VCCIO8A                      : J13       : power  :                   : 2.5V    : 8A        :                
 VGA_B[7]                     : J14       : output : 2.5 V             :         : 8A        : Y              
 DNU                          : J15       :        :                   :         :           :                
@@ -650,12 +650,12 @@ DNU                          : K3        :        :                   :         
 DNU                          : K4        :        :                   :         :           :                
 GND                          : K5        : gnd    :                   :         :           :                
 MSEL1                        : K6        :        :                   :         : 9A        :                
-RESERVED_INPUT               : K7        :        :                   :         : 8A        :                
-pixel_data_export[23]        : K8        : output : 2.5 V             :         : 8A        : N              
+pixel_status_write_export[3] : K7        : output : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : K8        :        :                   :         : 8A        :                
 VCCA_FPLL                    : K9        : power  :                   : 2.5V    :           :                
 GND                          : K10       : gnd    :                   :         :           :                
 VCCPD8A                      : K11       : power  :                   : 2.5V    : 8A        :                
-pixel_row_export[0]          : K12       : input  : 2.5 V             :         : 8A        : N              
+RESERVED_INPUT               : K12       :        :                   :         : 8A        :                
 VCCPD8A                      : K13       : power  :                   : 2.5V    : 8A        :                
 RESERVED_INPUT               : K14       :        :                   :         : 8A        :                
 GND                          : K15       : gnd    :                   :         :           :                
@@ -899,14 +899,14 @@ GND                          : V12       : gnd    :                   :         
 VCC                          : V13       : power  :                   : 1.1V    :           :                
 GND                          : V14       : gnd    :                   :         :           :                
 VCC                          : V15       : power  :                   : 1.1V    :           :                
-pixel_status_write_export[0] : V16       : output : 2.5 V             :         : 4A        : N              
-RESERVED_INPUT               : V17       :        :                   :         : 4A        :                
-RESERVED_INPUT               : V18       :        :                   :         : 4A        :                
+LEDR[0]                      : V16       : output : 2.5 V             :         : 4A        : Y              
+LEDR[2]                      : V17       : output : 2.5 V             :         : 4A        : Y              
+LEDR[3]                      : V18       : output : 2.5 V             :         : 4A        : Y              
 GND                          : V19       : gnd    :                   :         :           :                
 RESERVED_INPUT               : V20       :        :                   :         : 6B        :                
 GND                          : V21       : gnd    :                   :         :           :                
 VCCPD5A                      : V22       : power  :                   : 2.5V    : 5A        :                
-pixel_data_export[10]        : V23       : output : 2.5 V             :         : 5A        : N              
+RESERVED_INPUT               : V23       :        :                   :         : 5A        :                
 VCCPD5A                      : V24       : power  :                   : 2.5V    : 5A        :                
 RESERVED_INPUT               : V25       :        :                   :         : 5B        :                
 VCCIO6B_HPS                  : V26       : power  :                   : 1.5V    : 6B        :                
@@ -929,16 +929,16 @@ VCC                          : W12       : power  :                   : 1.1V    
 GND                          : W13       : gnd    :                   :         :           :                
 VCC                          : W14       : power  :                   : 1.1V    :           :                
 KEY[2]                       : W15       : input  : 2.5 V             :         : 3B        : Y              
-RESERVED_INPUT               : W16       :        :                   :         : 4A        :                
-RESERVED_INPUT               : W17       :        :                   :         : 4A        :                
+LEDR[1]                      : W16       : output : 2.5 V             :         : 4A        : Y              
+LEDR[4]                      : W17       : output : 2.5 V             :         : 4A        : Y              
 GND                          : W18       : gnd    :                   :         :           :                
-RESERVED_INPUT               : W19       :        :                   :         : 4A        :                
-RESERVED_INPUT               : W20       :        :                   :         : 5A        :                
-RESERVED_INPUT               : W21       :        :                   :         : 5A        :                
+LEDR[5]                      : W19       : output : 2.5 V             :         : 4A        : Y              
+LEDR[7]                      : W20       : output : 2.5 V             :         : 5A        : Y              
+LEDR[8]                      : W21       : output : 2.5 V             :         : 5A        : Y              
 RESERVED_INPUT               : W22       :        :                   :         : 5A        :                
 VCCIO5A                      : W23       : power  :                   : 2.5V    : 5A        :                
-pixel_data_export[6]         : W24       : output : 2.5 V             :         : 5A        : N              
-RESERVED_INPUT               : W25       :        :                   :         : 5B        :                
+RESERVED_INPUT               : W24       :        :                   :         : 5A        :                
+pixel_row_export[7]          : W25       : input  : 2.5 V             :         : 5B        : N              
 RESERVED_INPUT               : W26       :        :                   :         : 6B        :                
 RESERVED_INPUT               : W27       :        :                   :         : 6B        :                
 GND                          : W28       : gnd    :                   :         :           :                
@@ -960,16 +960,16 @@ VCC                          : Y13       : power  :                   : 1.1V    
 GND                          : Y14       : gnd    :                   :         :           :                
 GND                          : Y15       : gnd    :                   :         :           :                
 KEY[3]                       : Y16       : input  : 2.5 V             :         : 3B        : Y              
-RESERVED_INPUT               : Y17       :        :                   :         : 4A        :                
-pixel_row_export[15]         : Y18       : input  : 2.5 V             :         : 4A        : N              
-RESERVED_INPUT               : Y19       :        :                   :         : 4A        :                
+pixel_row_export[1]          : Y17       : input  : 2.5 V             :         : 4A        : N              
+pixel_status_read_export[1]  : Y18       : input  : 2.5 V             :         : 4A        : N              
+LEDR[6]                      : Y19       : output : 2.5 V             :         : 4A        : Y              
 GND                          : Y20       : gnd    :                   :         :           :                
-RESERVED_INPUT               : Y21       :        :                   :         : 5A        :                
+LEDR[9]                      : Y21       : output : 2.5 V             :         : 5A        : Y              
 VCCA_FPLL                    : Y22       : power  :                   : 2.5V    :           :                
 RESERVED_INPUT               : Y23       :        :                   :         : 5A        :                
 RESERVED_INPUT               : Y24       :        :                   :         : 5A        :                
 GND                          : Y25       : gnd    :                   :         :           :                
-pixel_status_write_export[3] : Y26       : output : 2.5 V             :         : 5B        : N              
+RESERVED_INPUT               : Y26       :        :                   :         : 5B        :                
 RESERVED_INPUT               : Y27       :        :                   :         : 5B        :                
 RESERVED_INPUT               : Y28       :        :                   :         : 6B        :                
 RESERVED_INPUT               : Y29       :        :                   :         : 6B        :                

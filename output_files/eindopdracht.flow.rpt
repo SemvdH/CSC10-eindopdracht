@@ -1,5 +1,5 @@
 Flow report for eindopdracht
-Wed Dec 21 13:54:07 2022
+Fri Dec 23 11:58:21 2022
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,16 +40,16 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Wed Dec 21 13:53:08 2022       ;
+; Flow Status                     ; Successful - Fri Dec 23 11:57:27 2022       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; eindopdracht                                ;
 ; Top-level Entity Name           ; VGA_image_viewer_tl                         ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA5F31C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 26,937 / 32,070 ( 84 % )                    ;
-; Total registers                 ; 1030                                        ;
-; Total pins                      ; 205 / 457 ( 45 % )                          ;
+; Logic utilization (in ALMs)     ; 26,940 / 32,070 ( 84 % )                    ;
+; Total registers                 ; 1023                                        ;
+; Total pins                      ; 215 / 457 ( 47 % )                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 0 / 4,065,280 ( 0 % )                       ;
 ; Total DSP Blocks                ; 0 / 87 ( 0 % )                              ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 12/21/2022 13:44:17 ;
+; Start date & time ; 12/23/2022 11:48:55 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; eindopdracht        ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +---------------------------------------+--------------------------------------------------------------------------------+---------------+--------------------------------------+------------+
 ; Assignment Name                       ; Value                                                                          ; Default Value ; Entity Name                          ; Section Id ;
 +---------------------------------------+--------------------------------------------------------------------------------+---------------+--------------------------------------+------------+
-; COMPILER_SIGNATURE_ID                 ; 128028629797681.167162665502687                                                ; --            ; --                                   ; --         ;
+; COMPILER_SIGNATURE_ID                 ; 128028629797681.167179253363116                                                ; --            ; --                                   ; --         ;
 ; ECO_REGENERATE_REPORT                 ; On                                                                             ; Off           ; --                                   ; --         ;
 ; HPS_ISW_FILE                          ; VGA_image_viewer/synthesis/submodules/sequencer/emif.pre.xml                   ; --            ; VGA_image_viewer_hps_0_hps_io_border ; --         ;
 ; HPS_ISW_FILE                          ; VGA_image_viewer/synthesis/submodules/sequencer/sequencer_defines.pre.h        ; --            ; VGA_image_viewer_hps_0_hps_io_border ; --         ;
@@ -140,11 +140,11 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:47     ; 2.8                     ; 1425 MB             ; 00:02:10                           ;
-; Fitter               ; 00:04:48     ; 1.4                     ; 3787 MB             ; 00:14:43                           ;
-; Assembler            ; 00:00:19     ; 1.0                     ; 1232 MB             ; 00:00:18                           ;
-; Timing Analyzer      ; 00:00:58     ; 2.9                     ; 2094 MB             ; 00:02:31                           ;
-; Total                ; 00:06:52     ; --                      ; --                  ; 00:19:42                           ;
+; Analysis & Synthesis ; 00:00:49     ; 2.9                     ; 1442 MB             ; 00:02:21                           ;
+; Fitter               ; 00:04:29     ; 1.4                     ; 3804 MB             ; 00:13:25                           ;
+; Assembler            ; 00:00:18     ; 1.0                     ; 1239 MB             ; 00:00:17                           ;
+; Timing Analyzer      ; 00:00:53     ; 2.8                     ; 2096 MB             ; 00:02:23                           ;
+; Total                ; 00:06:29     ; --                      ; --                  ; 00:18:26                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
