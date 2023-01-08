@@ -107,6 +107,7 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
     SIGNAL pixel_x, pixel_y : STD_LOGIC_VECTOR(9 DOWNTO 0); -- pixel x and y coordinates
 
     -- Registers for pixel memory
+    -- The pixel row register is for each color. Each register will have 640 pixels, each pixel is 8 bits.
     SIGNAL row_reg_1_r, row_reg_1_g, row_reg_1_b : STD_LOGIC_VECTOR((HD - 1) * 8 DOWNTO 0);
     SIGNAL row_reg_2_r, row_reg_2_g, row_reg_2_b : STD_LOGIC_VECTOR((HD - 1) * 8 DOWNTO 0);
     COMPONENT VGA_sync
@@ -313,6 +314,7 @@ BEGIN
                 pixel_x_v := to_integer(unsigned(pixel_x));
                 pixel_y_v := to_integer(unsigned(pixel_y));
                 IF (pm_blank = '1') THEN
+                -- assign the pixel data to the VGA registers
                     IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
                         VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
                         VGA_G <= row_reg_1_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
@@ -324,12 +326,13 @@ BEGIN
                         VGA_B <= row_reg_2_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
                     END IF;
                 END IF;
-                -- IF (pixel_y_v = prev_pixel_y) THEN
-                --     pixel_status_read_s <= "0000";
-                -- ELSE
-                --     pixel_status_read_s <= "0001";
-                --     prev_pixel_y := pixel_y_v;
-                -- END IF;
+                -- if the pixel y changes, set the read flag to true to signal that the pixel data is ready to be read
+                IF (pixel_y_v = prev_pixel_y) THEN
+                    pixel_status_read_s <= "0000";
+                ELSE
+                    pixel_status_read_s <= "0001";
+                    prev_pixel_y := pixel_y_v;
+                END IF;
             END IF;
 
         END PROCESS;
@@ -341,21 +344,17 @@ BEGIN
         draw_row_data : PROCESS (pixel_status_write_s)
             VARIABLE pixel_in_row_index : INTEGER RANGE 0 TO HD - 1; -- 0 to 639
         BEGIN
-            IF (pixel_status_write_s = "0001") THEN
-                pixel_status_read_s <= "0001"; -- test, remove later
-                IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
-                    row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                    row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                    row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
-                ELSE
-                    row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                    row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                    row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
-                END IF;
-                pixel_in_row_index := pixel_in_row_index + 1;
+            -- assign the pixel data to the color row registers, depending on the row index
+            IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
+                row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
             ELSE
-                pixel_status_read_s <= "0000"; -- test, remove later
+                row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
             END IF;
+            pixel_in_row_index := pixel_in_row_index + 1;
 
         END PROCESS;
         pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
