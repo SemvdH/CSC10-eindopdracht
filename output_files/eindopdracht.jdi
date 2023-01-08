@@ -1,16 +1,8 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="0b7230890c7d7641fc75"/>
+    <hash md5_digest_80b="63e4280366eba5622182"/>
   </project>
   <file_info>
     <file device="5CSEMA5F31C6" path="eindopdracht.sof" usercode="0xFFFFFFFF"/>
   </file_info>
-  <sld_infos>
-    <sld_info hpath="VGA_image_viewer:u0" name="u0">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME VGA_image_viewer HAS_SOPCINFO 1 GENERATION_ID 1671617186"/>
-      </assignment_values>
-      <parameters/>
-    </sld_info>
-  </sld_infos>
 </sld_project_info>
