@@ -6,11 +6,11 @@
 
 typedef struct tagBITMAPFILEHEADER
 {
-    WORD bfType;  //specifies the file type
-    DWORD bfSize;  //specifies the size in bytes of the bitmap file
-    WORD bfReserved1;  //reserved; must be 0
-    WORD bfReserved2;  //reserved; must be 0
-    DWORD bfOffBits;  //specifies the offset in bytes from the bitmapfileheader to the bitmap bits
+    uint16_t bfType;  //specifies the file type
+    uint32_t bfSize;  //specifies the size in bytes of the bitmap file
+    uint16_t bfReserved1;  //reserved; must be 0
+    uint16_t bfReserved2;  //reserved; must be 0
+    uint32_t bfOffBits;  //specifies the offset in bytes from the bitmapfileheader to the bitmap bits
 }BITMAPFILEHEADER;
 
 #pragma pack(pop)
@@ -20,17 +20,17 @@ typedef struct tagBITMAPFILEHEADER
 
 typedef struct tagBITMAPINFOHEADER
 {
-    DWORD biSize;  //specifies the number of bytes required by the struct
-    LONG biWidth;  //specifies width in pixels
-    LONG biHeight;  //specifies height in pixels
-    WORD biPlanes;  //specifies the number of color planes, must be 1
-    WORD biBitCount;  //specifies the number of bits per pixel
-    DWORD biCompression;  //specifies the type of compression
-    DWORD biSizeImage;  //size of image in bytes
-    LONG biXPelsPerMeter;  //number of pixels per meter in x axis
-    LONG biYPelsPerMeter;  //number of pixels per meter in y axis
-    DWORD biClrUsed;  //number of colors used by the bitmap
-    DWORD biClrImportant;  //number of colors that are important
+    uint32_t biSize;  //specifies the number of bytes required by the struct
+    long biWidth;  //specifies width in pixels
+    long biHeight;  //specifies height in pixels
+    uint16_t biPlanes;  //specifies the number of color planes, must be 1
+    uint16_t biBitCount;  //specifies the number of bits per pixel
+    uint32_t biCompression;  //specifies the type of compression
+    uint32_t biSizeImage;  //size of image in bytes
+    long biXPelsPerMeter;  //number of pixels per meter in x axis
+    long biYPelsPerMeter;  //number of pixels per meter in y axis
+    uint32_t biClrUsed;  //number of colors used by the bitmap
+    uint32_t biClrImportant;  //number of colors that are important
 }BITMAPINFOHEADER;
 
 #pragma pack(pop)
