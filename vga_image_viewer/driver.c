@@ -60,7 +60,7 @@ static int init_handler(struct platform_device * pdev)
 //	*(PIXEL_data_ptr) = 0xF0F;
 //	printk(KERN_ALERT DEVNAME": PIXEL STATUS GEZET! %d\n",*(PIXEL_status_w_ptr));
         ret = request_irq(irq_num, (irq_handler_t) irq_handler, 0, DEVNAME, NULL);
-
+//	free(img_data);
         return ret;
 }
 static int  clean_handler(struct platform_device *pdev)
