@@ -7,8 +7,6 @@
 #include <linux/io.h>
 #include <linux/of.h>
 
-#include "jpeg.h"
-
 MODULE_LICENSE("GPL");
 
 #define HW_REGS_BASE 0xff200000
@@ -50,11 +48,6 @@ static int init_handler(struct platform_device * pdev)
 
         irq_num = platform_get_irq(pdev,0);
         printk(KERN_ALERT DEVNAME ": IRQ %d wordt geregistreert!\n", irq_num);
-
-	
-	unsigned char *img_data = loadjpeg("./bird.jpg",&width,&heigth);
-
-	printk(KERN_ALERT DEVNAME ": %s\n",img_data);
 
 //	*(PIXEL_status_w_ptr) = 0b0001;
 //	*(PIXEL_data_ptr) = 0xF0F;
