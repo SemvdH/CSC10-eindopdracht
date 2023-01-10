@@ -1,5 +1,5 @@
 EXTRA_CFLAGS=-I$(PWD)
-obj-m += driver.o
+obj-m += driver.o jpeg.o
 
 all:
 	echo current path is $(PWD)
