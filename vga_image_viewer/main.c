@@ -8,10 +8,10 @@
 #define HW_REGS_SPAN ( 0x00200000 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
 
-#define PIXEL_DATA_BASE ( 0x100000030 )
-#define PIXEL_STATUS_WRITE_BASE (0x100000020)
-#define PIXEL_STATUS_READ_BASE ( 0x100000010 )
-#define PIXEL_ROW_BASE ( 0x100000000  )
+#define PIXEL_DATA_BASE ( 0x000000030 )
+#define PIXEL_STATUS_WRITE_BASE (0x000000020)
+#define PIXEL_STATUS_READ_BASE ( 0x000000010 )
+#define PIXEL_ROW_BASE ( 0x000000000  )
 
 #define HWREG(x) (*((volatile uint32_t *)(x)))
 
@@ -39,10 +39,11 @@ int main(void) {
 
 	for (int i = 0; i < 0xFFFFFF; i++) {
 		HWREG(virtual_base + PIXEL_DATA_BASE) = i;
-
-//		printf("%d\n",HWREG(virtual_base + PIXEL_STATUS_READ_BASE));
 	}
 
+//	HWREG(virtual_base + PIXEL_DATA_BASE) = 0xFF00FF;
+
+//	HWREG(virtual_base + PIXEL_STATUS_WRITE_BASE) = 1;
 
 	if( munmap( virtual_base, HW_REGS_SPAN ) != 0 ) {
                 printf( "ERROR: munmap() failed...\n" );

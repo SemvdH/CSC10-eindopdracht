@@ -7,6 +7,8 @@
 #include <linux/io.h>
 #include <linux/of.h>
 
+#include "jpeg.h"
+
 MODULE_LICENSE("GPL");
 
 #define HW_REGS_BASE 0xff200000
@@ -20,11 +22,13 @@ MODULE_LICENSE("GPL");
 #define DEVNAME "Mijn Module"
 
 void * LW_virtual; // Lightweight bridge base address
-volatile int *PIXEL_base_ptr; // virtual addresses
+volatile int *PIXEL_data_ptr; // virtual addresses
 volatile int *PIXEL_status_r_ptr;
 volatile int *PIXEL_status_w_ptr;
 volatile int *PIXEL_row_ptr;
-
+int i = 0;
+int width = 640;
+int heigth = 480;
 irq_handler_t irq_handler (int irq, void *dev_id, struct pt_regs * regs)
 {
         printk(KERN_ALERT "In de IRQqqqqqqqqqqqqqqqqqqqqq!");
@@ -40,12 +44,21 @@ static int init_handler(struct platform_device * pdev)
 
         PIXEL_status_r_ptr = LW_virtual + PIXEL_STATUS_READ_BASE; //offset naar PIO registers
 	PIXEL_status_w_ptr = LW_virtual + PIXEL_STATUS_WRITE_BASE;
+	PIXEL_data_ptr = LW_virtual + PIXEL_DATA_BASE;
 
 	*(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
 
         irq_num = platform_get_irq(pdev,0);
         printk(KERN_ALERT DEVNAME ": IRQ %d wordt geregistreert!\n", irq_num);
 
+	
+	unsigned char *img_data = loadjpeg("./bird.jpg",&width,&heigth);
+
+	printk(KERN_ALERT DEVNAME ": %s\n",img_data);
+
+//	*(PIXEL_status_w_ptr) = 0b0001;
+//	*(PIXEL_data_ptr) = 0xF0F;
+//	printk(KERN_ALERT DEVNAME": PIXEL STATUS GEZET! %d\n",*(PIXEL_status_w_ptr));
         ret = request_irq(irq_num, (irq_handler_t) irq_handler, 0, DEVNAME, NULL);
 
         return ret;
