@@ -1,12 +1,12 @@
-Fitter Status : Successful - Sun Jan  8 17:18:56 2023
+Fitter Status : Successful - Mon Jan 16 12:08:44 2023
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : eindopdracht
 Top-level Entity Name : VGA_image_viewer_tl
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 26,914 / 32,070 ( 84 % )
-Total registers : 1042
+Logic utilization (in ALMs) : 26,901 / 32,070 ( 84 % )
+Total registers : 1032
 Total pins : 215 / 457 ( 47 % )
 Total virtual pins : 0
 Total block memory bits : 0 / 4,065,280 ( 0 % )

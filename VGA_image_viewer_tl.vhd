@@ -313,8 +313,9 @@ BEGIN
             IF (rising_edge(pixel_tick)) THEN
                 pixel_x_v := to_integer(unsigned(pixel_x));
                 pixel_y_v := to_integer(unsigned(pixel_y));
+                pixel_status_read_s <= "0001";
                 IF (pm_blank = '1') THEN
-                -- assign the pixel data to the VGA registers
+                    -- assign the pixel data to the VGA registers
                     IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
                         VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
                         VGA_G <= row_reg_1_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
@@ -327,12 +328,15 @@ BEGIN
                     END IF;
                 END IF;
                 -- if the pixel y changes, set the read flag to true to signal that the pixel data is ready to be read
-                IF (pixel_y_v = prev_pixel_y) THEN
-                    pixel_status_read_s <= "0000";
-                ELSE
-                    pixel_status_read_s <= "0001";
-                    prev_pixel_y := pixel_y_v;
-                END IF;
+
+                -- IF (pixel_y_v = prev_pixel_y) THEN
+                --     pixel_status_read_s <= "0000";
+                -- ELSE
+                --     pixel_status_read_s <= "0001";
+                --     prev_pixel_y := pixel_y_v;
+                -- END IF;
+            ELSE
+                pixel_status_read_s <= "0000";
             END IF;
 
         END PROCESS;
