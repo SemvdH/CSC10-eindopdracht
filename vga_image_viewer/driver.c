@@ -36,19 +36,7 @@ int timestamp = 0;
 
 irq_handler_t irq_handler (int irq, void *dev_id, struct pt_regs * regs)
 {
-	if (!jiffies_set) {
-		timestamp = jiffies;
-		jiffies_set = 1;
-	}
-        //printk(KERN_ALERT "In de IRQqqqqqqqqqqqqqqqqqqqqq!");
-	irq_amount += 1;
-	if (irq_amount >= 1000) {
-		int elapsed = jiffies - timestamp;
-		printk(KERN_ALERT "1000 interrupts duurde %d ticks",elapsed);
-		jiffies_set = 0;
-		timestamp = 0;
-		irq_amount = 0;
-	}
+        printk(KERN_ALERT "In de IRQqqqqqqqqqqqqqqqqqqqqq!");
         return (irq_handler_t) IRQ_HANDLED;
 }
 
@@ -64,7 +52,6 @@ static int init_handler(struct platform_device * pdev)
 	PIXEL_data_ptr = LW_virtual + PIXEL_DATA_BASE;
 
 	*(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
-	*(PIXEL_status_w_ptr) = 0b0001; // test enable interrupts
         irq_num = platform_get_irq(pdev,0);
         printk(KERN_ALERT DEVNAME ": IRQ %d wordt geregistreert!\n", irq_num);
 
