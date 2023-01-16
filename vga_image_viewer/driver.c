@@ -6,8 +6,11 @@
 #include <linux/sched.h>
 #include <linux/io.h>
 #include <linux/of.h>
-
+#include <linux/delay.h>
+#include <linux/jiffies.h>
 //clock speed: 800MHz
+
+//Hz per row on fpga: 52000
 
 MODULE_LICENSE("GPL");
 
@@ -35,9 +38,11 @@ irq_handler_t irq_handler (int irq, void *dev_id, struct pt_regs * regs)
 	int i = 0;
 	while(i < 639) {
 		*(PIXEL_status_w_ptr) = 0;
-		*(PIXEL_data_ptr) = 0x0;
+		*(PIXEL_data_ptr) = 0xFF00FF;
 		*(PIXEL_status_w_ptr) = 1;
 		i++;
+//		long timestamp = jiffies;
+//		while (jiffies - timestamp < 1000);
 	}
 	//printk(KERN_ALERT DEVNAME "in de irq");
         return (irq_handler_t) IRQ_HANDLED;
