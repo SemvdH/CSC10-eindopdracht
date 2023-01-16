@@ -6,7 +6,7 @@
 #include <linux/sched.h>
 #include <linux/io.h>
 #include <linux/of.h>
-#include <linux/jiffies.h>
+
 //clock speed: 800MHz
 
 MODULE_LICENSE("GPL");
@@ -26,17 +26,20 @@ volatile int *PIXEL_data_ptr; // virtual addresses
 volatile int *PIXEL_status_r_ptr;
 volatile int *PIXEL_status_w_ptr;
 volatile int *PIXEL_row_ptr;
-int i = 0;
+
 int width = 640;
 int heigth = 480;
 
-int irq_amount = 0;
-int jiffies_set = 0;
-int timestamp = 0;
-
 irq_handler_t irq_handler (int irq, void *dev_id, struct pt_regs * regs)
 {
-        printk(KERN_ALERT "In de IRQqqqqqqqqqqqqqqqqqqqqq!");
+	int i = 0;
+	while(i < 639) {
+		*(PIXEL_status_w_ptr) = 0;
+		*(PIXEL_data_ptr) = 0x0;
+		*(PIXEL_status_w_ptr) = 1;
+		i++;
+	}
+	//printk(KERN_ALERT DEVNAME "in de irq");
         return (irq_handler_t) IRQ_HANDLED;
 }
 
@@ -50,6 +53,7 @@ static int init_handler(struct platform_device * pdev)
         PIXEL_status_r_ptr = LW_virtual + PIXEL_STATUS_READ_BASE; //offset naar PIO registers
 	PIXEL_status_w_ptr = LW_virtual + PIXEL_STATUS_WRITE_BASE;
 	PIXEL_data_ptr = LW_virtual + PIXEL_DATA_BASE;
+	PIXEL_row_ptr = LW_virtual + PIXEL_ROW_BASE;
 
 	*(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
         irq_num = platform_get_irq(pdev,0);
@@ -80,7 +84,10 @@ static int  clean_handler(struct platform_device *pdev)
 * komen!
 */
 static const struct of_device_id mijn_module_id[] ={
-        {.compatible = "altr,pixel_status_read"},
+        {.compatible = "altr,pixel_status_read",
+	"altr,pixel_row",
+	"altr,pixel_status_write",
+	"altr,pixel_data"},
         {}
 };
 
