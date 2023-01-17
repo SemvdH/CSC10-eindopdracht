@@ -25,6 +25,9 @@ MODULE_LICENSE("GPL");
 #define PIXEL_STATUS_WRITE_BASE 0x000000020
 #define PIXEL_ROW_BASE 0x000000000
 
+#define width = 640
+#define heigth = 480
+
 #define DEVNAME "Mijn Module"
 
 static int vga_img_viewer_open(struct inode *inode, struct file *file);
@@ -58,8 +61,6 @@ static int dev_major = 0;
 static struct class *vga_img_viewer_class = NULL;
 static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
-int width = 640;
-int heigth = 480;
 uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
 static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env)
@@ -153,13 +154,13 @@ static int vga_img_viewer_release(struct inode *inode, struct file *file)
 {
         printk("vga_img_viewer: Device close\n");
 
-        struct task_struct * ref_taak = get_current();
-        printk ( KERN_INFO " Device bestand vrijgegeven \n");
+        // struct task_struct * ref_taak = get_current();
+        // printk ( KERN_INFO " Device bestand vrijgegeven \n");
 
         // Taak 0 maken
-        if( ref_taak == taak ) {
-                taak = NULL;
-        }
+        // if( ref_taak == taak ) {
+        //         taak = NULL;
+        // }
 
         return 0;
 }
@@ -168,12 +169,12 @@ static long vga_img_viewer_ioctl(struct file *file, unsigned int cmd, unsigned l
 {
     printk("vga_img_viewer: Device ioctl\n");
 
-    if(cmd == _IOW ('a','a', int32_t *))
-    {
-        printk ( KERN_INFO " Taak registreren \n") ;
-        // huidige taak die registratie aanvraagt
-        taak = get_current();
-    }
+//     if(cmd == _IOW ('a','a', int32_t *))
+//     {
+//         printk ( KERN_INFO " Taak registreren \n") ;
+//         // huidige taak die registratie aanvraagt
+//         // taak = get_current();
+//     }
     return 0;
 }
 
