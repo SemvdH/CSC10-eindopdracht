@@ -25,8 +25,8 @@ MODULE_LICENSE("GPL");
 #define PIXEL_STATUS_WRITE_BASE 0x000000020
 #define PIXEL_ROW_BASE 0x000000000
 
-#define width = 640
-#define heigth = 480
+#define width 640
+#define heigth 480
 
 #define DEVNAME "Mijn Module"
 
@@ -61,7 +61,7 @@ static int dev_major = 0;
 static struct class *vga_img_viewer_class = NULL;
 static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
-uint8_t frame_data[width*heigth*3] = {0}; // whole frame
+static uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
 static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
