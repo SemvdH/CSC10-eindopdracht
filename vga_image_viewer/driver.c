@@ -11,7 +11,7 @@
 //clock speed: 800MHz
 
 //Hz per row on fpga: 52000
-
+// VGA horizontal blanking time: 6.3 us
 MODULE_LICENSE("GPL");
 
 #define HW_REGS_BASE 0xff200000
@@ -36,15 +36,18 @@ int heigth = 480;
 irq_handler_t irq_handler (int irq, void *dev_id, struct pt_regs * regs)
 {
 	int i = 0;
+//	int timestamp = jiffies;
 	while(i < 639) {
 		*(PIXEL_status_w_ptr) = 0;
-		*(PIXEL_data_ptr) = 0xFF00FF;
+		*(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 300 ? 0xFF0000 : 0x00FFFF;
+//			*(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 240 ? 0xFFFFFF : 0x0;
 		*(PIXEL_status_w_ptr) = 1;
 		i++;
-//		long timestamp = jiffies;
-//		while (jiffies - timestamp < 1000);
+//			long timestamp = jiffies;
+//			while (jiffies - timestamp < 1000);
 	}
-	//printk(KERN_ALERT DEVNAME "in de irq");
+//	int jf = jiffies - timestamp;
+//	printk(KERN_ALERT DEVNAME "setting took %d ticks",jf);
         return (irq_handler_t) IRQ_HANDLED;
 }
 
