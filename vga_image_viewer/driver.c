@@ -60,6 +60,7 @@ static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
 int width = 640;
 int heigth = 480;
+uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
 static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
@@ -73,8 +74,12 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
         //	int timestamp = jiffies;
         while (i < 639)
         {
-                *(PIXEL_status_w_ptr) = 0;
-                *(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 300 ? 0xFF0000 : 0x00FFFF;
+                *(PIXEL_status_w_ptr) = 0;                
+                uint8_t r = frame_data[(*(PIXEL_row_ptr) * width * 3) + i];
+                uint8_t g = frame_data[(*(PIXEL_row_ptr) * width * 3) + i + 1];
+                uint8_t b = frame_data[(*(PIXEL_row_ptr) * width * 3) + i + 2];
+
+                *(PIXEL_data_ptr) = (b << 16) | (g << 8) | r;
                 //			*(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 240 ? 0xFFFFFF : 0x0;
                 *(PIXEL_status_w_ptr) = 1;
                 i++;
@@ -174,7 +179,7 @@ static long vga_img_viewer_ioctl(struct file *file, unsigned int cmd, unsigned l
 
 static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t count, loff_t *offset)
 {
-    uint8_t data = *(SW_ptr) & 0xFF;
+    uint8_t data = *(PIXEL_row_ptr);
     size_t datalen = 1;
 
     printk("Reading device: %d\n", MINOR(file->f_path.dentry->d_inode->i_rdev));
@@ -190,27 +195,25 @@ static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t c
     return count;
 }
 
+// write image data
 static ssize_t vga_img_viewer_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
 {
-    size_t maxdatalen = 1, ncopied;
-    uint8_t databuf = 0;
-
+    size_t maxdatalen = 640*480*3, ncopied; // 640x480 pixels, 3 bytes per pixel
+    
     printk("Writing device: %d\n", MINOR(file->f_path.dentry->d_inode->i_rdev));
 
     if (count < maxdatalen) {
         maxdatalen = count;
     }
 
-    ncopied = copy_from_user(&databuf, buf, maxdatalen);
+    ncopied = copy_from_user(frame_data, buf, maxdatalen);
 
     if (ncopied == 0) {
         printk("Copied %zd bytes from the user\n", maxdatalen);
-        printk("Copied value: %x\n", databuf);
+        // printk("Copied value: %x\n", data);
     } else {
         printk("Could't copy %zd bytes from the user\n", ncopied);
     }
-
-    *(LEDR_ptr) = databuf & 0xFF;
 
     return count;
 }
