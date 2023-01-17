@@ -319,7 +319,8 @@ BEGIN
             IF (rising_edge(pixel_tick)) THEN
                 pixel_x_v := to_integer(unsigned(pixel_x));
                 pixel_y_v := to_integer(unsigned(pixel_y));
-                IF (pm_blank = '1') THEN
+                IF (pm_blank = '1' and pixel_x_v < HD - 1) THEN
+
                     -- assign the pixel data to the VGA registers
                     -- IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
                     VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
@@ -340,6 +341,10 @@ BEGIN
                         pixel_status_read_s <= "0001";
                         prev_pixel_y := pixel_y_v;
                     END IF;
+                END IF;
+
+                IF (pixel_y_v < VD - 1) THEN
+                    pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
                 END IF;
 
             END IF;
@@ -434,7 +439,7 @@ BEGIN
             END IF;
 
         END PROCESS;
-        pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
+
         LEDR(9) <= '1'; -- status led
         LEDR(1) <= pixel_status_read_s(0); -- status led for read flag
         LEDR(2) <= pixel_status_write_s(0); -- status led for write flag

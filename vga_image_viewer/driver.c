@@ -73,12 +73,12 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
         int i = 0;
         //	int timestamp = jiffies;
-        while (i < 639)
+        while (i < width-1)
         {
                 *(PIXEL_status_w_ptr) = 0;                
-                uint8_t r = frame_data[(*(PIXEL_row_ptr) * width * 3) + i];
-                uint8_t g = frame_data[(*(PIXEL_row_ptr) * width * 3) + i + 1];
-                uint8_t b = frame_data[(*(PIXEL_row_ptr) * width * 3) + i + 2];
+                uint8_t r = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i];
+                uint8_t g = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i + 1];
+                uint8_t b = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i + 2];
 
                 *(PIXEL_data_ptr) = (b << 16) | (g << 8) | r;
                 //			*(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 240 ? 0xFFFFFF : 0x0;
