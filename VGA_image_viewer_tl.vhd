@@ -108,8 +108,8 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
 
     -- Registers for pixel memory
     -- The pixel row register is for each color. Each register will have 640 pixels, each pixel is 8 bits.
-    SIGNAL row_reg_1_r, row_reg_1_g, row_reg_1_b : STD_LOGIC_VECTOR((HD - 1) * 8 DOWNTO 0) := (OTHERS => '0');
-    SIGNAL row_reg_2_r, row_reg_2_g, row_reg_2_b : STD_LOGIC_VECTOR((HD - 1) * 8 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL row_reg_1_r, row_reg_1_g, row_reg_1_b : STD_LOGIC_VECTOR(((HD - 1) * 8) DOWNTO 0) := (OTHERS => '0');
+    SIGNAL row_reg_2_r, row_reg_2_g, row_reg_2_b : STD_LOGIC_VECTOR(((HD - 1) * 8) DOWNTO 0) := (OTHERS => '0');
     SIGNAL pixel_in_row_s : unsigned(9 DOWNTO 0) := (OTHERS => '0'); -- pixel in row counter
 
     COMPONENT VGA_sync
@@ -355,13 +355,68 @@ BEGIN
                 IF (pm_blank = '1') THEN
                     -- assign the pixel data to the color row registers, depending on the row index
                     IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
-                        row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                        row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                        row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                        -- row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                        -- row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                        -- row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+
+                        row_reg_1_r(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(7);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(6);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(5);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(4);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(3);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(2);
+                        row_reg_1_r(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(1);
+                        row_reg_1_r(((pixel_in_row_index * 8))) <= pixel_data_s(0);
+
+                        row_reg_1_g(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(15);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(14);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(13);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(12);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(11);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(10);
+                        row_reg_1_g(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(9);
+                        row_reg_1_g(((pixel_in_row_index * 8))) <= pixel_data_s(8);
+
+                        row_reg_1_b(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(23);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(22);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(21);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(20);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(19);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(18);
+                        row_reg_1_b(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(17);
+                        row_reg_1_b(((pixel_in_row_index * 8))) <= pixel_data_s(16);
+
+
                     ELSE
-                        row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                        row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                        row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                        -- row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                        -- row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                        -- row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(7);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(6);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(5);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(4);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(3);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(2);
+                        row_reg_2_r(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(1);
+                        row_reg_2_r(((pixel_in_row_index * 8))) <= pixel_data_s(0);
+
+                        row_reg_2_g(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(15);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(14);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(13);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(12);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(11);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(10);
+                        row_reg_2_g(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(9);
+                        row_reg_2_g(((pixel_in_row_index * 8))) <= pixel_data_s(8);
+
+                        row_reg_2_b(((pixel_in_row_index * 8) + 7)) <= pixel_data_s(23);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 6)) <= pixel_data_s(22);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 5)) <= pixel_data_s(21);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 4)) <= pixel_data_s(20);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 3)) <= pixel_data_s(19);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 2)) <= pixel_data_s(18);
+                        row_reg_2_b(((pixel_in_row_index * 8) + 1)) <= pixel_data_s(17);
+                        row_reg_2_b(((pixel_in_row_index * 8))) <= pixel_data_s(16);
                     END IF;
                 END IF;
             END IF;
