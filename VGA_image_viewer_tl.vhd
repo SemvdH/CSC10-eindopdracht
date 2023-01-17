@@ -318,13 +318,10 @@ BEGIN
                 IF (pm_blank = '1') THEN
                     -- assign the pixel data to the VGA registers
                     IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
-                        -- pixel_status_read_s <= "0001";
                         VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
                         VGA_G <= row_reg_1_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
                         VGA_B <= row_reg_1_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
-                        -- counter := counter + 1;
                     ELSE
-                        -- pixel_status_read_s <= "0000";
                         VGA_R <= row_reg_2_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
                         VGA_G <= row_reg_2_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
                         VGA_B <= row_reg_2_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
@@ -355,15 +352,17 @@ BEGIN
             VARIABLE pixel_in_row_index : INTEGER RANGE 0 TO HD - 1; -- 0 to 639
         BEGIN
             IF (pixel_status_write_s = "0001") THEN
-                -- assign the pixel data to the color row registers, depending on the row index
-                IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
-                    row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                    row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                    row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
-                ELSE
-                    row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
-                    row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
-                    row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                IF (pm_blank = '1') THEN
+                    -- assign the pixel data to the color row registers, depending on the row index
+                    IF (to_integer(unsigned(pixel_y)) MOD 2 = 1) THEN
+                        row_reg_1_r((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                        row_reg_1_g((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                        row_reg_1_b((pixel_in_row_index * 8) + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                    ELSE
+                        row_reg_2_r(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(7 DOWNTO 0);
+                        row_reg_2_g(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(15 DOWNTO 8);
+                        row_reg_2_b(pixel_in_row_index * 8 + 7 DOWNTO (pixel_in_row_index * 8)) <= pixel_data_s(23 DOWNTO 16);
+                    END IF;
                 END IF;
             END IF;
 
