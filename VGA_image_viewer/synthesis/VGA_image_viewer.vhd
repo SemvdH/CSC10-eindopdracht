@@ -59,6 +59,13 @@ entity VGA_image_viewer is
 		hps_io_hps_io_i2c1_inst_SCL     : inout std_logic                     := '0';             --                   .hps_io_i2c1_inst_SCL
 		hps_io_hps_io_gpio_inst_GPIO53  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO53
 		hps_io_hps_io_gpio_inst_GPIO54  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO54
+		image_ram_address               : in    std_logic_vector(17 downto 0) := (others => '0'); --          image_ram.address
+		image_ram_clken                 : in    std_logic                     := '0';             --                   .clken
+		image_ram_chipselect            : in    std_logic                     := '0';             --                   .chipselect
+		image_ram_write                 : in    std_logic                     := '0';             --                   .write
+		image_ram_readdata              : out   std_logic_vector(31 downto 0);                    --                   .readdata
+		image_ram_writedata             : in    std_logic_vector(31 downto 0) := (others => '0'); --                   .writedata
+		image_ram_byteenable            : in    std_logic_vector(3 downto 0)  := (others => '0'); --                   .byteenable
 		memory_mem_a                    : out   std_logic_vector(14 downto 0);                    --             memory.mem_a
 		memory_mem_ba                   : out   std_logic_vector(2 downto 0);                     --                   .mem_ba
 		memory_mem_ck                   : out   std_logic;                                        --                   .mem_ck
@@ -76,7 +83,6 @@ entity VGA_image_viewer is
 		memory_mem_dm                   : out   std_logic_vector(3 downto 0);                     --                   .mem_dm
 		memory_oct_rzqin                : in    std_logic                     := '0';             --                   .oct_rzqin
 		pixel_data_export               : out   std_logic_vector(23 downto 0);                    --         pixel_data.export
-		pixel_index_in_row_export       : out   std_logic_vector(15 downto 0);                    -- pixel_index_in_row.export
 		pixel_row_export                : in    std_logic_vector(15 downto 0) := (others => '0'); --          pixel_row.export
 		pixel_status_read_export        : in    std_logic_vector(3 downto 0)  := (others => '0'); --  pixel_status_read.export
 		pixel_status_write_export       : out   std_logic_vector(3 downto 0);                     -- pixel_status_write.export
@@ -202,17 +208,27 @@ architecture rtl of VGA_image_viewer is
 
 	component VGA_image_viewer_image_ram is
 		port (
-			clk        : in  std_logic                     := 'X';             -- clk
-			address    : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
-			clken      : in  std_logic                     := 'X';             -- clken
-			chipselect : in  std_logic                     := 'X';             -- chipselect
-			write      : in  std_logic                     := 'X';             -- write
-			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
-			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			byteenable : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
-			reset      : in  std_logic                     := 'X';             -- reset
-			reset_req  : in  std_logic                     := 'X';             -- reset_req
-			freeze     : in  std_logic                     := 'X'              -- freeze
+			clk         : in  std_logic                     := 'X';             -- clk
+			address     : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			clken       : in  std_logic                     := 'X';             -- clken
+			chipselect  : in  std_logic                     := 'X';             -- chipselect
+			write       : in  std_logic                     := 'X';             -- write
+			readdata    : out std_logic_vector(31 downto 0);                    -- readdata
+			writedata   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			byteenable  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			reset       : in  std_logic                     := 'X';             -- reset
+			reset_req   : in  std_logic                     := 'X';             -- reset_req
+			address2    : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			chipselect2 : in  std_logic                     := 'X';             -- chipselect
+			clken2      : in  std_logic                     := 'X';             -- clken
+			write2      : in  std_logic                     := 'X';             -- write
+			readdata2   : out std_logic_vector(31 downto 0);                    -- readdata
+			writedata2  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			byteenable2 : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			clk2        : in  std_logic                     := 'X';             -- clk
+			reset2      : in  std_logic                     := 'X';             -- reset
+			reset_req2  : in  std_logic                     := 'X';             -- reset_req
+			freeze      : in  std_logic                     := 'X'              -- freeze
 		);
 	end component VGA_image_viewer_image_ram;
 
@@ -228,19 +244,6 @@ architecture rtl of VGA_image_viewer is
 			out_port   : out std_logic_vector(23 downto 0)                     -- export
 		);
 	end component VGA_image_viewer_pixel_data;
-
-	component VGA_image_viewer_pixel_index_in_row is
-		port (
-			clk        : in  std_logic                     := 'X';             -- clk
-			reset_n    : in  std_logic                     := 'X';             -- reset_n
-			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
-			write_n    : in  std_logic                     := 'X';             -- write_n
-			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			chipselect : in  std_logic                     := 'X';             -- chipselect
-			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
-			out_port   : out std_logic_vector(15 downto 0)                     -- export
-		);
-	end component VGA_image_viewer_pixel_index_in_row;
 
 	component VGA_image_viewer_pixel_row is
 		port (
@@ -320,23 +323,18 @@ architecture rtl of VGA_image_viewer is
 			clk_0_clk_clk                                                       : in  std_logic                     := 'X';             -- clk
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        : in  std_logic                     := 'X';             -- reset
-			image_ram_s1_address                                                : out std_logic_vector(17 downto 0);                    -- address
-			image_ram_s1_write                                                  : out std_logic;                                        -- write
-			image_ram_s1_readdata                                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			image_ram_s1_writedata                                              : out std_logic_vector(31 downto 0);                    -- writedata
-			image_ram_s1_byteenable                                             : out std_logic_vector(3 downto 0);                     -- byteenable
-			image_ram_s1_chipselect                                             : out std_logic;                                        -- chipselect
-			image_ram_s1_clken                                                  : out std_logic;                                        -- clken
+			image_ram_s2_address                                                : out std_logic_vector(17 downto 0);                    -- address
+			image_ram_s2_write                                                  : out std_logic;                                        -- write
+			image_ram_s2_readdata                                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			image_ram_s2_writedata                                              : out std_logic_vector(31 downto 0);                    -- writedata
+			image_ram_s2_byteenable                                             : out std_logic_vector(3 downto 0);                     -- byteenable
+			image_ram_s2_chipselect                                             : out std_logic;                                        -- chipselect
+			image_ram_s2_clken                                                  : out std_logic;                                        -- clken
 			pixel_data_s1_address                                               : out std_logic_vector(1 downto 0);                     -- address
 			pixel_data_s1_write                                                 : out std_logic;                                        -- write
 			pixel_data_s1_readdata                                              : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
 			pixel_data_s1_writedata                                             : out std_logic_vector(31 downto 0);                    -- writedata
 			pixel_data_s1_chipselect                                            : out std_logic;                                        -- chipselect
-			pixel_index_in_row_s1_address                                       : out std_logic_vector(1 downto 0);                     -- address
-			pixel_index_in_row_s1_write                                         : out std_logic;                                        -- write
-			pixel_index_in_row_s1_readdata                                      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			pixel_index_in_row_s1_writedata                                     : out std_logic_vector(31 downto 0);                    -- writedata
-			pixel_index_in_row_s1_chipselect                                    : out std_logic;                                        -- chipselect
 			pixel_row_s1_address                                                : out std_logic_vector(1 downto 0);                     -- address
 			pixel_row_s1_readdata                                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
 			pixel_status_read_s1_address                                        : out std_logic_vector(1 downto 0);                     -- address
@@ -554,31 +552,25 @@ architecture rtl of VGA_image_viewer is
 	signal mm_interconnect_0_pixel_status_read_s1_writedata        : std_logic_vector(31 downto 0); -- mm_interconnect_0:pixel_status_read_s1_writedata -> pixel_status_read:writedata
 	signal mm_interconnect_0_pixel_row_s1_readdata                 : std_logic_vector(31 downto 0); -- pixel_row:readdata -> mm_interconnect_0:pixel_row_s1_readdata
 	signal mm_interconnect_0_pixel_row_s1_address                  : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_row_s1_address -> pixel_row:address
-	signal mm_interconnect_0_pixel_index_in_row_s1_chipselect      : std_logic;                     -- mm_interconnect_0:pixel_index_in_row_s1_chipselect -> pixel_index_in_row:chipselect
-	signal mm_interconnect_0_pixel_index_in_row_s1_readdata        : std_logic_vector(31 downto 0); -- pixel_index_in_row:readdata -> mm_interconnect_0:pixel_index_in_row_s1_readdata
-	signal mm_interconnect_0_pixel_index_in_row_s1_address         : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_index_in_row_s1_address -> pixel_index_in_row:address
-	signal mm_interconnect_0_pixel_index_in_row_s1_write           : std_logic;                     -- mm_interconnect_0:pixel_index_in_row_s1_write -> mm_interconnect_0_pixel_index_in_row_s1_write:in
-	signal mm_interconnect_0_pixel_index_in_row_s1_writedata       : std_logic_vector(31 downto 0); -- mm_interconnect_0:pixel_index_in_row_s1_writedata -> pixel_index_in_row:writedata
-	signal mm_interconnect_0_image_ram_s1_chipselect               : std_logic;                     -- mm_interconnect_0:image_ram_s1_chipselect -> image_ram:chipselect
-	signal mm_interconnect_0_image_ram_s1_readdata                 : std_logic_vector(31 downto 0); -- image_ram:readdata -> mm_interconnect_0:image_ram_s1_readdata
-	signal mm_interconnect_0_image_ram_s1_address                  : std_logic_vector(17 downto 0); -- mm_interconnect_0:image_ram_s1_address -> image_ram:address
-	signal mm_interconnect_0_image_ram_s1_byteenable               : std_logic_vector(3 downto 0);  -- mm_interconnect_0:image_ram_s1_byteenable -> image_ram:byteenable
-	signal mm_interconnect_0_image_ram_s1_write                    : std_logic;                     -- mm_interconnect_0:image_ram_s1_write -> image_ram:write
-	signal mm_interconnect_0_image_ram_s1_writedata                : std_logic_vector(31 downto 0); -- mm_interconnect_0:image_ram_s1_writedata -> image_ram:writedata
-	signal mm_interconnect_0_image_ram_s1_clken                    : std_logic;                     -- mm_interconnect_0:image_ram_s1_clken -> image_ram:clken
+	signal mm_interconnect_0_image_ram_s2_chipselect               : std_logic;                     -- mm_interconnect_0:image_ram_s2_chipselect -> image_ram:chipselect2
+	signal mm_interconnect_0_image_ram_s2_readdata                 : std_logic_vector(31 downto 0); -- image_ram:readdata2 -> mm_interconnect_0:image_ram_s2_readdata
+	signal mm_interconnect_0_image_ram_s2_address                  : std_logic_vector(17 downto 0); -- mm_interconnect_0:image_ram_s2_address -> image_ram:address2
+	signal mm_interconnect_0_image_ram_s2_byteenable               : std_logic_vector(3 downto 0);  -- mm_interconnect_0:image_ram_s2_byteenable -> image_ram:byteenable2
+	signal mm_interconnect_0_image_ram_s2_write                    : std_logic;                     -- mm_interconnect_0:image_ram_s2_write -> image_ram:write2
+	signal mm_interconnect_0_image_ram_s2_writedata                : std_logic_vector(31 downto 0); -- mm_interconnect_0:image_ram_s2_writedata -> image_ram:writedata2
+	signal mm_interconnect_0_image_ram_s2_clken                    : std_logic;                     -- mm_interconnect_0:image_ram_s2_clken -> image_ram:clken2
 	signal irq_mapper_receiver0_irq                                : std_logic;                     -- pixel_status_read:irq -> irq_mapper:receiver0_irq
 	signal hps_0_f2h_irq0_irq                                      : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> hps_0:f2h_irq_p0
 	signal hps_0_f2h_irq1_irq                                      : std_logic_vector(31 downto 0); -- irq_mapper_001:sender_irq -> hps_0:f2h_irq_p1
-	signal rst_controller_reset_out_reset                          : std_logic;                     -- rst_controller:reset_out -> [image_ram:reset, mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
-	signal rst_controller_reset_out_reset_req                      : std_logic;                     -- rst_controller:reset_req -> [image_ram:reset_req, rst_translator:reset_req_in]
+	signal rst_controller_reset_out_reset                          : std_logic;                     -- rst_controller:reset_out -> [image_ram:reset, image_ram:reset2, mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
+	signal rst_controller_reset_out_reset_req                      : std_logic;                     -- rst_controller:reset_req -> [image_ram:reset_req, image_ram:reset_req2, rst_translator:reset_req_in]
 	signal rst_controller_001_reset_out_reset                      : std_logic;                     -- rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
 	signal hps_0_h2f_reset_reset                                   : std_logic;                     -- hps_0:h2f_rst_n -> hps_0_h2f_reset_reset:in
 	signal reset_reset_n_ports_inv                                 : std_logic;                     -- reset_reset_n:inv -> rst_controller:reset_in0
 	signal mm_interconnect_0_pixel_data_s1_write_ports_inv         : std_logic;                     -- mm_interconnect_0_pixel_data_s1_write:inv -> pixel_data:write_n
 	signal mm_interconnect_0_pixel_status_write_s1_write_ports_inv : std_logic;                     -- mm_interconnect_0_pixel_status_write_s1_write:inv -> pixel_status_write:write_n
 	signal mm_interconnect_0_pixel_status_read_s1_write_ports_inv  : std_logic;                     -- mm_interconnect_0_pixel_status_read_s1_write:inv -> pixel_status_read:write_n
-	signal mm_interconnect_0_pixel_index_in_row_s1_write_ports_inv : std_logic;                     -- mm_interconnect_0_pixel_index_in_row_s1_write:inv -> pixel_index_in_row:write_n
-	signal rst_controller_reset_out_reset_ports_inv                : std_logic;                     -- rst_controller_reset_out_reset:inv -> [pixel_data:reset_n, pixel_index_in_row:reset_n, pixel_row:reset_n, pixel_status_read:reset_n, pixel_status_write:reset_n]
+	signal rst_controller_reset_out_reset_ports_inv                : std_logic;                     -- rst_controller_reset_out_reset:inv -> [pixel_data:reset_n, pixel_row:reset_n, pixel_status_read:reset_n, pixel_status_write:reset_n]
 	signal hps_0_h2f_reset_reset_ports_inv                         : std_logic;                     -- hps_0_h2f_reset_reset:inv -> rst_controller_001:reset_in0
 
 begin
@@ -699,17 +691,27 @@ begin
 
 	image_ram : component VGA_image_viewer_image_ram
 		port map (
-			clk        => clk_clk,                                   --   clk1.clk
-			address    => mm_interconnect_0_image_ram_s1_address,    --     s1.address
-			clken      => mm_interconnect_0_image_ram_s1_clken,      --       .clken
-			chipselect => mm_interconnect_0_image_ram_s1_chipselect, --       .chipselect
-			write      => mm_interconnect_0_image_ram_s1_write,      --       .write
-			readdata   => mm_interconnect_0_image_ram_s1_readdata,   --       .readdata
-			writedata  => mm_interconnect_0_image_ram_s1_writedata,  --       .writedata
-			byteenable => mm_interconnect_0_image_ram_s1_byteenable, --       .byteenable
-			reset      => rst_controller_reset_out_reset,            -- reset1.reset
-			reset_req  => rst_controller_reset_out_reset_req,        --       .reset_req
-			freeze     => '0'                                        -- (terminated)
+			clk         => clk_clk,                                   --   clk1.clk
+			address     => image_ram_address,                         --     s1.address
+			clken       => image_ram_clken,                           --       .clken
+			chipselect  => image_ram_chipselect,                      --       .chipselect
+			write       => image_ram_write,                           --       .write
+			readdata    => image_ram_readdata,                        --       .readdata
+			writedata   => image_ram_writedata,                       --       .writedata
+			byteenable  => image_ram_byteenable,                      --       .byteenable
+			reset       => rst_controller_reset_out_reset,            -- reset1.reset
+			reset_req   => rst_controller_reset_out_reset_req,        --       .reset_req
+			address2    => mm_interconnect_0_image_ram_s2_address,    --     s2.address
+			chipselect2 => mm_interconnect_0_image_ram_s2_chipselect, --       .chipselect
+			clken2      => mm_interconnect_0_image_ram_s2_clken,      --       .clken
+			write2      => mm_interconnect_0_image_ram_s2_write,      --       .write
+			readdata2   => mm_interconnect_0_image_ram_s2_readdata,   --       .readdata
+			writedata2  => mm_interconnect_0_image_ram_s2_writedata,  --       .writedata
+			byteenable2 => mm_interconnect_0_image_ram_s2_byteenable, --       .byteenable
+			clk2        => clk_clk,                                   --   clk2.clk
+			reset2      => rst_controller_reset_out_reset,            -- reset2.reset
+			reset_req2  => rst_controller_reset_out_reset_req,        --       .reset_req
+			freeze      => '0'                                        -- (terminated)
 		);
 
 	pixel_data : component VGA_image_viewer_pixel_data
@@ -722,18 +724,6 @@ begin
 			chipselect => mm_interconnect_0_pixel_data_s1_chipselect,      --                    .chipselect
 			readdata   => mm_interconnect_0_pixel_data_s1_readdata,        --                    .readdata
 			out_port   => pixel_data_export                                -- external_connection.export
-		);
-
-	pixel_index_in_row : component VGA_image_viewer_pixel_index_in_row
-		port map (
-			clk        => clk_clk,                                                 --                 clk.clk
-			reset_n    => rst_controller_reset_out_reset_ports_inv,                --               reset.reset_n
-			address    => mm_interconnect_0_pixel_index_in_row_s1_address,         --                  s1.address
-			write_n    => mm_interconnect_0_pixel_index_in_row_s1_write_ports_inv, --                    .write_n
-			writedata  => mm_interconnect_0_pixel_index_in_row_s1_writedata,       --                    .writedata
-			chipselect => mm_interconnect_0_pixel_index_in_row_s1_chipselect,      --                    .chipselect
-			readdata   => mm_interconnect_0_pixel_index_in_row_s1_readdata,        --                    .readdata
-			out_port   => pixel_index_in_row_export                                -- external_connection.export
 		);
 
 	pixel_row : component VGA_image_viewer_pixel_row
@@ -811,23 +801,18 @@ begin
 			clk_0_clk_clk                                                       => clk_clk,                                            --                                                     clk_0_clk.clk
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,                 -- hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        => rst_controller_reset_out_reset,                     --                        pixel_data_reset_reset_bridge_in_reset.reset
-			image_ram_s1_address                                                => mm_interconnect_0_image_ram_s1_address,             --                                                  image_ram_s1.address
-			image_ram_s1_write                                                  => mm_interconnect_0_image_ram_s1_write,               --                                                              .write
-			image_ram_s1_readdata                                               => mm_interconnect_0_image_ram_s1_readdata,            --                                                              .readdata
-			image_ram_s1_writedata                                              => mm_interconnect_0_image_ram_s1_writedata,           --                                                              .writedata
-			image_ram_s1_byteenable                                             => mm_interconnect_0_image_ram_s1_byteenable,          --                                                              .byteenable
-			image_ram_s1_chipselect                                             => mm_interconnect_0_image_ram_s1_chipselect,          --                                                              .chipselect
-			image_ram_s1_clken                                                  => mm_interconnect_0_image_ram_s1_clken,               --                                                              .clken
+			image_ram_s2_address                                                => mm_interconnect_0_image_ram_s2_address,             --                                                  image_ram_s2.address
+			image_ram_s2_write                                                  => mm_interconnect_0_image_ram_s2_write,               --                                                              .write
+			image_ram_s2_readdata                                               => mm_interconnect_0_image_ram_s2_readdata,            --                                                              .readdata
+			image_ram_s2_writedata                                              => mm_interconnect_0_image_ram_s2_writedata,           --                                                              .writedata
+			image_ram_s2_byteenable                                             => mm_interconnect_0_image_ram_s2_byteenable,          --                                                              .byteenable
+			image_ram_s2_chipselect                                             => mm_interconnect_0_image_ram_s2_chipselect,          --                                                              .chipselect
+			image_ram_s2_clken                                                  => mm_interconnect_0_image_ram_s2_clken,               --                                                              .clken
 			pixel_data_s1_address                                               => mm_interconnect_0_pixel_data_s1_address,            --                                                 pixel_data_s1.address
 			pixel_data_s1_write                                                 => mm_interconnect_0_pixel_data_s1_write,              --                                                              .write
 			pixel_data_s1_readdata                                              => mm_interconnect_0_pixel_data_s1_readdata,           --                                                              .readdata
 			pixel_data_s1_writedata                                             => mm_interconnect_0_pixel_data_s1_writedata,          --                                                              .writedata
 			pixel_data_s1_chipselect                                            => mm_interconnect_0_pixel_data_s1_chipselect,         --                                                              .chipselect
-			pixel_index_in_row_s1_address                                       => mm_interconnect_0_pixel_index_in_row_s1_address,    --                                         pixel_index_in_row_s1.address
-			pixel_index_in_row_s1_write                                         => mm_interconnect_0_pixel_index_in_row_s1_write,      --                                                              .write
-			pixel_index_in_row_s1_readdata                                      => mm_interconnect_0_pixel_index_in_row_s1_readdata,   --                                                              .readdata
-			pixel_index_in_row_s1_writedata                                     => mm_interconnect_0_pixel_index_in_row_s1_writedata,  --                                                              .writedata
-			pixel_index_in_row_s1_chipselect                                    => mm_interconnect_0_pixel_index_in_row_s1_chipselect, --                                                              .chipselect
 			pixel_row_s1_address                                                => mm_interconnect_0_pixel_row_s1_address,             --                                                  pixel_row_s1.address
 			pixel_row_s1_readdata                                               => mm_interconnect_0_pixel_row_s1_readdata,            --                                                              .readdata
 			pixel_status_read_s1_address                                        => mm_interconnect_0_pixel_status_read_s1_address,     --                                          pixel_status_read_s1.address
@@ -994,8 +979,6 @@ begin
 	mm_interconnect_0_pixel_status_write_s1_write_ports_inv <= not mm_interconnect_0_pixel_status_write_s1_write;
 
 	mm_interconnect_0_pixel_status_read_s1_write_ports_inv <= not mm_interconnect_0_pixel_status_read_s1_write;
-
-	mm_interconnect_0_pixel_index_in_row_s1_write_ports_inv <= not mm_interconnect_0_pixel_index_in_row_s1_write;
 
 	rst_controller_reset_out_reset_ports_inv <= not rst_controller_reset_out_reset;
 

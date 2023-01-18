@@ -9,9 +9,8 @@
    <export preferredWidth="177" />
   </columns>
  </systemtable>
- <library
-   expandedCategories="Library/Qsys Interconnect,Library/Memory Interfaces and Controllers/Flash,Library/Qsys Interconnect/Memory-Mapped,Library/Qsys Interconnect/Memory-Mapped Alpha,Library/Memory Interfaces and Controllers/SDRAM,Library/Basic Functions/Bridges and Adaptors/Memory Mapped,Library/University Program/Memory,Library/Memory Interfaces and Controllers/Memory Interfaces with ALTMEMPHY,Project,Library/Basic Functions,Library/Processors and Peripherals/Hard Processor Components,Library,Library/Basic Functions/Bridges and Adaptors,Library/Memory Interfaces and Controllers/Memory Interfaces with UniPHY,Library/Basic Functions/Simulation; Debug and Verification,Library/Processors and Peripherals,Library/Basic Functions/On Chip Memory,Library/Memory Interfaces and Controllers,Library/University Program,Library/Basic Functions/Simulation; Debug and Verification/Simulation" />
- <window width="1920" height="1060" x="0" y="20" />
+ <library expandedCategories="Library,Project" />
+ <window width="1918" height="1038" x="1" y="41" />
  <hdlexample language="VHDL" />
  <generation synthesis="VHDL" block_symbol_file="0" />
 </preferences>

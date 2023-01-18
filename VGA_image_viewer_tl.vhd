@@ -57,6 +57,13 @@ ENTITY VGA_image_viewer_tl IS
         hps_io_hps_io_i2c1_inst_SCL : INOUT STD_LOGIC := 'X'; -- hps_io_i2c1_inst_SCL
         hps_io_hps_io_gpio_inst_GPIO53 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO53
         hps_io_hps_io_gpio_inst_GPIO54 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO54
+        image_ram_address : IN STD_LOGIC_VECTOR(17 DOWNTO 0) := (OTHERS => 'X'); -- address
+        image_ram_clken : IN STD_LOGIC := 'X'; -- clken
+        image_ram_chipselect : IN STD_LOGIC := 'X'; -- chipselect
+        image_ram_write : IN STD_LOGIC := 'X'; -- write
+        image_ram_readdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0); -- readdata
+        image_ram_writedata : IN STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => 'X'); -- writedata
+        image_ram_byteenable : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => 'X'); -- byteenable
         memory_mem_a : OUT STD_LOGIC_VECTOR(14 DOWNTO 0); -- mem_a
         memory_mem_ba : OUT STD_LOGIC_VECTOR(2 DOWNTO 0); -- mem_ba
         memory_mem_ck : OUT STD_LOGIC; -- mem_ck
@@ -188,6 +195,13 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
             hps_io_hps_io_i2c1_inst_SCL : INOUT STD_LOGIC := 'X'; -- hps_io_i2c1_inst_SCL
             hps_io_hps_io_gpio_inst_GPIO53 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO53
             hps_io_hps_io_gpio_inst_GPIO54 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO54
+            image_ram_address : IN STD_LOGIC_VECTOR(17 DOWNTO 0) := (OTHERS => 'X'); -- address
+            image_ram_clken : IN STD_LOGIC := 'X'; -- clken
+            image_ram_chipselect : IN STD_LOGIC := 'X'; -- chipselect
+            image_ram_write : IN STD_LOGIC := 'X'; -- write
+            image_ram_readdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0); -- readdata
+            image_ram_writedata : IN STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => 'X'); -- writedata
+            image_ram_byteenable : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => 'X'); -- byteenable
             memory_mem_a : OUT STD_LOGIC_VECTOR(14 DOWNTO 0); -- mem_a
             memory_mem_ba : OUT STD_LOGIC_VECTOR(2 DOWNTO 0); -- mem_ba
             memory_mem_ck : OUT STD_LOGIC; -- mem_ck
@@ -267,6 +281,13 @@ BEGIN
             hps_io_hps_io_i2c1_inst_SCL => hps_io_hps_io_i2c1_inst_SCL, --                  .hps_io_i2c1_inst_SCL
             hps_io_hps_io_gpio_inst_GPIO53 => hps_io_hps_io_gpio_inst_GPIO53, --                  .hps_io_gpio_inst_GPIO53
             hps_io_hps_io_gpio_inst_GPIO54 => hps_io_hps_io_gpio_inst_GPIO54, --                  .hps_io_gpio_inst_GPIO54
+            image_ram_address => image_ram_address, --          image_ram.address
+            image_ram_clken => image_ram_clken, --                   .clken
+            image_ram_chipselect => image_ram_chipselect, --                   .chipselect
+            image_ram_write => image_ram_write, --                   .write
+            image_ram_readdata => image_ram_readdata, --                   .readdata
+            image_ram_writedata => image_ram_writedata, --                   .writedata
+            image_ram_byteenable => image_ram_byteenable, --                   .byteenable
             memory_mem_a => memory_mem_a, --            memory.mem_a
             memory_mem_ba => memory_mem_ba, --                  .mem_ba
             memory_mem_ck => memory_mem_ck, --                  .mem_ck
@@ -371,7 +392,7 @@ BEGIN
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(2);
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(1);                       b
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(0);
-        row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 7 downto (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(7 downto 0);
+        row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(7 DOWNTO 0);
 
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7) <= pixel_data_s(15);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 6) <= pixel_data_s(14);
@@ -381,7 +402,7 @@ BEGIN
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(10);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(9);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(8);
-        row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7 downto (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(15 downto 8);
+        row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(15 DOWNTO 8);
 
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7) <= pixel_data_s(23);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 6) <= pixel_data_s(22);
@@ -391,7 +412,7 @@ BEGIN
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(18);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(17);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(16);
-        row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7 downto (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(23 downto 16);
+        row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(23 DOWNTO 16);
 
         -- with pixel_status_read_s select
         --     pixel_in_row_s <= pixel_in_row_s + 1 when "0001",
