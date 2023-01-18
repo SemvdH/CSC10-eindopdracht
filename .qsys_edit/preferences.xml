@@ -3,14 +3,15 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="47" />
-   <irq preferredWidth="34" />
+   <connections preferredWidth="127" />
+   <irq preferredWidth="47" />
    <name preferredWidth="195" />
    <export preferredWidth="177" />
   </columns>
  </systemtable>
- <library expandedCategories="Library,Project" />
- <window width="1900" height="1040" x="10" y="30" />
- <hdlexample language="VERILOG" />
+ <library
+   expandedCategories="Library/Qsys Interconnect,Library/Memory Interfaces and Controllers/Flash,Library/Qsys Interconnect/Memory-Mapped,Library/Qsys Interconnect/Memory-Mapped Alpha,Library/Memory Interfaces and Controllers/SDRAM,Library/Basic Functions/Bridges and Adaptors/Memory Mapped,Library/University Program/Memory,Library/Memory Interfaces and Controllers/Memory Interfaces with ALTMEMPHY,Project,Library/Basic Functions,Library/Processors and Peripherals/Hard Processor Components,Library,Library/Basic Functions/Bridges and Adaptors,Library/Memory Interfaces and Controllers/Memory Interfaces with UniPHY,Library/Basic Functions/Simulation; Debug and Verification,Library/Processors and Peripherals,Library/Basic Functions/On Chip Memory,Library/Memory Interfaces and Controllers,Library/University Program,Library/Basic Functions/Simulation; Debug and Verification/Simulation" />
+ <window width="1920" height="1060" x="0" y="20" />
+ <hdlexample language="VHDL" />
  <generation synthesis="VHDL" block_symbol_file="0" />
 </preferences>

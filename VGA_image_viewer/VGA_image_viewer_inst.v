@@ -67,9 +67,10 @@
 		.memory_mem_dm                   (<connected-to-memory_mem_dm>),                   //                   .mem_dm
 		.memory_oct_rzqin                (<connected-to-memory_oct_rzqin>),                //                   .oct_rzqin
 		.pixel_data_export               (<connected-to-pixel_data_export>),               //         pixel_data.export
+		.pixel_index_in_row_export       (<connected-to-pixel_index_in_row_export>),       // pixel_index_in_row.export
 		.pixel_row_export                (<connected-to-pixel_row_export>),                //          pixel_row.export
-		.pixel_status_write_export       (<connected-to-pixel_status_write_export>),       // pixel_status_write.export
 		.pixel_status_read_export        (<connected-to-pixel_status_read_export>),        //  pixel_status_read.export
+		.pixel_status_write_export       (<connected-to-pixel_status_write_export>),       // pixel_status_write.export
 		.reset_reset_n                   (<connected-to-reset_reset_n>)                    //              reset.reset_n
 	);
 

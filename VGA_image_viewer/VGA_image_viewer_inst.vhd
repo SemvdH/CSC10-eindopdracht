@@ -68,9 +68,10 @@
 			memory_mem_dm                   : out   std_logic_vector(3 downto 0);                     -- mem_dm
 			memory_oct_rzqin                : in    std_logic                     := 'X';             -- oct_rzqin
 			pixel_data_export               : out   std_logic_vector(23 downto 0);                    -- export
+			pixel_index_in_row_export       : out   std_logic_vector(15 downto 0);                    -- export
 			pixel_row_export                : in    std_logic_vector(15 downto 0) := (others => 'X'); -- export
-			pixel_status_write_export       : out   std_logic_vector(3 downto 0);                     -- export
 			pixel_status_read_export        : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- export
+			pixel_status_write_export       : out   std_logic_vector(3 downto 0);                     -- export
 			reset_reset_n                   : in    std_logic                     := 'X'              -- reset_n
 		);
 	end component VGA_image_viewer;
@@ -145,9 +146,10 @@
 			memory_mem_dm                   => CONNECTED_TO_memory_mem_dm,                   --                   .mem_dm
 			memory_oct_rzqin                => CONNECTED_TO_memory_oct_rzqin,                --                   .oct_rzqin
 			pixel_data_export               => CONNECTED_TO_pixel_data_export,               --         pixel_data.export
+			pixel_index_in_row_export       => CONNECTED_TO_pixel_index_in_row_export,       -- pixel_index_in_row.export
 			pixel_row_export                => CONNECTED_TO_pixel_row_export,                --          pixel_row.export
-			pixel_status_write_export       => CONNECTED_TO_pixel_status_write_export,       -- pixel_status_write.export
 			pixel_status_read_export        => CONNECTED_TO_pixel_status_read_export,        --  pixel_status_read.export
+			pixel_status_write_export       => CONNECTED_TO_pixel_status_write_export,       -- pixel_status_write.export
 			reset_reset_n                   => CONNECTED_TO_reset_reset_n                    --              reset.reset_n
 		);
 
