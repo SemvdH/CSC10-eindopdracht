@@ -20,15 +20,17 @@ MODULE_LICENSE("GPL");
 #define HW_REGS_BASE 0xff200000
 #define HW_REGS_SPAN 0x00200000
 #define HW_REGS_MASK (HW_REGS_SPAN - 1)
-#define PIXEL_DATA_BASE 0x000000030
-#define PIXEL_STATUS_READ_BASE 0x000000010
-#define PIXEL_STATUS_WRITE_BASE 0x000000020
-#define PIXEL_ROW_BASE 0x000000000
+#define PIXEL_DATA_BASE 0x000000040
+#define PIXEL_STATUS_READ_BASE 0x000000020
+#define PIXEL_STATUS_WRITE_BASE 0x000000030
+#define PIXEL_ROW_BASE 0x000000010
+#define PIXEL_IN_ROW_BASE 0x000000000
 
 #define width 640
 #define heigth 480
 
 #define DEVNAME "Mijn Module"
+
 
 static int vga_img_viewer_open(struct inode *inode, struct file *file);
 static int vga_img_viewer_release(struct inode *inode, struct file *file);
@@ -41,6 +43,7 @@ volatile int *PIXEL_data_ptr; // virtual addresses
 volatile int *PIXEL_status_r_ptr;
 volatile int *PIXEL_status_w_ptr;
 volatile int *PIXEL_row_ptr;
+volatile int *PIXEL_in_row_ptr;
 
 static const struct file_operations vga_img_viewer_fops = {
     .owner = THIS_MODULE,
@@ -63,6 +66,9 @@ static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
 static uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
+uint16_t rows[480] = {0};
+int rowcounter = 0;
+int timestamp = 0;
 static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
         add_uevent_var(env, "DEVMODE=%#o", 0666);
@@ -72,10 +78,19 @@ static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env
 irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
         int i = 0;
-        //	int timestamp = jiffies;
+/*	rows[*PIXEL_row_ptr] = *(PIXEL_row_ptr);
+	rowcounter++;
+	if (rowcounter >= 479) {
+		rowcounter = 0;
+		while (rowcounter < 479) {
+			printk(KERN_CONT "%d ",rows[rowcounter]);
+			rowcounter++;
+		}
+		rowcounter = 0;
+	}*/
         while (i < width-1)
         {
-                *(PIXEL_status_w_ptr) = 0;                
+                *(PIXEL_status_w_ptr) = 0;
                 uint8_t r = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i];
                 uint8_t g = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i + 1];
                 uint8_t b = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i + 2];
@@ -83,12 +98,15 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
                 *(PIXEL_data_ptr) = (b << 16) | (g << 8) | r;
                 //			*(PIXEL_data_ptr) = *(PIXEL_row_ptr) < 240 ? 0xFFFFFF : 0x0;
                 *(PIXEL_status_w_ptr) = 1;
+	        int timestamp = jiffies;
+
                 i++;
                 //			long timestamp = jiffies;
                 //			while (jiffies - timestamp < 1000);
         }
         //	int jf = jiffies - timestamp;
         //	printk(KERN_ALERT DEVNAME "setting took %d ticks",jf);
+	//printk(KERN_ALERT DEVNAME "interrupt");
         return (irq_handler_t)IRQ_HANDLED;
 }
 
@@ -104,6 +122,7 @@ static int init_handler(struct platform_device *pdev)
         PIXEL_status_w_ptr = LW_virtual + PIXEL_STATUS_WRITE_BASE;
         PIXEL_data_ptr = LW_virtual + PIXEL_DATA_BASE;
         PIXEL_row_ptr = LW_virtual + PIXEL_ROW_BASE;
+        PIXEL_in_row_ptr = LW_virtual + PIXEL_IN_ROW_BASE;
 
         *(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
         irq_num = platform_get_irq(pdev, 0);
