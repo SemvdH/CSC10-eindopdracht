@@ -69,9 +69,16 @@
 			memory_oct_rzqin                : in    std_logic                     := 'X';             -- oct_rzqin
 			pixel_data_export               : out   std_logic_vector(23 downto 0);                    -- export
 			pixel_row_export                : in    std_logic_vector(15 downto 0) := (others => 'X'); -- export
-			pixel_status_write_export       : out   std_logic_vector(3 downto 0);                     -- export
 			pixel_status_read_export        : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- export
-			reset_reset_n                   : in    std_logic                     := 'X'              -- reset_n
+			pixel_status_write_export       : out   std_logic_vector(3 downto 0);                     -- export
+			reset_reset_n                   : in    std_logic                     := 'X';             -- reset_n
+			image_ram_address               : in    std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			image_ram_clken                 : in    std_logic                     := 'X';             -- clken
+			image_ram_chipselect            : in    std_logic                     := 'X';             -- chipselect
+			image_ram_write                 : in    std_logic                     := 'X';             -- write
+			image_ram_readdata              : out   std_logic_vector(31 downto 0);                    -- readdata
+			image_ram_writedata             : in    std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			image_ram_byteenable            : in    std_logic_vector(3 downto 0)  := (others => 'X')  -- byteenable
 		);
 	end component VGA_image_viewer;
 
@@ -146,8 +153,15 @@
 			memory_oct_rzqin                => CONNECTED_TO_memory_oct_rzqin,                --                   .oct_rzqin
 			pixel_data_export               => CONNECTED_TO_pixel_data_export,               --         pixel_data.export
 			pixel_row_export                => CONNECTED_TO_pixel_row_export,                --          pixel_row.export
-			pixel_status_write_export       => CONNECTED_TO_pixel_status_write_export,       -- pixel_status_write.export
 			pixel_status_read_export        => CONNECTED_TO_pixel_status_read_export,        --  pixel_status_read.export
-			reset_reset_n                   => CONNECTED_TO_reset_reset_n                    --              reset.reset_n
+			pixel_status_write_export       => CONNECTED_TO_pixel_status_write_export,       -- pixel_status_write.export
+			reset_reset_n                   => CONNECTED_TO_reset_reset_n,                   --              reset.reset_n
+			image_ram_address               => CONNECTED_TO_image_ram_address,               --          image_ram.address
+			image_ram_clken                 => CONNECTED_TO_image_ram_clken,                 --                   .clken
+			image_ram_chipselect            => CONNECTED_TO_image_ram_chipselect,            --                   .chipselect
+			image_ram_write                 => CONNECTED_TO_image_ram_write,                 --                   .write
+			image_ram_readdata              => CONNECTED_TO_image_ram_readdata,              --                   .readdata
+			image_ram_writedata             => CONNECTED_TO_image_ram_writedata,             --                   .writedata
+			image_ram_byteenable            => CONNECTED_TO_image_ram_byteenable             --                   .byteenable
 		);
 

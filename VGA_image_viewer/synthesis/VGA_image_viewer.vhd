@@ -59,6 +59,13 @@ entity VGA_image_viewer is
 		hps_io_hps_io_i2c1_inst_SCL     : inout std_logic                     := '0';             --                   .hps_io_i2c1_inst_SCL
 		hps_io_hps_io_gpio_inst_GPIO53  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO53
 		hps_io_hps_io_gpio_inst_GPIO54  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO54
+		image_ram_address               : in    std_logic_vector(17 downto 0) := (others => '0'); --          image_ram.address
+		image_ram_clken                 : in    std_logic                     := '0';             --                   .clken
+		image_ram_chipselect            : in    std_logic                     := '0';             --                   .chipselect
+		image_ram_write                 : in    std_logic                     := '0';             --                   .write
+		image_ram_readdata              : out   std_logic_vector(31 downto 0);                    --                   .readdata
+		image_ram_writedata             : in    std_logic_vector(31 downto 0) := (others => '0'); --                   .writedata
+		image_ram_byteenable            : in    std_logic_vector(3 downto 0)  := (others => '0'); --                   .byteenable
 		memory_mem_a                    : out   std_logic_vector(14 downto 0);                    --             memory.mem_a
 		memory_mem_ba                   : out   std_logic_vector(2 downto 0);                     --                   .mem_ba
 		memory_mem_ck                   : out   std_logic;                                        --                   .mem_ck
@@ -199,6 +206,32 @@ architecture rtl of VGA_image_viewer is
 		);
 	end component VGA_image_viewer_hps_0;
 
+	component VGA_image_viewer_image_ram is
+		port (
+			clk         : in  std_logic                     := 'X';             -- clk
+			address     : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			clken       : in  std_logic                     := 'X';             -- clken
+			chipselect  : in  std_logic                     := 'X';             -- chipselect
+			write       : in  std_logic                     := 'X';             -- write
+			readdata    : out std_logic_vector(31 downto 0);                    -- readdata
+			writedata   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			byteenable  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			reset       : in  std_logic                     := 'X';             -- reset
+			reset_req   : in  std_logic                     := 'X';             -- reset_req
+			address2    : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			chipselect2 : in  std_logic                     := 'X';             -- chipselect
+			clken2      : in  std_logic                     := 'X';             -- clken
+			write2      : in  std_logic                     := 'X';             -- write
+			readdata2   : out std_logic_vector(31 downto 0);                    -- readdata
+			writedata2  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			byteenable2 : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			clk2        : in  std_logic                     := 'X';             -- clk
+			reset2      : in  std_logic                     := 'X';             -- reset
+			reset_req2  : in  std_logic                     := 'X';             -- reset_req
+			freeze      : in  std_logic                     := 'X'              -- freeze
+		);
+	end component VGA_image_viewer_image_ram;
+
 	component VGA_image_viewer_pixel_data is
 		port (
 			clk        : in  std_logic                     := 'X';             -- clk
@@ -290,6 +323,13 @@ architecture rtl of VGA_image_viewer is
 			clk_0_clk_clk                                                       : in  std_logic                     := 'X';             -- clk
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        : in  std_logic                     := 'X';             -- reset
+			image_ram_s2_address                                                : out std_logic_vector(17 downto 0);                    -- address
+			image_ram_s2_write                                                  : out std_logic;                                        -- write
+			image_ram_s2_readdata                                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			image_ram_s2_writedata                                              : out std_logic_vector(31 downto 0);                    -- writedata
+			image_ram_s2_byteenable                                             : out std_logic_vector(3 downto 0);                     -- byteenable
+			image_ram_s2_chipselect                                             : out std_logic;                                        -- chipselect
+			image_ram_s2_clken                                                  : out std_logic;                                        -- clken
 			pixel_data_s1_address                                               : out std_logic_vector(1 downto 0);                     -- address
 			pixel_data_s1_write                                                 : out std_logic;                                        -- write
 			pixel_data_s1_readdata                                              : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
@@ -327,7 +367,7 @@ architecture rtl of VGA_image_viewer is
 		);
 	end component VGA_image_viewer_irq_mapper_001;
 
-	component altera_reset_controller is
+	component vga_image_viewer_rst_controller is
 		generic (
 			NUM_RESET_INPUTS          : integer := 6;
 			OUTPUT_RESET_SYNC_EDGES   : string  := "deassert";
@@ -355,43 +395,109 @@ architecture rtl of VGA_image_viewer is
 			ADAPT_RESET_REQUEST       : integer := 0
 		);
 		port (
-			reset_in0      : in  std_logic := 'X'; -- reset
-			clk            : in  std_logic := 'X'; -- clk
-			reset_out      : out std_logic;        -- reset
-			reset_req      : out std_logic;        -- reset_req
-			reset_req_in0  : in  std_logic := 'X'; -- reset_req
-			reset_in1      : in  std_logic := 'X'; -- reset
-			reset_req_in1  : in  std_logic := 'X'; -- reset_req
-			reset_in2      : in  std_logic := 'X'; -- reset
-			reset_req_in2  : in  std_logic := 'X'; -- reset_req
-			reset_in3      : in  std_logic := 'X'; -- reset
-			reset_req_in3  : in  std_logic := 'X'; -- reset_req
-			reset_in4      : in  std_logic := 'X'; -- reset
-			reset_req_in4  : in  std_logic := 'X'; -- reset_req
-			reset_in5      : in  std_logic := 'X'; -- reset
-			reset_req_in5  : in  std_logic := 'X'; -- reset_req
-			reset_in6      : in  std_logic := 'X'; -- reset
-			reset_req_in6  : in  std_logic := 'X'; -- reset_req
-			reset_in7      : in  std_logic := 'X'; -- reset
-			reset_req_in7  : in  std_logic := 'X'; -- reset_req
-			reset_in8      : in  std_logic := 'X'; -- reset
-			reset_req_in8  : in  std_logic := 'X'; -- reset_req
-			reset_in9      : in  std_logic := 'X'; -- reset
-			reset_req_in9  : in  std_logic := 'X'; -- reset_req
-			reset_in10     : in  std_logic := 'X'; -- reset
-			reset_req_in10 : in  std_logic := 'X'; -- reset_req
-			reset_in11     : in  std_logic := 'X'; -- reset
-			reset_req_in11 : in  std_logic := 'X'; -- reset_req
-			reset_in12     : in  std_logic := 'X'; -- reset
-			reset_req_in12 : in  std_logic := 'X'; -- reset_req
-			reset_in13     : in  std_logic := 'X'; -- reset
-			reset_req_in13 : in  std_logic := 'X'; -- reset_req
-			reset_in14     : in  std_logic := 'X'; -- reset
-			reset_req_in14 : in  std_logic := 'X'; -- reset_req
-			reset_in15     : in  std_logic := 'X'; -- reset
-			reset_req_in15 : in  std_logic := 'X'  -- reset_req
+			reset_in0      : in  std_logic := 'X'; -- reset_in0.reset
+			clk            : in  std_logic := 'X'; --       clk.clk
+			reset_out      : out std_logic;        -- reset_out.reset
+			reset_req      : out std_logic;        --          .reset_req
+			reset_in1      : in  std_logic := 'X';
+			reset_in10     : in  std_logic := 'X';
+			reset_in11     : in  std_logic := 'X';
+			reset_in12     : in  std_logic := 'X';
+			reset_in13     : in  std_logic := 'X';
+			reset_in14     : in  std_logic := 'X';
+			reset_in15     : in  std_logic := 'X';
+			reset_in2      : in  std_logic := 'X';
+			reset_in3      : in  std_logic := 'X';
+			reset_in4      : in  std_logic := 'X';
+			reset_in5      : in  std_logic := 'X';
+			reset_in6      : in  std_logic := 'X';
+			reset_in7      : in  std_logic := 'X';
+			reset_in8      : in  std_logic := 'X';
+			reset_in9      : in  std_logic := 'X';
+			reset_req_in0  : in  std_logic := 'X';
+			reset_req_in1  : in  std_logic := 'X';
+			reset_req_in10 : in  std_logic := 'X';
+			reset_req_in11 : in  std_logic := 'X';
+			reset_req_in12 : in  std_logic := 'X';
+			reset_req_in13 : in  std_logic := 'X';
+			reset_req_in14 : in  std_logic := 'X';
+			reset_req_in15 : in  std_logic := 'X';
+			reset_req_in2  : in  std_logic := 'X';
+			reset_req_in3  : in  std_logic := 'X';
+			reset_req_in4  : in  std_logic := 'X';
+			reset_req_in5  : in  std_logic := 'X';
+			reset_req_in6  : in  std_logic := 'X';
+			reset_req_in7  : in  std_logic := 'X';
+			reset_req_in8  : in  std_logic := 'X';
+			reset_req_in9  : in  std_logic := 'X'
 		);
-	end component altera_reset_controller;
+	end component vga_image_viewer_rst_controller;
+
+	component vga_image_viewer_rst_controller_001 is
+		generic (
+			NUM_RESET_INPUTS          : integer := 6;
+			OUTPUT_RESET_SYNC_EDGES   : string  := "deassert";
+			SYNC_DEPTH                : integer := 2;
+			RESET_REQUEST_PRESENT     : integer := 0;
+			RESET_REQ_WAIT_TIME       : integer := 1;
+			MIN_RST_ASSERTION_TIME    : integer := 3;
+			RESET_REQ_EARLY_DSRT_TIME : integer := 1;
+			USE_RESET_REQUEST_IN0     : integer := 0;
+			USE_RESET_REQUEST_IN1     : integer := 0;
+			USE_RESET_REQUEST_IN2     : integer := 0;
+			USE_RESET_REQUEST_IN3     : integer := 0;
+			USE_RESET_REQUEST_IN4     : integer := 0;
+			USE_RESET_REQUEST_IN5     : integer := 0;
+			USE_RESET_REQUEST_IN6     : integer := 0;
+			USE_RESET_REQUEST_IN7     : integer := 0;
+			USE_RESET_REQUEST_IN8     : integer := 0;
+			USE_RESET_REQUEST_IN9     : integer := 0;
+			USE_RESET_REQUEST_IN10    : integer := 0;
+			USE_RESET_REQUEST_IN11    : integer := 0;
+			USE_RESET_REQUEST_IN12    : integer := 0;
+			USE_RESET_REQUEST_IN13    : integer := 0;
+			USE_RESET_REQUEST_IN14    : integer := 0;
+			USE_RESET_REQUEST_IN15    : integer := 0;
+			ADAPT_RESET_REQUEST       : integer := 0
+		);
+		port (
+			reset_in0      : in  std_logic := 'X'; -- reset_in0.reset
+			clk            : in  std_logic := 'X'; --       clk.clk
+			reset_out      : out std_logic;        -- reset_out.reset
+			reset_in1      : in  std_logic := 'X';
+			reset_in10     : in  std_logic := 'X';
+			reset_in11     : in  std_logic := 'X';
+			reset_in12     : in  std_logic := 'X';
+			reset_in13     : in  std_logic := 'X';
+			reset_in14     : in  std_logic := 'X';
+			reset_in15     : in  std_logic := 'X';
+			reset_in2      : in  std_logic := 'X';
+			reset_in3      : in  std_logic := 'X';
+			reset_in4      : in  std_logic := 'X';
+			reset_in5      : in  std_logic := 'X';
+			reset_in6      : in  std_logic := 'X';
+			reset_in7      : in  std_logic := 'X';
+			reset_in8      : in  std_logic := 'X';
+			reset_in9      : in  std_logic := 'X';
+			reset_req      : out std_logic;
+			reset_req_in0  : in  std_logic := 'X';
+			reset_req_in1  : in  std_logic := 'X';
+			reset_req_in10 : in  std_logic := 'X';
+			reset_req_in11 : in  std_logic := 'X';
+			reset_req_in12 : in  std_logic := 'X';
+			reset_req_in13 : in  std_logic := 'X';
+			reset_req_in14 : in  std_logic := 'X';
+			reset_req_in15 : in  std_logic := 'X';
+			reset_req_in2  : in  std_logic := 'X';
+			reset_req_in3  : in  std_logic := 'X';
+			reset_req_in4  : in  std_logic := 'X';
+			reset_req_in5  : in  std_logic := 'X';
+			reset_req_in6  : in  std_logic := 'X';
+			reset_req_in7  : in  std_logic := 'X';
+			reset_req_in8  : in  std_logic := 'X';
+			reset_req_in9  : in  std_logic := 'X'
+		);
+	end component vga_image_viewer_rst_controller_001;
 
 	signal hps_0_h2f_lw_axi_master_awburst                         : std_logic_vector(1 downto 0);  -- hps_0:h2f_lw_AWBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awburst
 	signal hps_0_h2f_lw_axi_master_arlen                           : std_logic_vector(3 downto 0);  -- hps_0:h2f_lw_ARLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlen
@@ -446,10 +552,18 @@ architecture rtl of VGA_image_viewer is
 	signal mm_interconnect_0_pixel_status_read_s1_writedata        : std_logic_vector(31 downto 0); -- mm_interconnect_0:pixel_status_read_s1_writedata -> pixel_status_read:writedata
 	signal mm_interconnect_0_pixel_row_s1_readdata                 : std_logic_vector(31 downto 0); -- pixel_row:readdata -> mm_interconnect_0:pixel_row_s1_readdata
 	signal mm_interconnect_0_pixel_row_s1_address                  : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_row_s1_address -> pixel_row:address
+	signal mm_interconnect_0_image_ram_s2_chipselect               : std_logic;                     -- mm_interconnect_0:image_ram_s2_chipselect -> image_ram:chipselect2
+	signal mm_interconnect_0_image_ram_s2_readdata                 : std_logic_vector(31 downto 0); -- image_ram:readdata2 -> mm_interconnect_0:image_ram_s2_readdata
+	signal mm_interconnect_0_image_ram_s2_address                  : std_logic_vector(17 downto 0); -- mm_interconnect_0:image_ram_s2_address -> image_ram:address2
+	signal mm_interconnect_0_image_ram_s2_byteenable               : std_logic_vector(3 downto 0);  -- mm_interconnect_0:image_ram_s2_byteenable -> image_ram:byteenable2
+	signal mm_interconnect_0_image_ram_s2_write                    : std_logic;                     -- mm_interconnect_0:image_ram_s2_write -> image_ram:write2
+	signal mm_interconnect_0_image_ram_s2_writedata                : std_logic_vector(31 downto 0); -- mm_interconnect_0:image_ram_s2_writedata -> image_ram:writedata2
+	signal mm_interconnect_0_image_ram_s2_clken                    : std_logic;                     -- mm_interconnect_0:image_ram_s2_clken -> image_ram:clken2
 	signal irq_mapper_receiver0_irq                                : std_logic;                     -- pixel_status_read:irq -> irq_mapper:receiver0_irq
 	signal hps_0_f2h_irq0_irq                                      : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> hps_0:f2h_irq_p0
 	signal hps_0_f2h_irq1_irq                                      : std_logic_vector(31 downto 0); -- irq_mapper_001:sender_irq -> hps_0:f2h_irq_p1
-	signal rst_controller_reset_out_reset                          : std_logic;                     -- rst_controller:reset_out -> [mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in]
+	signal rst_controller_reset_out_reset                          : std_logic;                     -- rst_controller:reset_out -> [image_ram:reset, image_ram:reset2, mm_interconnect_0:pixel_data_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
+	signal rst_controller_reset_out_reset_req                      : std_logic;                     -- rst_controller:reset_req -> [image_ram:reset_req, image_ram:reset_req2, rst_translator:reset_req_in]
 	signal rst_controller_001_reset_out_reset                      : std_logic;                     -- rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
 	signal hps_0_h2f_reset_reset                                   : std_logic;                     -- hps_0:h2f_rst_n -> hps_0_h2f_reset_reset:in
 	signal reset_reset_n_ports_inv                                 : std_logic;                     -- reset_reset_n:inv -> rst_controller:reset_in0
@@ -575,6 +689,31 @@ begin
 			f2h_irq_p1               => hps_0_f2h_irq1_irq               --          f2h_irq1.irq
 		);
 
+	image_ram : component VGA_image_viewer_image_ram
+		port map (
+			clk         => clk_clk,                                   --   clk1.clk
+			address     => image_ram_address,                         --     s1.address
+			clken       => image_ram_clken,                           --       .clken
+			chipselect  => image_ram_chipselect,                      --       .chipselect
+			write       => image_ram_write,                           --       .write
+			readdata    => image_ram_readdata,                        --       .readdata
+			writedata   => image_ram_writedata,                       --       .writedata
+			byteenable  => image_ram_byteenable,                      --       .byteenable
+			reset       => rst_controller_reset_out_reset,            -- reset1.reset
+			reset_req   => rst_controller_reset_out_reset_req,        --       .reset_req
+			address2    => mm_interconnect_0_image_ram_s2_address,    --     s2.address
+			chipselect2 => mm_interconnect_0_image_ram_s2_chipselect, --       .chipselect
+			clken2      => mm_interconnect_0_image_ram_s2_clken,      --       .clken
+			write2      => mm_interconnect_0_image_ram_s2_write,      --       .write
+			readdata2   => mm_interconnect_0_image_ram_s2_readdata,   --       .readdata
+			writedata2  => mm_interconnect_0_image_ram_s2_writedata,  --       .writedata
+			byteenable2 => mm_interconnect_0_image_ram_s2_byteenable, --       .byteenable
+			clk2        => clk_clk,                                   --   clk2.clk
+			reset2      => rst_controller_reset_out_reset,            -- reset2.reset
+			reset_req2  => rst_controller_reset_out_reset_req,        --       .reset_req
+			freeze      => '0'                                        -- (terminated)
+		);
+
 	pixel_data : component VGA_image_viewer_pixel_data
 		port map (
 			clk        => clk_clk,                                         --                 clk.clk
@@ -662,6 +801,13 @@ begin
 			clk_0_clk_clk                                                       => clk_clk,                                            --                                                     clk_0_clk.clk
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,                 -- hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        => rst_controller_reset_out_reset,                     --                        pixel_data_reset_reset_bridge_in_reset.reset
+			image_ram_s2_address                                                => mm_interconnect_0_image_ram_s2_address,             --                                                  image_ram_s2.address
+			image_ram_s2_write                                                  => mm_interconnect_0_image_ram_s2_write,               --                                                              .write
+			image_ram_s2_readdata                                               => mm_interconnect_0_image_ram_s2_readdata,            --                                                              .readdata
+			image_ram_s2_writedata                                              => mm_interconnect_0_image_ram_s2_writedata,           --                                                              .writedata
+			image_ram_s2_byteenable                                             => mm_interconnect_0_image_ram_s2_byteenable,          --                                                              .byteenable
+			image_ram_s2_chipselect                                             => mm_interconnect_0_image_ram_s2_chipselect,          --                                                              .chipselect
+			image_ram_s2_clken                                                  => mm_interconnect_0_image_ram_s2_clken,               --                                                              .clken
 			pixel_data_s1_address                                               => mm_interconnect_0_pixel_data_s1_address,            --                                                 pixel_data_s1.address
 			pixel_data_s1_write                                                 => mm_interconnect_0_pixel_data_s1_write,              --                                                              .write
 			pixel_data_s1_readdata                                              => mm_interconnect_0_pixel_data_s1_readdata,           --                                                              .readdata
@@ -696,12 +842,12 @@ begin
 			sender_irq => hps_0_f2h_irq1_irq  --    sender.irq
 		);
 
-	rst_controller : component altera_reset_controller
+	rst_controller : component vga_image_viewer_rst_controller
 		generic map (
 			NUM_RESET_INPUTS          => 1,
 			OUTPUT_RESET_SYNC_EDGES   => "deassert",
 			SYNC_DEPTH                => 2,
-			RESET_REQUEST_PRESENT     => 0,
+			RESET_REQUEST_PRESENT     => 1,
 			RESET_REQ_WAIT_TIME       => 1,
 			MIN_RST_ASSERTION_TIME    => 3,
 			RESET_REQ_EARLY_DSRT_TIME => 1,
@@ -724,44 +870,44 @@ begin
 			ADAPT_RESET_REQUEST       => 0
 		)
 		port map (
-			reset_in0      => reset_reset_n_ports_inv,        -- reset_in0.reset
-			clk            => clk_clk,                        --       clk.clk
-			reset_out      => rst_controller_reset_out_reset, -- reset_out.reset
-			reset_req      => open,                           -- (terminated)
-			reset_req_in0  => '0',                            -- (terminated)
-			reset_in1      => '0',                            -- (terminated)
-			reset_req_in1  => '0',                            -- (terminated)
-			reset_in2      => '0',                            -- (terminated)
-			reset_req_in2  => '0',                            -- (terminated)
-			reset_in3      => '0',                            -- (terminated)
-			reset_req_in3  => '0',                            -- (terminated)
-			reset_in4      => '0',                            -- (terminated)
-			reset_req_in4  => '0',                            -- (terminated)
-			reset_in5      => '0',                            -- (terminated)
-			reset_req_in5  => '0',                            -- (terminated)
-			reset_in6      => '0',                            -- (terminated)
-			reset_req_in6  => '0',                            -- (terminated)
-			reset_in7      => '0',                            -- (terminated)
-			reset_req_in7  => '0',                            -- (terminated)
-			reset_in8      => '0',                            -- (terminated)
-			reset_req_in8  => '0',                            -- (terminated)
-			reset_in9      => '0',                            -- (terminated)
-			reset_req_in9  => '0',                            -- (terminated)
-			reset_in10     => '0',                            -- (terminated)
-			reset_req_in10 => '0',                            -- (terminated)
-			reset_in11     => '0',                            -- (terminated)
-			reset_req_in11 => '0',                            -- (terminated)
-			reset_in12     => '0',                            -- (terminated)
-			reset_req_in12 => '0',                            -- (terminated)
-			reset_in13     => '0',                            -- (terminated)
-			reset_req_in13 => '0',                            -- (terminated)
-			reset_in14     => '0',                            -- (terminated)
-			reset_req_in14 => '0',                            -- (terminated)
-			reset_in15     => '0',                            -- (terminated)
-			reset_req_in15 => '0'                             -- (terminated)
+			reset_in0      => reset_reset_n_ports_inv,            -- reset_in0.reset
+			clk            => clk_clk,                            --       clk.clk
+			reset_out      => rst_controller_reset_out_reset,     -- reset_out.reset
+			reset_req      => rst_controller_reset_out_reset_req, --          .reset_req
+			reset_req_in0  => '0',                                -- (terminated)
+			reset_in1      => '0',                                -- (terminated)
+			reset_req_in1  => '0',                                -- (terminated)
+			reset_in2      => '0',                                -- (terminated)
+			reset_req_in2  => '0',                                -- (terminated)
+			reset_in3      => '0',                                -- (terminated)
+			reset_req_in3  => '0',                                -- (terminated)
+			reset_in4      => '0',                                -- (terminated)
+			reset_req_in4  => '0',                                -- (terminated)
+			reset_in5      => '0',                                -- (terminated)
+			reset_req_in5  => '0',                                -- (terminated)
+			reset_in6      => '0',                                -- (terminated)
+			reset_req_in6  => '0',                                -- (terminated)
+			reset_in7      => '0',                                -- (terminated)
+			reset_req_in7  => '0',                                -- (terminated)
+			reset_in8      => '0',                                -- (terminated)
+			reset_req_in8  => '0',                                -- (terminated)
+			reset_in9      => '0',                                -- (terminated)
+			reset_req_in9  => '0',                                -- (terminated)
+			reset_in10     => '0',                                -- (terminated)
+			reset_req_in10 => '0',                                -- (terminated)
+			reset_in11     => '0',                                -- (terminated)
+			reset_req_in11 => '0',                                -- (terminated)
+			reset_in12     => '0',                                -- (terminated)
+			reset_req_in12 => '0',                                -- (terminated)
+			reset_in13     => '0',                                -- (terminated)
+			reset_req_in13 => '0',                                -- (terminated)
+			reset_in14     => '0',                                -- (terminated)
+			reset_req_in14 => '0',                                -- (terminated)
+			reset_in15     => '0',                                -- (terminated)
+			reset_req_in15 => '0'                                 -- (terminated)
 		);
 
-	rst_controller_001 : component altera_reset_controller
+	rst_controller_001 : component vga_image_viewer_rst_controller_001
 		generic map (
 			NUM_RESET_INPUTS          => 1,
 			OUTPUT_RESET_SYNC_EDGES   => "deassert",

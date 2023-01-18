@@ -69,9 +69,16 @@ module VGA_image_viewer (
 	memory_oct_rzqin,
 	pixel_data_export,
 	pixel_row_export,
-	pixel_status_write_export,
 	pixel_status_read_export,
-	reset_reset_n);	
+	pixel_status_write_export,
+	reset_reset_n,
+	image_ram_address,
+	image_ram_clken,
+	image_ram_chipselect,
+	image_ram_write,
+	image_ram_readdata,
+	image_ram_writedata,
+	image_ram_byteenable);	
 
 	input		clk_clk;
 	output		hps_io_hps_io_emac1_inst_TX_CLK;
@@ -142,7 +149,14 @@ module VGA_image_viewer (
 	input		memory_oct_rzqin;
 	output	[23:0]	pixel_data_export;
 	input	[15:0]	pixel_row_export;
-	output	[3:0]	pixel_status_write_export;
 	input	[3:0]	pixel_status_read_export;
+	output	[3:0]	pixel_status_write_export;
 	input		reset_reset_n;
+	input	[17:0]	image_ram_address;
+	input		image_ram_clken;
+	input		image_ram_chipselect;
+	input		image_ram_write;
+	output	[31:0]	image_ram_readdata;
+	input	[31:0]	image_ram_writedata;
+	input	[3:0]	image_ram_byteenable;
 endmodule
