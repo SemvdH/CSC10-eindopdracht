@@ -20,11 +20,11 @@ MODULE_LICENSE("GPL");
 #define HW_REGS_BASE 0xff200000
 #define HW_REGS_SPAN 0x00200000
 #define HW_REGS_MASK (HW_REGS_SPAN - 1)
-#define PIXEL_DATA_BASE 0x000000040
-#define PIXEL_STATUS_READ_BASE 0x000000020
-#define PIXEL_STATUS_WRITE_BASE 0x000000030
-#define PIXEL_ROW_BASE 0x000000010
-#define PIXEL_IN_ROW_BASE 0x000000000
+#define PIXEL_DATA_BASE 0x001000030
+#define PIXEL_STATUS_READ_BASE 0x001000010
+#define PIXEL_STATUS_WRITE_BASE 0x001000020
+#define PIXEL_ROW_BASE 0x001000000
+#define IMAGE_RAM_BASE 0x00000000
 
 #define width 640
 #define heigth 480
@@ -43,7 +43,7 @@ volatile int *PIXEL_data_ptr; // virtual addresses
 volatile int *PIXEL_status_r_ptr;
 volatile int *PIXEL_status_w_ptr;
 volatile int *PIXEL_row_ptr;
-volatile int *PIXEL_in_row_ptr;
+volatile int *image_ram_ptr;
 
 static const struct file_operations vga_img_viewer_fops = {
     .owner = THIS_MODULE,
@@ -64,7 +64,7 @@ static int dev_major = 0;
 static struct class *vga_img_viewer_class = NULL;
 static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
-static uint8_t frame_data[width*heigth*3] = {0}; // whole frame
+//static uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
 uint16_t rows[480] = {0};
 int rowcounter = 0;
@@ -88,7 +88,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 		}
 		rowcounter = 0;
 	}*/
-        while (i < width-1)
+/*        while (i < width-1)
         {
                 *(PIXEL_status_w_ptr) = 0;
                 uint8_t r = frame_data[((*(PIXEL_row_ptr)) * width * 3) + i];
@@ -104,6 +104,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
                 //			long timestamp = jiffies;
                 //			while (jiffies - timestamp < 1000);
         }
+*/
         //	int jf = jiffies - timestamp;
         //	printk(KERN_ALERT DEVNAME "setting took %d ticks",jf);
 	//printk(KERN_ALERT DEVNAME "interrupt");
@@ -122,7 +123,7 @@ static int init_handler(struct platform_device *pdev)
         PIXEL_status_w_ptr = LW_virtual + PIXEL_STATUS_WRITE_BASE;
         PIXEL_data_ptr = LW_virtual + PIXEL_DATA_BASE;
         PIXEL_row_ptr = LW_virtual + PIXEL_ROW_BASE;
-        PIXEL_in_row_ptr = LW_virtual + PIXEL_IN_ROW_BASE;
+        image_ram_ptr = LW_virtual + IMAGE_RAM_BASE;
 
         *(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
         irq_num = platform_get_irq(pdev, 0);
@@ -218,7 +219,7 @@ static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t c
 // write image data
 static ssize_t vga_img_viewer_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
 {
-    size_t maxdatalen = 640*480*3, ncopied; // 640x480 pixels, 3 bytes per pixel
+    size_t maxdatalen = 640*480*4, ncopied; // 640x480 pixels, 4 bytes per pixel
     
     printk("Writing device: %d\n", MINOR(file->f_path.dentry->d_inode->i_rdev));
 
@@ -226,7 +227,7 @@ static ssize_t vga_img_viewer_write(struct file *file, const char __user *buf, s
         maxdatalen = count;
     }
 
-    ncopied = copy_from_user(frame_data, buf, maxdatalen);
+    ncopied = copy_from_user(*(image_ram_ptr), buf, maxdatalen);
 
     if (ncopied == 0) {
         printk("Copied %zd bytes from the user\n", maxdatalen);
