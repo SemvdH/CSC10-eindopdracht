@@ -115,6 +115,14 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
     SIGNAL pm_blank : STD_LOGIC := '0'; -- blank signal for pixel memory
     SIGNAL pixel_x, pixel_y : STD_LOGIC_VECTOR(9 DOWNTO 0); -- pixel x and y coordinates
 
+    SIGNAL image_ram_read_ready_s : STD_LOGIC := '0'; -- 0 for ready to request data, 1 for ready to read requested data
+    SIGNAL image_ram_clock_s : STD_LOGIC := '0';
+    SIGNAL image_ram_cs_s : STD_LOGIC := '0';
+    SIGNAL image_ram_address_s : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0'); -- current address that is being read from
+    SIGNAL image_ram_byteselect_s : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); -- byteselect
+
+    SIGNAL next_pixel : STD_LOGIC := '1'; -- if we are ready to read a next pixel;
+
     -- Registers for pixel memory
     -- The pixel row register is for each color. Each register will have 640 pixels, each pixel is 8 bits.
     SIGNAL row_reg_1_r, row_reg_1_g, row_reg_1_b : STD_LOGIC_VECTOR(((HD - 1) * 8) DOWNTO 0) := (OTHERS => '0');
@@ -281,13 +289,13 @@ BEGIN
             hps_io_hps_io_i2c1_inst_SCL => hps_io_hps_io_i2c1_inst_SCL, --                  .hps_io_i2c1_inst_SCL
             hps_io_hps_io_gpio_inst_GPIO53 => hps_io_hps_io_gpio_inst_GPIO53, --                  .hps_io_gpio_inst_GPIO53
             hps_io_hps_io_gpio_inst_GPIO54 => hps_io_hps_io_gpio_inst_GPIO54, --                  .hps_io_gpio_inst_GPIO54
-            image_ram_address => image_ram_address, --          image_ram.address
-            image_ram_clken => image_ram_clken, --                   .clken
-            image_ram_chipselect => image_ram_chipselect, --                   .chipselect
+            image_ram_address => image_ram_address_s, --          image_ram.address
+            image_ram_clken => image_ram_clock_s, --                   .clken
+            image_ram_chipselect => image_ram_cs_s, --                   .chipselect
             image_ram_write => image_ram_write, --                   .write
             image_ram_readdata => image_ram_readdata, --                   .readdata
             image_ram_writedata => image_ram_writedata, --                   .writedata
-            image_ram_byteenable => image_ram_byteenable, --                   .byteenable
+            image_ram_byteenable => image_ram_byteselect_s, --                   .byteenable
             memory_mem_a => memory_mem_a, --            memory.mem_a
             memory_mem_ba => memory_mem_ba, --                  .mem_ba
             memory_mem_ck => memory_mem_ck, --                  .mem_ck
@@ -348,9 +356,11 @@ BEGIN
 
                     -- assign the pixel data to the VGA registers
                     -- IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
-                    VGA_R <= row_reg_1_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
-                    VGA_G <= row_reg_1_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
-                    VGA_B <= row_reg_1_b((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
+                    VGA_R <= image_ram_readdata(7 DOWNTO 0);
+                    VGA_G <= image_ram_readdata(15 DOWNTO 8);
+                    VGA_B <= image_ram_readdata(23 DOWNTO 16);
+                    next_pixel <= '1';
+
                     -- ELSE
                     --     VGA_R <= row_reg_2_r((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8)); -- add all objects with or.
                     --     VGA_G <= row_reg_2_g((pixel_x_v * 8) + 7 DOWNTO (pixel_x_v * 8));
@@ -359,14 +369,11 @@ BEGIN
                 END IF;
                 -- if the pixel y changes, set the read flag to true to signal that the pixel data is ready to be read
 
-                -- IF (pixel_y_v = prev_pixel_y) THEN
-                --     pixel_status_read_s <= "0000";
-                -- ELSE
-                --     IF (local_HSYNC = '1' AND unsigned(pixel_y) < VD) THEN
-                --         pixel_status_read_s <= "0001";
-                --         prev_pixel_y := pixel_y_v;
-                --     END IF;
-                -- END IF;
+                IF (pixel_y_v = prev_pixel_y) THEN
+
+                ELSE
+
+                END IF;
 
                 IF (pixel_y_v < VD - 1) THEN
                     pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
@@ -374,6 +381,24 @@ BEGIN
 
             END IF;
 
+        END PROCESS;
+
+        image_data : PROCESS (CLOCK_50) -- process for reading and writing to the image ram (signals image in quartus)
+        BEGIN
+            IF rising_edge(CLOCK_50) THEN
+                IF (image_ram_read_ready_s = '0') THEN -- we are ready to read from the image ram
+                    -- request new data
+
+                    -- enable chip select
+                    image_ram_cs_s <= '1';
+
+                    image_ram_read_ready_s <= '1'; -- set ready to retrieve data
+                ELSE -- data is available on the readdata signal
+
+                    image_ram_cs_s <= '0';
+                    image_ram_read_ready_s <= '0'; -- set ready to request new data
+                END IF;
+            END IF;
         END PROCESS;
 
         -- concurrent setting read status
@@ -384,6 +409,16 @@ BEGIN
         VGA_CLK <= pixel_tick;
         VGA_BLANK_N <= pm_blank;
 
+        LEDR(9) <= '1'; -- status led
+        LEDR(1) <= pixel_status_read_s(0); -- status led for read flag
+        LEDR(2) <= pixel_status_write_s(0); -- status led for write flag
+
+        image_ram_clock_s <= CLOCK_50; -- connect clock to memory clock
+        image_ram_byteselect_s <= "00"; -- always read first byte position
+
+        pixel_status_read_s <= "0000" WHEN pm_blank = '0' ELSE
+            "0001";
+
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 7) <= pixel_data_s(7);
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 6) <= pixel_data_s(6);
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 5) <= pixel_data_s(5);
@@ -392,7 +427,7 @@ BEGIN
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(2);
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(1);                       b
         -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(0);
-        row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(7 DOWNTO 0);
+        -- row_reg_1_r(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(7 DOWNTO 0);
 
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7) <= pixel_data_s(15);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 6) <= pixel_data_s(14);
@@ -402,7 +437,7 @@ BEGIN
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(10);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(9);
         -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(8);
-        row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(15 DOWNTO 8);
+        -- row_reg_1_g(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(15 DOWNTO 8);
 
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7) <= pixel_data_s(23);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 6) <= pixel_data_s(22);
@@ -412,7 +447,7 @@ BEGIN
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 2) <= pixel_data_s(18);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 1) <= pixel_data_s(17);
         -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s))) <= pixel_data_s(16);
-        row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(23 DOWNTO 16);
+        -- row_reg_1_b(to_integer(unsigned(pixel_index_in_row_s)) + 7 DOWNTO (to_integer(unsigned(pixel_index_in_row_s)))) <= pixel_data_s(23 DOWNTO 16);
 
         -- with pixel_status_read_s select
         --     pixel_in_row_s <= pixel_in_row_s + 1 when "0001",
@@ -494,12 +529,5 @@ BEGIN
         --     END IF;
 
         -- END PROCESS;
-
-        LEDR(9) <= '1'; -- status led
-        LEDR(1) <= pixel_status_read_s(0); -- status led for read flag
-        LEDR(2) <= pixel_status_write_s(0); -- status led for write flag
-
-        pixel_status_read_s <= "0000" WHEN pm_blank = '0' ELSE
-            "0001";
 
     END ARCHITECTURE;
