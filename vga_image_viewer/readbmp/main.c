@@ -21,24 +21,33 @@ void pad_with_zeros(char* imgdata, char* newimgdata) {
 
 int main()
 {
+	FILE* destFile = fopen("./bird.bmp","wb");
+	if (destFile == NULL){
+		printf("could not open the bird\n");
+		return -1;
+	}
+
 	BITMAPINFOHEADER bitmapInfoHeader;
 	unsigned char *bitmapData;
 
 	bitmapData = LoadBitmapFile("bird.bmp",&bitmapInfoHeader);
+	printf("bird loaded\n");
 
 	if (bitmapData == NULL)
 	{
-		printf("Shit");
+		printf("Shit, the bird bmp could not be read\n");
+		return -1;
 	}
 	unsigned char *paddedImage = (unsigned char*) malloc(480*640*4);
 
+	printf("padding that shit\n");
 	pad_with_zeros(bitmapData,paddedImage);
-
+	printf("the bird is fat\n" );
 	free(bitmapData);
 
-
+	int bytesWritten = fwrite(paddedImage,sizeof(unsigned char),480*640*4,destFile);
 	//printf("Image data:\n");
-
-	print_raw_bmp(bitmapData);
+	printf("Wrote %d bytes\n",bytesWritten);
+	//print_raw_bmp(bitmapData);
 	return 0;
 }

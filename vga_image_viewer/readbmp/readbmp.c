@@ -12,6 +12,7 @@ unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader
     filePtr = fopen(filename,"rb");
     if (filePtr == NULL)
         return NULL;
+    printf("bmp: file opened\n");
 
     //read the bitmap file header
     fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER),1,filePtr);
@@ -20,6 +21,7 @@ unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader
     if (bitmapFileHeader.bfType !=0x4D42)
     {
         fclose(filePtr);
+	printf("bmp: could not read bmp header\n");
         return NULL;
     }
 
@@ -37,6 +39,7 @@ unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader
     {
         free(bitmapImage);
         fclose(filePtr);
+	printf("bmp: could not allocate memory\n");
         return NULL;
     }
 
@@ -47,6 +50,7 @@ unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader
     if (bitmapImage == NULL)
     {
         fclose(filePtr);
+	printf("bmp: bmp data was not read properly\n");
         return NULL;
     }
 
