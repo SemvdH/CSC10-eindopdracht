@@ -59,7 +59,7 @@ entity VGA_image_viewer is
 		hps_io_hps_io_i2c1_inst_SCL     : inout std_logic                     := '0';             --                   .hps_io_i2c1_inst_SCL
 		hps_io_hps_io_gpio_inst_GPIO53  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO53
 		hps_io_hps_io_gpio_inst_GPIO54  : inout std_logic                     := '0';             --                   .hps_io_gpio_inst_GPIO54
-		image_ram_address               : in    std_logic_vector(17 downto 0) := (others => '0'); --          image_ram.address
+		image_ram_address               : in    std_logic_vector(14 downto 0) := (others => '0'); --          image_ram.address
 		image_ram_clken                 : in    std_logic                     := '0';             --                   .clken
 		image_ram_chipselect            : in    std_logic                     := '0';             --                   .chipselect
 		image_ram_write                 : in    std_logic                     := '0';             --                   .write
@@ -209,7 +209,7 @@ architecture rtl of VGA_image_viewer is
 	component VGA_image_viewer_image_ram is
 		port (
 			clk         : in  std_logic                     := 'X';             -- clk
-			address     : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			address     : in  std_logic_vector(14 downto 0) := (others => 'X'); -- address
 			clken       : in  std_logic                     := 'X';             -- clken
 			chipselect  : in  std_logic                     := 'X';             -- chipselect
 			write       : in  std_logic                     := 'X';             -- write
@@ -218,7 +218,7 @@ architecture rtl of VGA_image_viewer is
 			byteenable  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
 			reset       : in  std_logic                     := 'X';             -- reset
 			reset_req   : in  std_logic                     := 'X';             -- reset_req
-			address2    : in  std_logic_vector(17 downto 0) := (others => 'X'); -- address
+			address2    : in  std_logic_vector(14 downto 0) := (others => 'X'); -- address
 			chipselect2 : in  std_logic                     := 'X';             -- chipselect
 			clken2      : in  std_logic                     := 'X';             -- clken
 			write2      : in  std_logic                     := 'X';             -- write
@@ -323,7 +323,7 @@ architecture rtl of VGA_image_viewer is
 			clk_0_clk_clk                                                       : in  std_logic                     := 'X';             -- clk
 			hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
 			pixel_data_reset_reset_bridge_in_reset_reset                        : in  std_logic                     := 'X';             -- reset
-			image_ram_s2_address                                                : out std_logic_vector(17 downto 0);                    -- address
+			image_ram_s2_address                                                : out std_logic_vector(14 downto 0);                    -- address
 			image_ram_s2_write                                                  : out std_logic;                                        -- write
 			image_ram_s2_readdata                                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
 			image_ram_s2_writedata                                              : out std_logic_vector(31 downto 0);                    -- writedata
@@ -554,7 +554,7 @@ architecture rtl of VGA_image_viewer is
 	signal mm_interconnect_0_pixel_row_s1_address                  : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pixel_row_s1_address -> pixel_row:address
 	signal mm_interconnect_0_image_ram_s2_chipselect               : std_logic;                     -- mm_interconnect_0:image_ram_s2_chipselect -> image_ram:chipselect2
 	signal mm_interconnect_0_image_ram_s2_readdata                 : std_logic_vector(31 downto 0); -- image_ram:readdata2 -> mm_interconnect_0:image_ram_s2_readdata
-	signal mm_interconnect_0_image_ram_s2_address                  : std_logic_vector(17 downto 0); -- mm_interconnect_0:image_ram_s2_address -> image_ram:address2
+	signal mm_interconnect_0_image_ram_s2_address                  : std_logic_vector(14 downto 0); -- mm_interconnect_0:image_ram_s2_address -> image_ram:address2
 	signal mm_interconnect_0_image_ram_s2_byteenable               : std_logic_vector(3 downto 0);  -- mm_interconnect_0:image_ram_s2_byteenable -> image_ram:byteenable2
 	signal mm_interconnect_0_image_ram_s2_write                    : std_logic;                     -- mm_interconnect_0:image_ram_s2_write -> image_ram:write2
 	signal mm_interconnect_0_image_ram_s2_writedata                : std_logic_vector(31 downto 0); -- mm_interconnect_0:image_ram_s2_writedata -> image_ram:writedata2

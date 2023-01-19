@@ -46,7 +46,7 @@ module VGA_image_viewer_mm_interconnect_0 (
 		input  wire        clk_0_clk_clk,                                                       //                                                     clk_0_clk.clk
 		input  wire        hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset, // hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
 		input  wire        pixel_data_reset_reset_bridge_in_reset_reset,                        //                        pixel_data_reset_reset_bridge_in_reset.reset
-		output wire [17:0] image_ram_s2_address,                                                //                                                  image_ram_s2.address
+		output wire [14:0] image_ram_s2_address,                                                //                                                  image_ram_s2.address
 		output wire        image_ram_s2_write,                                                  //                                                              .write
 		input  wire [31:0] image_ram_s2_readdata,                                               //                                                              .readdata
 		output wire [31:0] image_ram_s2_writedata,                                              //                                                              .writedata
@@ -778,7 +778,7 @@ module VGA_image_viewer_mm_interconnect_0 (
 	);
 
 	altera_merlin_slave_translator #(
-		.AV_ADDRESS_W                   (18),
+		.AV_ADDRESS_W                   (15),
 		.AV_DATA_W                      (32),
 		.UAV_DATA_W                     (32),
 		.AV_BURSTCOUNT_W                (1),

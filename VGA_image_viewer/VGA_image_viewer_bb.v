@@ -51,6 +51,13 @@ module VGA_image_viewer (
 	hps_io_hps_io_i2c1_inst_SCL,
 	hps_io_hps_io_gpio_inst_GPIO53,
 	hps_io_hps_io_gpio_inst_GPIO54,
+	image_ram_address,
+	image_ram_clken,
+	image_ram_chipselect,
+	image_ram_write,
+	image_ram_readdata,
+	image_ram_writedata,
+	image_ram_byteenable,
 	memory_mem_a,
 	memory_mem_ba,
 	memory_mem_ck,
@@ -71,14 +78,7 @@ module VGA_image_viewer (
 	pixel_row_export,
 	pixel_status_read_export,
 	pixel_status_write_export,
-	reset_reset_n,
-	image_ram_address,
-	image_ram_clken,
-	image_ram_chipselect,
-	image_ram_write,
-	image_ram_readdata,
-	image_ram_writedata,
-	image_ram_byteenable);	
+	reset_reset_n);	
 
 	input		clk_clk;
 	output		hps_io_hps_io_emac1_inst_TX_CLK;
@@ -131,6 +131,13 @@ module VGA_image_viewer (
 	inout		hps_io_hps_io_i2c1_inst_SCL;
 	inout		hps_io_hps_io_gpio_inst_GPIO53;
 	inout		hps_io_hps_io_gpio_inst_GPIO54;
+	input	[14:0]	image_ram_address;
+	input		image_ram_clken;
+	input		image_ram_chipselect;
+	input		image_ram_write;
+	output	[31:0]	image_ram_readdata;
+	input	[31:0]	image_ram_writedata;
+	input	[3:0]	image_ram_byteenable;
 	output	[14:0]	memory_mem_a;
 	output	[2:0]	memory_mem_ba;
 	output		memory_mem_ck;
@@ -152,11 +159,4 @@ module VGA_image_viewer (
 	input	[3:0]	pixel_status_read_export;
 	output	[3:0]	pixel_status_write_export;
 	input		reset_reset_n;
-	input	[17:0]	image_ram_address;
-	input		image_ram_clken;
-	input		image_ram_chipselect;
-	input		image_ram_write;
-	output	[31:0]	image_ram_readdata;
-	input	[31:0]	image_ram_writedata;
-	input	[3:0]	image_ram_byteenable;
 endmodule

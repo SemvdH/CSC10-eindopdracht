@@ -50,6 +50,13 @@
 		.hps_io_hps_io_i2c1_inst_SCL     (<connected-to-hps_io_hps_io_i2c1_inst_SCL>),     //                   .hps_io_i2c1_inst_SCL
 		.hps_io_hps_io_gpio_inst_GPIO53  (<connected-to-hps_io_hps_io_gpio_inst_GPIO53>),  //                   .hps_io_gpio_inst_GPIO53
 		.hps_io_hps_io_gpio_inst_GPIO54  (<connected-to-hps_io_hps_io_gpio_inst_GPIO54>),  //                   .hps_io_gpio_inst_GPIO54
+		.image_ram_address               (<connected-to-image_ram_address>),               //          image_ram.address
+		.image_ram_clken                 (<connected-to-image_ram_clken>),                 //                   .clken
+		.image_ram_chipselect            (<connected-to-image_ram_chipselect>),            //                   .chipselect
+		.image_ram_write                 (<connected-to-image_ram_write>),                 //                   .write
+		.image_ram_readdata              (<connected-to-image_ram_readdata>),              //                   .readdata
+		.image_ram_writedata             (<connected-to-image_ram_writedata>),             //                   .writedata
+		.image_ram_byteenable            (<connected-to-image_ram_byteenable>),            //                   .byteenable
 		.memory_mem_a                    (<connected-to-memory_mem_a>),                    //             memory.mem_a
 		.memory_mem_ba                   (<connected-to-memory_mem_ba>),                   //                   .mem_ba
 		.memory_mem_ck                   (<connected-to-memory_mem_ck>),                   //                   .mem_ck
@@ -70,13 +77,6 @@
 		.pixel_row_export                (<connected-to-pixel_row_export>),                //          pixel_row.export
 		.pixel_status_read_export        (<connected-to-pixel_status_read_export>),        //  pixel_status_read.export
 		.pixel_status_write_export       (<connected-to-pixel_status_write_export>),       // pixel_status_write.export
-		.reset_reset_n                   (<connected-to-reset_reset_n>),                   //              reset.reset_n
-		.image_ram_address               (<connected-to-image_ram_address>),               //          image_ram.address
-		.image_ram_clken                 (<connected-to-image_ram_clken>),                 //                   .clken
-		.image_ram_chipselect            (<connected-to-image_ram_chipselect>),            //                   .chipselect
-		.image_ram_write                 (<connected-to-image_ram_write>),                 //                   .write
-		.image_ram_readdata              (<connected-to-image_ram_readdata>),              //                   .readdata
-		.image_ram_writedata             (<connected-to-image_ram_writedata>),             //                   .writedata
-		.image_ram_byteenable            (<connected-to-image_ram_byteenable>)             //                   .byteenable
+		.reset_reset_n                   (<connected-to-reset_reset_n>)                    //              reset.reset_n
 	);
 

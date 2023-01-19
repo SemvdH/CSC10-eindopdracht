@@ -57,7 +57,7 @@ ENTITY VGA_image_viewer_tl IS
         hps_io_hps_io_i2c1_inst_SCL : INOUT STD_LOGIC := 'X'; -- hps_io_i2c1_inst_SCL
         hps_io_hps_io_gpio_inst_GPIO53 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO53
         hps_io_hps_io_gpio_inst_GPIO54 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO54
-        image_ram_address : IN STD_LOGIC_VECTOR(17 DOWNTO 0) := (OTHERS => 'X'); -- address
+        image_ram_address : IN STD_LOGIC_VECTOR(14 DOWNTO 0) := (OTHERS => 'X'); -- address
         image_ram_clken : IN STD_LOGIC := 'X'; -- clken
         image_ram_chipselect : IN STD_LOGIC := 'X'; -- chipselect
         image_ram_write : IN STD_LOGIC := 'X'; -- write
@@ -85,7 +85,6 @@ ENTITY VGA_image_viewer_tl IS
         reset_reset_n : IN STD_LOGIC := 'X'; -- reset_n
         pixel_row_export : IN STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => 'X'); -- export
         pixel_status_read_export : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => 'X'); -- export
-        pixel_index_in_row_export : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
         KEY : IN STD_LOGIC_VECTOR(3 DOWNTO 0); -- reset_n
         LEDR : OUT STD_LOGIC_VECTOR(9 DOWNTO 0) := (OTHERS => '0') -- LEDs
     );
@@ -118,9 +117,9 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
     SIGNAL image_ram_read_ready_s : STD_LOGIC := '0'; -- 0 for ready to request data, 1 for ready to read requested data
     SIGNAL image_ram_clock_s : STD_LOGIC := '0';
     SIGNAL image_ram_cs_s : STD_LOGIC := '0';
-    SIGNAL image_ram_address_s : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0'); -- current address that is being read from
+    SIGNAL image_ram_address_s : STD_LOGIC_VECTOR(14 DOWNTO 0) := (OTHERS => '0'); -- current address that is being read from
     SIGNAL image_ram_byteselect_s : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); -- byteselect
-
+    signal image_ram_readdata_s : std_logic_vector(31 downto 0) := (others => '0'); -- readdata
     SIGNAL next_pixel : STD_LOGIC := '1'; -- if we are ready to read a next pixel;
 
     -- Registers for pixel memory
@@ -203,7 +202,7 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
             hps_io_hps_io_i2c1_inst_SCL : INOUT STD_LOGIC := 'X'; -- hps_io_i2c1_inst_SCL
             hps_io_hps_io_gpio_inst_GPIO53 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO53
             hps_io_hps_io_gpio_inst_GPIO54 : INOUT STD_LOGIC := 'X'; -- hps_io_gpio_inst_GPIO54
-            image_ram_address : IN STD_LOGIC_VECTOR(17 DOWNTO 0) := (OTHERS => 'X'); -- address
+            image_ram_address : IN STD_LOGIC_VECTOR(14 DOWNTO 0) := (OTHERS => 'X'); -- address
             image_ram_clken : IN STD_LOGIC := 'X'; -- clken
             image_ram_chipselect : IN STD_LOGIC := 'X'; -- chipselect
             image_ram_write : IN STD_LOGIC := 'X'; -- write
@@ -227,7 +226,6 @@ ARCHITECTURE rtl OF VGA_image_viewer_tl IS
             memory_mem_dm : OUT STD_LOGIC_VECTOR(3 DOWNTO 0); -- mem_dm
             memory_oct_rzqin : IN STD_LOGIC := 'X'; -- oct_rzqin
             pixel_data_export : OUT STD_LOGIC_VECTOR(23 DOWNTO 0); -- export
-            pixel_index_in_row_export : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
             pixel_status_write_export : OUT STD_LOGIC_VECTOR(3 DOWNTO 0); -- export
             reset_reset_n : IN STD_LOGIC := 'X'; -- reset_n
             pixel_row_export : IN STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => 'X'); -- export
@@ -293,7 +291,7 @@ BEGIN
             image_ram_clken => image_ram_clock_s, --                   .clken
             image_ram_chipselect => image_ram_cs_s, --                   .chipselect
             image_ram_write => image_ram_write, --                   .write
-            image_ram_readdata => image_ram_readdata, --                   .readdata
+            image_ram_readdata => image_ram_readdata_s, --                   .readdata
             image_ram_writedata => image_ram_writedata, --                   .writedata
             image_ram_byteenable => image_ram_byteselect_s, --                   .byteenable
             memory_mem_a => memory_mem_a, --            memory.mem_a
@@ -313,7 +311,6 @@ BEGIN
             memory_mem_dm => memory_mem_dm, --                  .mem_dm
             memory_oct_rzqin => memory_oct_rzqin, --                  .oct_rzqin
             pixel_data_export => pixel_data_s, --        pixel_data.export
-            pixel_index_in_row_export => pixel_index_in_row_s, -- pixel_index_in_row.export
             pixel_status_write_export => pixel_status_write_s, --      pixel_status.export
             reset_reset_n => KEY(0), --             reset.reset_n
             pixel_row_export => pixel_row_s, --         pixel_row.export
@@ -356,9 +353,9 @@ BEGIN
 
                     -- assign the pixel data to the VGA registers
                     -- IF (to_integer(unsigned(pixel_y)) MOD 2 = 0) THEN
-                    VGA_R <= image_ram_readdata(7 DOWNTO 0);
-                    VGA_G <= image_ram_readdata(15 DOWNTO 8);
-                    VGA_B <= image_ram_readdata(23 DOWNTO 16);
+                    VGA_R <= image_ram_readdata_s(7 DOWNTO 0);
+                    VGA_G <= image_ram_readdata_s(15 DOWNTO 8);
+                    VGA_B <= image_ram_readdata_s(23 DOWNTO 16);
                     next_pixel <= '1';
 
                     -- ELSE
@@ -379,11 +376,14 @@ BEGIN
                     pixel_row_s <= STD_LOGIC_VECTOR(resize(unsigned(pixel_y), 16)); -- write vertical pos to row register
                 END IF;
 
+                image_ram_address_s <= std_logic_vector(to_unsigned((pixel_y_v * (HD-1)) + pixel_x_v,15)); -- calculate address
+
             END IF;
 
         END PROCESS;
 
         image_data : PROCESS (CLOCK_50) -- process for reading and writing to the image ram (signals image in quartus)
+          -- image ram ready kan ook als variabele
         BEGIN
             IF rising_edge(CLOCK_50) THEN
                 IF (image_ram_read_ready_s = '0') THEN -- we are ready to read from the image ram
@@ -397,6 +397,7 @@ BEGIN
 
                     image_ram_cs_s <= '0';
                     image_ram_read_ready_s <= '0'; -- set ready to request new data
+
                 END IF;
             END IF;
         END PROCESS;
@@ -414,7 +415,9 @@ BEGIN
         LEDR(2) <= pixel_status_write_s(0); -- status led for write flag
 
         image_ram_clock_s <= CLOCK_50; -- connect clock to memory clock
-        image_ram_byteselect_s <= "00"; -- always read first byte position
+        image_ram_byteselect_s <= "1111"; -- always read all 32 bits
+
+        
 
         pixel_status_read_s <= "0000" WHEN pm_blank = '0' ELSE
             "0001";

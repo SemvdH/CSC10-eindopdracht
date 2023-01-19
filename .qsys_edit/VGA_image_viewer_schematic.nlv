@@ -58,18 +58,18 @@ preplace inst VGA_image_viewer.hps_0.dcan1 -pg 1
 preplace inst VGA_image_viewer.hps_0.arm_a9_0 -pg 1
 preplace inst VGA_image_viewer.hps_0.clk_0 -pg 1
 preplace inst VGA_image_viewer.hps_0.hps_io -pg 1
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.hps_io,(SLAVE)hps_0.hps_io) 1 0 3 NJ 90 NJ 90 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_read.external_connection,(SLAVE)VGA_image_viewer.pixel_status_read) 1 0 5 NJ 40 NJ 40 NJ 40 NJ 40 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.memory,(SLAVE)hps_0.memory) 1 0 3 NJ 130 NJ 130 NJ
-preplace netloc POINT_TO_POINT<net_container>VGA_image_viewer</net_container>(MASTER)hps_0.f2h_irq0,(SLAVE)pixel_status_read.irq) 1 3 2 NJ 90 1180
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)image_ram.s1,(SLAVE)VGA_image_viewer.image_ram) 1 0 5 NJ 620 NJ 620 NJ 620 NJ 620 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.reset,(SLAVE)clk_0.clk_in_reset) 1 0 4 NJ 300 NJ 300 NJ 300 NJ
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_row.clk,(SLAVE)hps_0.h2f_lw_axi_clock,(SLAVE)image_ram.clk1,(SLAVE)pixel_data.clk,(SLAVE)pixel_status_read.clk,(SLAVE)pixel_status_write.clk,(MASTER)clk_0.clk) 1 2 3 520 220 NJ 220 1200
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_data.external_connection,(SLAVE)VGA_image_viewer.pixel_data) 1 0 5 NJ 200 NJ 200 NJ 200 NJ 200 NJ
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.clk,(SLAVE)clk_0.clk_in) 1 0 4 NJ 280 NJ 280 NJ 280 NJ
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_data.s1,(SLAVE)pixel_status_read.s1,(SLAVE)pixel_status_write.s1,(SLAVE)pixel_row.s1,(MASTER)hps_0.h2f_lw_axi_master) 1 3 2 NJ 130 1180
-preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_write.external_connection,(SLAVE)VGA_image_viewer.pixel_status_write) 1 0 5 NJ 400 NJ 400 NJ 400 NJ 400 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.hps_io,(SLAVE)VGA_image_viewer.hps_io) 1 0 3 NJ 90 NJ 90 NJ
+preplace netloc POINT_TO_POINT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_read.irq,(MASTER)hps_0.f2h_irq0) 1 3 2 NJ 90 1180
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_data,(SLAVE)pixel_data.external_connection) 1 0 5 NJ 200 NJ 200 NJ 200 NJ 200 NJ
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_write.reset,(SLAVE)image_ram.reset1,(SLAVE)pixel_data.reset,(SLAVE)pixel_row.reset,(MASTER)clk_0.clk_reset,(SLAVE)image_ram.reset2,(SLAVE)pixel_status_read.reset) 1 4 1 1220
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)hps_0.memory,(SLAVE)VGA_image_viewer.memory) 1 0 3 NJ 130 NJ 130 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_status_write,(SLAVE)pixel_status_write.external_connection) 1 0 5 NJ 400 NJ 400 NJ 400 NJ 400 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)clk_0.clk_in,(SLAVE)VGA_image_viewer.clk) 1 0 4 NJ 280 NJ 280 NJ 280 NJ
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)image_ram.s2,(SLAVE)pixel_row.s1,(MASTER)hps_0.h2f_lw_axi_master,(SLAVE)pixel_data.s1,(SLAVE)pixel_status_write.s1,(SLAVE)pixel_status_read.s1) 1 3 2 900 220 1180
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)VGA_image_viewer.reset) 1 0 4 NJ 300 NJ 300 NJ 300 NJ
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.pixel_status_read,(SLAVE)pixel_status_read.external_connection) 1 0 5 NJ 40 NJ 40 NJ 40 NJ 40 NJ
 preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_row.external_connection,(SLAVE)VGA_image_viewer.pixel_row) 1 0 5 NJ 500 NJ 500 NJ 500 NJ 500 NJ
-preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_row.reset,(SLAVE)pixel_status_read.reset,(SLAVE)pixel_data.reset,(MASTER)clk_0.clk_reset,(SLAVE)pixel_status_write.reset,(SLAVE)image_ram.reset1) 1 4 1 1220
+preplace netloc EXPORT<net_container>VGA_image_viewer</net_container>(SLAVE)VGA_image_viewer.image_ram,(SLAVE)image_ram.s1) 1 0 5 NJ 660 NJ 660 NJ 660 NJ 660 NJ
+preplace netloc FAN_OUT<net_container>VGA_image_viewer</net_container>(SLAVE)pixel_status_write.clk,(SLAVE)image_ram.clk2,(MASTER)clk_0.clk,(SLAVE)hps_0.h2f_lw_axi_clock,(SLAVE)pixel_status_read.clk,(SLAVE)image_ram.clk1,(SLAVE)pixel_row.clk,(SLAVE)pixel_data.clk) 1 2 3 520 260 NJ 260 1200
 levelinfo -pg 1 0 120 1450
 levelinfo -hier VGA_image_viewer 130 150 500 710 1010 1290 1440
