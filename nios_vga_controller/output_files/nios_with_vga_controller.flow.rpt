@@ -1,0 +1,136 @@
+Flow report for nios_with_vga_controller
+Fri Jan 20 14:59:56 2023
+Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Flow Summary
+  3. Flow Settings
+  4. Flow Non-Default Global Settings
+  5. Flow Elapsed Time
+  6. Flow OS Summary
+  7. Flow Log
+  8. Flow Messages
+  9. Flow Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+
+
+
++-------------------------------------------------------------------------------+
+; Flow Summary                                                                  ;
++---------------------------------+---------------------------------------------+
+; Flow Status                     ; Successful - Fri Jan 20 14:59:56 2023       ;
+; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
+; Revision Name                   ; nios_with_vga_controller                    ;
+; Top-level Entity Name           ; nios_with_vga_controller_top                ;
+; Family                          ; Cyclone V                                   ;
+; Device                          ; 5CSEMA5F31C6                                ;
+; Timing Models                   ; Final                                       ;
+; Logic utilization (in ALMs)     ; 1,486 / 32,070 ( 5 % )                      ;
+; Total registers                 ; 2128                                        ;
+; Total pins                      ; 31 / 457 ( 7 % )                            ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 2,063,744 / 4,065,280 ( 51 % )              ;
+; Total DSP Blocks                ; 3 / 87 ( 3 % )                              ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0 / 6 ( 0 % )                               ;
+; Total DLLs                      ; 0 / 4 ( 0 % )                               ;
++---------------------------------+---------------------------------------------+
+
+
++----------------------------------------------+
+; Flow Settings                                ;
++-------------------+--------------------------+
+; Option            ; Setting                  ;
++-------------------+--------------------------+
+; Start date & time ; 01/20/2023 14:55:46      ;
+; Main task         ; Compilation              ;
+; Revision Name     ; nios_with_vga_controller ;
++-------------------+--------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                                                                                                       ;
++-------------------------------------+---------------------------------------------------------------------------+--------------------------+------------------------------+------------+
+; Assignment Name                     ; Value                                                                     ; Default Value            ; Entity Name                  ; Section Id ;
++-------------------------------------+---------------------------------------------------------------------------+--------------------------+------------------------------+------------+
+; COMPILER_SIGNATURE_ID               ; 168202124014750.167422294626392                                           ; --                       ; --                           ; --         ;
+; MAX_CORE_JUNCTION_TEMP              ; 85                                                                        ; --                       ; --                           ; --         ;
+; MIN_CORE_JUNCTION_TEMP              ; 0                                                                         ; --                       ; --                           ; --         ;
+; MISC_FILE                           ; vga_image_viewer_system/synthesis/../vga_image_viewer_system.cmp          ; --                       ; --                           ; --         ;
+; MISC_FILE                           ; vga_image_viewer_system/synthesis/../../vga_image_viewer_system.qsys      ; --                       ; --                           ; --         ;
+; OUTPUT_IO_TIMING_FAR_END_VMEAS      ; Half Signal Swing                                                         ; --                       ; --                           ; --         ;
+; OUTPUT_IO_TIMING_FAR_END_VMEAS      ; Half Signal Swing                                                         ; --                       ; --                           ; --         ;
+; OUTPUT_IO_TIMING_NEAR_END_VMEAS     ; Half Vccio                                                                ; --                       ; --                           ; --         ;
+; OUTPUT_IO_TIMING_NEAR_END_VMEAS     ; Half Vccio                                                                ; --                       ; --                           ; --         ;
+; PARTITION_COLOR                     ; -- (Not supported for targeted family)                                    ; --                       ; nios_with_vga_controller_top ; Top        ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family)                                    ; --                       ; nios_with_vga_controller_top ; Top        ;
+; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family)                                    ; --                       ; nios_with_vga_controller_top ; Top        ;
+; POWER_BOARD_THERMAL_MODEL           ; None (CONSERVATIVE)                                                       ; --                       ; --                           ; --         ;
+; POWER_PRESET_COOLING_SOLUTION       ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW                                     ; --                       ; --                           ; --         ;
+; PROJECT_OUTPUT_DIRECTORY            ; output_files                                                              ; --                       ; --                           ; --         ;
+; SLD_FILE                            ; vga_image_viewer_system/synthesis/vga_image_viewer_system.regmap          ; --                       ; --                           ; --         ;
+; SLD_FILE                            ; vga_image_viewer_system/synthesis/vga_image_viewer_system.debuginfo       ; --                       ; --                           ; --         ;
+; SLD_INFO                            ; QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674222868 ; --                       ; vga_image_viewer_system      ; --         ;
+; SOPCINFO_FILE                       ; vga_image_viewer_system/synthesis/../../vga_image_viewer_system.sopcinfo  ; --                       ; --                           ; --         ;
+; SYNTHESIS_ONLY_QIP                  ; On                                                                        ; --                       ; --                           ; --         ;
+; TOP_LEVEL_ENTITY                    ; nios_with_vga_controller_top                                              ; nios_with_vga_controller ; --                           ; --         ;
++-------------------------------------+---------------------------------------------------------------------------+--------------------------+------------------------------+------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                        ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Synthesis ; 00:00:50     ; 1.0                     ; 5057 MB             ; 00:00:37                           ;
+; Fitter               ; 00:02:15     ; 1.2                     ; 6898 MB             ; 00:02:39                           ;
+; Assembler            ; 00:00:11     ; 1.0                     ; 4900 MB             ; 00:00:09                           ;
+; Total                ; 00:03:16     ; --                      ; --                  ; 00:03:25                           ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+
+
++------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                    ;
++----------------------+------------------+------------+------------+----------------+
+; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
++----------------------+------------------+------------+------------+----------------+
+; Analysis & Synthesis ; LAPTOP-TACLTQ28  ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; LAPTOP-TACLTQ28  ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; LAPTOP-TACLTQ28  ; Windows 10 ; 10.0       ; x86_64         ;
++----------------------+------------------+------------+------------+----------------+
+
+
+------------
+; Flow Log ;
+------------
+quartus_map --read_settings_files=on --write_settings_files=off nios_with_vga_controller -c nios_with_vga_controller
+quartus_fit --read_settings_files=on --write_settings_files=off nios_with_vga_controller -c nios_with_vga_controller
+quartus_asm --read_settings_files=off --write_settings_files=off nios_with_vga_controller -c nios_with_vga_controller
+
+
+
