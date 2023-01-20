@@ -66,9 +66,9 @@ static struct vga_img_viewer_device_data vga_img_viewer_data = {0};
 
 //static uint8_t frame_data[width*heigth*3] = {0}; // whole frame
 
-uint16_t rows[480] = {0};
-int rowcounter = 0;
-int timestamp = 0;
+//uint16_t rows[480] = {0};
+//int rowcounter = 0;
+//int timestamp = 0;
 static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
         add_uevent_var(env, "DEVMODE=%#o", 0666);
@@ -77,7 +77,7 @@ static int vga_img_viewer_uevent(struct device *dev, struct kobj_uevent_env *env
 
 irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
-        int i = 0;
+//        int i = 0;
 /*	rows[*PIXEL_row_ptr] = *(PIXEL_row_ptr);
 	rowcounter++;
 	if (rowcounter >= 479) {
@@ -113,6 +113,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 
 static int init_handler(struct platform_device *pdev)
 {
+	printk(KERN_ALERT DEVNAME ": initialising...\n");
         int irq_num, ret;
         dev_t dev;
 
@@ -125,7 +126,7 @@ static int init_handler(struct platform_device *pdev)
         PIXEL_row_ptr = LW_virtual + PIXEL_ROW_BASE;
         image_ram_ptr = LW_virtual + IMAGE_RAM_BASE;
 
-        *(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
+//        *(PIXEL_status_r_ptr + 2) = 0xF; // enable irq interrupts
         irq_num = platform_get_irq(pdev, 0);
         printk(KERN_ALERT DEVNAME ": IRQ %d wordt geregistreert!\n", irq_num);
 
@@ -200,8 +201,7 @@ static long vga_img_viewer_ioctl(struct file *file, unsigned int cmd, unsigned l
 
 static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t count, loff_t *offset)
 {
-    uint8_t data = *(PIXEL_row_ptr);
-    size_t datalen = 1;
+    size_t datalen = 100;
 
     printk("Reading device: %d\n", MINOR(file->f_path.dentry->d_inode->i_rdev));
 
@@ -209,7 +209,7 @@ static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t c
         count = datalen;
     }
 
-    if (copy_to_user(buf, &data, count)) {
+    if (copy_to_user(buf, image_ram_ptr, count)) {
         return -EFAULT;
     }
 
@@ -220,17 +220,17 @@ static ssize_t vga_img_viewer_read(struct file *file, char __user *buf, size_t c
 static ssize_t vga_img_viewer_write(struct file *file, const char __user *buf, size_t count, loff_t *offset)
 {
     size_t maxdatalen = 640*480*4, ncopied; // 640x480 pixels, 4 bytes per pixel
-    
+
     printk("Writing device: %d\n", MINOR(file->f_path.dentry->d_inode->i_rdev));
 
     if (count < maxdatalen) {
         maxdatalen = count;
     }
 
-    ncopied = copy_from_user(*(image_ram_ptr), buf, maxdatalen);
+    ncopied = copy_from_user(image_ram_ptr, buf, maxdatalen);
 
     if (ncopied == 0) {
-        printk("Copied %zd bytes from the user\n", maxdatalen);
+        printk("VGA Copied %zd bytes from the user\n", maxdatalen);
         // printk("Copied value: %x\n", data);
     } else {
         printk("Could't copy %zd bytes from the user\n", ncopied);

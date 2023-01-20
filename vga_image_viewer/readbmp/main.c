@@ -21,33 +21,42 @@ void pad_with_zeros(char* imgdata, char* newimgdata) {
 
 int main()
 {
-	FILE* destFile = fopen("./bird.bmp","wb");
+	FILE* destFile = fopen("/dev/vga_image_viewer","wb");
 	if (destFile == NULL){
 		printf("could not open the bird\n");
 		return -1;
 	}
-
+	FILE* justbirb = fopen("birb","wb");
 	BITMAPINFOHEADER bitmapInfoHeader;
 	unsigned char *bitmapData;
 
 	bitmapData = LoadBitmapFile("bird.bmp",&bitmapInfoHeader);
-	printf("bird loaded\n");
+	//printf("bird loaded\n");
 
 	if (bitmapData == NULL)
 	{
 		printf("Shit, the bird bmp could not be read\n");
 		return -1;
 	}
+
+	fwrite(bitmapData,8,480*640*3,justbirb);
+	fclose(justbirb);
+
 	unsigned char *paddedImage = (unsigned char*) malloc(480*640*4);
 
-	printf("padding that shit\n");
+	//printf("padding that shit\n");
 	pad_with_zeros(bitmapData,paddedImage);
-	printf("the bird is fat\n" );
+	//printf("the bird is fat\n" );
+
+	print_raw_bmp(bitmapData);
+
 	free(bitmapData);
 
-	int bytesWritten = fwrite(paddedImage,sizeof(unsigned char),480*640*4,destFile);
+	int bytesWritten = fwrite(paddedImage,8,480*640*4,destFile);
+
 	//printf("Image data:\n");
-	printf("Wrote %d bytes\n",bytesWritten);
-	//print_raw_bmp(bitmapData);
+	//printf("Wrote %d bytes\n",bytesWritten);
+
+	fclose(destFile);
 	return 0;
 }
