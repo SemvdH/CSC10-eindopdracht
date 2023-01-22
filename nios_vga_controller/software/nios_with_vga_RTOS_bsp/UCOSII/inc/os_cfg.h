@@ -55,7 +55,6 @@ extern "C"
                                        /* ------------------------ SEMAPHORES ------------------------ */
 #define OS_SEM_PEND_ABORT_EN      1    /*    Include code for OSSemPendAbort()                         */
 
-#define OS_TICKS_PER_SEC		  50000000
                                                                                                                      
 #include "system.h"
 

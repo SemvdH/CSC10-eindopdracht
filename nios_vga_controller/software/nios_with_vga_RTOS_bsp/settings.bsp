@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jan 22, 2023 5:00:06 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1674403206915</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>E:\School\minor_ES\CSC10\nios_vga_controller\software\nios_with_vga_RTOS_bsp</BspGeneratedLocation>
-        <BspSettingsFile>.\settings.bsp</BspSettingsFile>
-        <SopcDesignFile>..\..\vga_image_viewer_system.sopcinfo</SopcDesignFile>
+        <BspGeneratedTimeStamp>Jan 22, 2023 8:34:28 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1674416068886</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>/mnt/Homework/Avans/MINOR/CSC10/CSC10-eindopdracht/nios_vga_controller/software/nios_with_vga_RTOS_bsp</BspGeneratedLocation>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
+        <SopcDesignFile>../../vga_image_viewer_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2_gen2_0</Cpu>
         <SchemaVersion>1.9</SchemaVersion>

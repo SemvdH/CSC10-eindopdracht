@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'vga_image_viewer_system'
  * SOPC Builder design path: ../../vga_image_viewer_system.sopcinfo
  *
- * Generated: Sun Jan 22 17:00:08 CET 2023
+ * Generated: Sun Jan 22 20:20:18 CET 2023
  */
 
 /*
@@ -252,11 +252,11 @@
 #define PIO_0_BASE 0x41000
 #define PIO_0_BIT_CLEARING_EDGE_REGISTER 0
 #define PIO_0_BIT_MODIFYING_OUTPUT_REGISTER 0
-#define PIO_0_CAPTURE 0
+#define PIO_0_CAPTURE 1
 #define PIO_0_DATA_WIDTH 4
 #define PIO_0_DO_TEST_BENCH_WIRING 0
 #define PIO_0_DRIVEN_SIM_VALUE 0
-#define PIO_0_EDGE_TYPE "NONE"
+#define PIO_0_EDGE_TYPE "FALLING"
 #define PIO_0_FREQ 50000000
 #define PIO_0_HAS_IN 1
 #define PIO_0_HAS_OUT 0
@@ -282,7 +282,7 @@
 #define SYSID_QSYS_0_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_QSYS_0_NAME "/dev/sysid_qsys_0"
 #define SYSID_QSYS_0_SPAN 8
-#define SYSID_QSYS_0_TIMESTAMP 1674402278
+#define SYSID_QSYS_0_TIMESTAMP 1674404482
 #define SYSID_QSYS_0_TYPE "altera_avalon_sysid_qsys"
 
 

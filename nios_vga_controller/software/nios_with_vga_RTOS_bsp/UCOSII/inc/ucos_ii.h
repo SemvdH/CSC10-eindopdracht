@@ -378,6 +378,8 @@ extern "C" {
 #define OS_FLAG_INVALID_OPT          OS_ERR_FLAG_INVALID_OPT
 #define OS_FLAG_GRP_DEPLETED         OS_ERR_FLAG_GRP_DEPLETED
 
+#define OS_TICKS_PER_SEC			10000
+
 /*$PAGE*/
 /*
 *********************************************************************************************************
