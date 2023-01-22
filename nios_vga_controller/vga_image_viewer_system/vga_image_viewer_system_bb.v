@@ -1,6 +1,7 @@
 
 module vga_image_viewer_system (
 	clk_clk,
+	key_export,
 	reset_reset_n,
 	vga_export_vclk,
 	vga_export_hsync,
@@ -12,6 +13,7 @@ module vga_image_viewer_system (
 	vga_export_b);	
 
 	input		clk_clk;
+	input	[3:0]	key_export;
 	input		reset_reset_n;
 	output		vga_export_vclk;
 	output		vga_export_hsync;

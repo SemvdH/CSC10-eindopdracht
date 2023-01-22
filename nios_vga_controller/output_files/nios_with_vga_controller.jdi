@@ -1,6 +1,6 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="863bf9cea9b8fad728ad"/>
+    <hash md5_digest_80b="b3e5909e777488dbfcf6"/>
   </project>
   <file_info>
     <file device="5CSEMA5F31C6" path="nios_with_vga_controller_time_limited.sof" usercode="0xFFFFFFFF"/>
@@ -140,7 +140,7 @@
   <sld_infos>
     <sld_info hpath="vga_image_viewer_system:u0" name="u0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674222868"/>
+        <assignment_value text="QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674404482"/>
       </assignment_values>
       <parameters/>
     </sld_info>

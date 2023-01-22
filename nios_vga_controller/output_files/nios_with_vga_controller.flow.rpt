@@ -1,5 +1,5 @@
 Flow report for nios_with_vga_controller
-Fri Jan 20 14:59:56 2023
+Sun Jan 22 17:28:04 2023
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,16 +40,16 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Fri Jan 20 14:59:56 2023       ;
+; Flow Status                     ; Successful - Sun Jan 22 17:28:04 2023       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; nios_with_vga_controller                    ;
 ; Top-level Entity Name           ; nios_with_vga_controller_top                ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA5F31C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 1,486 / 32,070 ( 5 % )                      ;
-; Total registers                 ; 2128                                        ;
-; Total pins                      ; 31 / 457 ( 7 % )                            ;
+; Logic utilization (in ALMs)     ; 1,472 / 32,070 ( 5 % )                      ;
+; Total registers                 ; 2189                                        ;
+; Total pins                      ; 35 / 457 ( 8 % )                            ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 2,063,744 / 4,065,280 ( 51 % )              ;
 ; Total DSP Blocks                ; 3 / 87 ( 3 % )                              ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+--------------------------+
 ; Option            ; Setting                  ;
 +-------------------+--------------------------+
-; Start date & time ; 01/20/2023 14:55:46      ;
+; Start date & time ; 01/22/2023 17:23:43      ;
 ; Main task         ; Compilation              ;
 ; Revision Name     ; nios_with_vga_controller ;
 +-------------------+--------------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+---------------------------------------------------------------------------+--------------------------+------------------------------+------------+
 ; Assignment Name                     ; Value                                                                     ; Default Value            ; Entity Name                  ; Section Id ;
 +-------------------------------------+---------------------------------------------------------------------------+--------------------------+------------------------------+------------+
-; COMPILER_SIGNATURE_ID               ; 168202124014750.167422294626392                                           ; --                       ; --                           ; --         ;
+; COMPILER_SIGNATURE_ID               ; 168202124014750.167440462222980                                           ; --                       ; --                           ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                                                        ; --                       ; --                           ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                                                         ; --                       ; --                           ; --         ;
 ; MISC_FILE                           ; vga_image_viewer_system/synthesis/../vga_image_viewer_system.cmp          ; --                       ; --                           ; --         ;
@@ -95,7 +95,7 @@ refer to the applicable agreement for further details.
 ; PROJECT_OUTPUT_DIRECTORY            ; output_files                                                              ; --                       ; --                           ; --         ;
 ; SLD_FILE                            ; vga_image_viewer_system/synthesis/vga_image_viewer_system.regmap          ; --                       ; --                           ; --         ;
 ; SLD_FILE                            ; vga_image_viewer_system/synthesis/vga_image_viewer_system.debuginfo       ; --                       ; --                           ; --         ;
-; SLD_INFO                            ; QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674222868 ; --                       ; vga_image_viewer_system      ; --         ;
+; SLD_INFO                            ; QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674404482 ; --                       ; vga_image_viewer_system      ; --         ;
 ; SOPCINFO_FILE                       ; vga_image_viewer_system/synthesis/../../vga_image_viewer_system.sopcinfo  ; --                       ; --                           ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                                        ; --                       ; --                           ; --         ;
 ; TOP_LEVEL_ENTITY                    ; nios_with_vga_controller_top                                              ; nios_with_vga_controller ; --                           ; --         ;
@@ -107,10 +107,10 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:50     ; 1.0                     ; 5057 MB             ; 00:00:37                           ;
-; Fitter               ; 00:02:15     ; 1.2                     ; 6898 MB             ; 00:02:39                           ;
-; Assembler            ; 00:00:11     ; 1.0                     ; 4900 MB             ; 00:00:09                           ;
-; Total                ; 00:03:16     ; --                      ; --                  ; 00:03:25                           ;
+; Analysis & Synthesis ; 00:00:55     ; 1.0                     ; 5055 MB             ; 00:00:41                           ;
+; Fitter               ; 00:03:02     ; 1.2                     ; 6845 MB             ; 00:03:21                           ;
+; Assembler            ; 00:00:11     ; 1.0                     ; 4895 MB             ; 00:00:10                           ;
+; Total                ; 00:04:08     ; --                      ; --                  ; 00:04:12                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

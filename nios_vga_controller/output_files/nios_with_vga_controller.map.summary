@@ -1,11 +1,11 @@
-Analysis & Synthesis Status : Successful - Fri Jan 20 14:56:39 2023
+Analysis & Synthesis Status : Successful - Sun Jan 22 17:24:40 2023
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : nios_with_vga_controller
 Top-level Entity Name : nios_with_vga_controller_top
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 2136
-Total pins : 31
+Total registers : 2173
+Total pins : 35
 Total virtual pins : 0
 Total block memory bits : 2,063,744
 Total DSP Blocks : 3

@@ -120,7 +120,7 @@ GND                          : AA11      : gnd    :                   :         
 RESERVED_INPUT               : AA12      :        :                   :         : 3A        :                
 RESERVED_INPUT               : AA13      :        :                   :         : 3B        :                
 reset_reset_n                : AA14      : input  : 2.5 V             :         : 3B        : Y              
-RESERVED_INPUT               : AA15      :        :                   :         : 3B        :                
+key[1]                       : AA15      : input  : 2.5 V             :         : 3B        : Y              
 RESERVED_INPUT               : AA16      :        :                   :         : 4A        :                
 VCCIO4A                      : AA17      : power  :                   : 2.5V    : 4A        :                
 RESERVED_INPUT               : AA18      :        :                   :         : 4A        :                
@@ -324,7 +324,7 @@ RESERVED_INPUT               : AH5       :        :                   :         
 GND                          : AH6       : gnd    :                   :         :           :                
 RESERVED_INPUT               : AH7       :        :                   :         : 3B        :                
 RESERVED_INPUT               : AH8       :        :                   :         : 3B        :                
-RESERVED_INPUT               : AH9       :        :                   :         : 3B        :                
+key[0]                       : AH9       : input  : 2.5 V             :         : 3B        : N              
 RESERVED_INPUT               : AH10      :        :                   :         : 3B        :                
 GND                          : AH11      : gnd    :                   :         :           :                
 RESERVED_INPUT               : AH12      :        :                   :         : 3B        :                
@@ -928,7 +928,7 @@ GND                          : W11       : gnd    :                   :         
 VCC                          : W12       : power  :                   : 1.1V    :           :                
 GND                          : W13       : gnd    :                   :         :           :                
 VCC                          : W14       : power  :                   : 1.1V    :           :                
-RESERVED_INPUT               : W15       :        :                   :         : 3B        :                
+key[2]                       : W15       : input  : 2.5 V             :         : 3B        : Y              
 RESERVED_INPUT               : W16       :        :                   :         : 4A        :                
 RESERVED_INPUT               : W17       :        :                   :         : 4A        :                
 GND                          : W18       : gnd    :                   :         :           :                
@@ -959,7 +959,7 @@ GND                          : Y12       : gnd    :                   :         
 VCC                          : Y13       : power  :                   : 1.1V    :           :                
 GND                          : Y14       : gnd    :                   :         :           :                
 GND                          : Y15       : gnd    :                   :         :           :                
-RESERVED_INPUT               : Y16       :        :                   :         : 3B        :                
+key[3]                       : Y16       : input  : 2.5 V             :         : 3B        : Y              
 RESERVED_INPUT               : Y17       :        :                   :         : 4A        :                
 RESERVED_INPUT               : Y18       :        :                   :         : 4A        :                
 RESERVED_INPUT               : Y19       :        :                   :         : 4A        :                

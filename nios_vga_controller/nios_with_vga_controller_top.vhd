@@ -13,7 +13,8 @@ ENTITY nios_with_vga_controller_top IS
         vga_sync : OUT STD_LOGIC; -- export_sync
         vga_r : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_r
         vga_g : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_g
-        vga_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) -- export_b
+        vga_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_b
+        key : IN STD_LOGIC_VECTOR(3 DOWNTO 0) -- export
     );
 END nios_with_vga_controller_top;
 
@@ -30,7 +31,8 @@ ARCHITECTURE rtl OF nios_with_vga_controller_top IS
             vga_export_sync : OUT STD_LOGIC; -- export_sync
             vga_export_r : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_r
             vga_export_g : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_g
-            vga_export_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) -- export_b
+            vga_export_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- export_b
+            key_export : IN STD_LOGIC_VECTOR(3 DOWNTO 0) -- export
         );
     END COMPONENT vga_image_viewer_system;
 
@@ -47,7 +49,8 @@ BEGIN
             vga_export_sync => vga_sync,
             vga_export_r => vga_r,
             vga_export_g => vga_g,
-            vga_export_b => vga_b
+            vga_export_b => vga_b,
+            key_export => key
         );
 
     END ARCHITECTURE;

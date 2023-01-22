@@ -2,7 +2,7 @@
   <sld_infos>
     <sld_info hpath="vga_image_viewer_system:u0" name="u0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674222868"/>
+        <assignment_value text="QSYS_NAME vga_image_viewer_system HAS_SOPCINFO 1 GENERATION_ID 1674404482"/>
       </assignment_values>
     </sld_info>
     <sld_info hpath="sld_hub:auto_hub|alt_sld_fab:\instrumentation_fabric_with_node_gen:instrumentation_fabric" library="alt_sld_fab" name="instrumentation_fabric">

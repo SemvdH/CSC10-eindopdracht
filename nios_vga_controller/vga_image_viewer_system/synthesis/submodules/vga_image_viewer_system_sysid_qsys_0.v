@@ -49,7 +49,7 @@ module vga_image_viewer_system_sysid_qsys_0 (
 
   wire    [ 31: 0] readdata;
   //control_slave, which is an e_avalon_slave
-  assign readdata = address ? 1674222868 : 8;
+  assign readdata = address ? 1674404482 : 8;
 
 endmodule
 
